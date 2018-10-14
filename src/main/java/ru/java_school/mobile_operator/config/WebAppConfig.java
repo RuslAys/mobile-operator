@@ -7,21 +7,24 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("ru.java_school.mobile_operator")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
-    //Позволяет видеть все ресурсы в папке pages
+    /**
+     * Позволяет видеть все ресурсы в папке pages
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/pages**").addResourceLocations("/pages/");
     }
 
-    /*
-    Этот бин инициализирует View проекта
+    /**
+     * Этот бин инициализирует View проекта
+     * @return
      */
 
     @Bean
