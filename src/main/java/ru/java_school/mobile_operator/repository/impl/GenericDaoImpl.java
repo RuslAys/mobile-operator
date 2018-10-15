@@ -4,45 +4,71 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.java_school.mobile_operator.repository.GenericDao;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 @Repository
-public abstract class GenericDaoImpl <T extends Serializable>
-    implements GenericDao<T> {
+public abstract class GenericDaoImpl <E, K extends Serializable>
+    implements GenericDao<E, K> {
 
-    private Class<T> clazz;
+    private Class<? extends E> daoType;
 
-    @Autowired
-    SessionFactory sessionFactory;
+    @Autowired(required = true)
+    private SessionFactory sessionFactory;
 
-    public final void setClazz(Class<T> clazz){
-        this.clazz = clazz;
+    public final void setDaoType(Class<E> daoType){
+        this.daoType = daoType;
     }
 
-    public T save(T entity){
-        return (T) getCurrentSession().save(entity);
+    /**
+     * By defining this class as abstract, we prevent Spring from creating instance of this class
+     * If not defined abstract getClass().getGenericSuperClass() would return Object.
+     * There would be exception because Object class does not have a constructor with parameters.
+     */
+    public GenericDaoImpl(){
+        Type t = getClass().getGenericSuperclass();
+        ParameterizedType pt = (ParameterizedType) t;
+        daoType = (Class) pt.getActualTypeArguments()[0];
     }
 
-    public T update(T entity){
-        return (T) getCurrentSession().merge(entity);
-    }
-
-    public void delete(T entity){
-        getCurrentSession().delete(entity);
-    }
-
-    public T findById(int id){
-        return (T) getCurrentSession().get(clazz, id);
-    }
-
-    public List<T> findAll(){
-        return getCurrentSession().createQuery("from " + clazz.getName()).list();
-    }
-
-    protected final Session getCurrentSession(){
+    protected Session currentSession(){
         return sessionFactory.getCurrentSession();
+    }
+
+
+    @Override
+    public void add(E entity) {
+        currentSession().save(entity);
+    }
+
+    @Override
+    public void saveOrUpdate(E entity) {
+        currentSession().saveOrUpdate(entity);
+    }
+
+    @Override
+    public void update(E entity) {
+        currentSession().saveOrUpdate(entity);
+    }
+
+    @Override
+    public void remove(E entity) {
+        currentSession().delete(entity);
+    }
+
+    @Override
+    public E find(K key) {
+        return (E) currentSession().get(daoType, key);
+    }
+
+    @Override
+    public List<E> findAll() {
+        return currentSession().createCriteria(daoType).list();
     }
 }

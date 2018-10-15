@@ -20,6 +20,7 @@ public class Initializer implements WebApplicationInitializer {
         //Регистрация в контексте конфигурациионного класса
         context.register(WebAppConfig.class);
         context.register(WebSecurityConfig.class);
+        context.register(HibernateConfig.class);
         servletContext.addListener(new ContextLoaderListener(context));
 
         context.setServletContext(servletContext);

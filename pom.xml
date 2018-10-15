@@ -12,7 +12,8 @@
     <properties>
         <spring.version>5.1.0.RELEASE</spring.version>
         <javax.servlet>4.0.1</javax.servlet>
-        <spring.securiry>5.1.0.RELEASE</spring.securiry>
+        <hibernate.version>5.3.6.Final</hibernate.version>
+        <mysql.connector.version>8.0.12</mysql.connector.version>
     </properties>
 
     <dependencies>
@@ -36,6 +37,26 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!--Spring orm support-->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet}</version>
@@ -47,39 +68,58 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.12</version>
+            <version>${mysql.connector.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+        <!--hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.3.6.Final</version>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <!--For basic data source-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.5.0</version>
         </dependency>
     </dependencies>
 
