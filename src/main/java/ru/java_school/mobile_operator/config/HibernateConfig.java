@@ -1,70 +1,61 @@
 package ru.java_school.mobile_operator.config;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.java_school.mobile_operator.domain.User;
 
-import javax.sql.DataSource;
 import java.util.Properties;
 
+import static org.hibernate.cfg.AvailableSettings.*;
+
 @Configuration
+@PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScan({"ru.java_school.mobile_operator"})
+@ComponentScans(value = {@ComponentScan("ru.java_school.mobile_operator.repository"),
+    @ComponentScan("ru.java_school.mobile_operator.service")})
 public class HibernateConfig {
+    @Autowired
+    private Environment environment;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory(){
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(restDataSource());
-        sessionFactory.setPackagesToScan(
-                new String[] {"ru.java_school.mobile_operator"});
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
+        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+        Properties properties = new Properties();
+
+        // Setting JDBC properties
+        properties.put(DRIVER, environment.getProperty("mysql.driver"));
+        properties.put(URL, environment.getProperty("mysql.jdbcUrl"));
+        properties.put(USER, environment.getProperty("mysql.username"));
+        properties.put(PASS, environment.getProperty("mysql.password"));
+
+        // Setting hibernate properties
+        properties.put(SHOW_SQL, environment.getProperty("hibernate.show_sql"));
+        properties.put(HBM2DDL_AUTO, environment.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put(DIALECT, environment.getProperty("hibernate.dialect"));
+
+        // Setting C3P0 properties
+        properties.put(C3P0_MIN_SIZE, environment.getProperty("hibernate.c3p0.min_size"));
+        properties.put(C3P0_MAX_SIZE, environment.getProperty("hibernate.c3p0.max_size"));
+        properties.put(C3P0_ACQUIRE_INCREMENT,
+                environment.getProperty("hibernate.c3p0.acquire_increment"));
+        properties.put(C3P0_TIMEOUT, environment.getProperty("hibernate.c3p0.timeout"));
+        properties.put(C3P0_MAX_STATEMENTS,
+                environment.getProperty("hibernate.c3p0.max_statements"));
+
+        factoryBean.setHibernateProperties(properties);
+        factoryBean.setAnnotatedClasses(User.class);
+
+        return factoryBean;
     }
 
     @Bean
-    public DataSource restDataSource(){
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/mobile_operator");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123");
-        return dataSource;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(
-            SessionFactory sessionFactory) {
-
-        HibernateTransactionManager txManager
-                = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory);
-
-        return txManager;
-    }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
-
-    Properties hibernateProperties() {
-        return new Properties() {
-            {
-                setProperty("hibernate.hbm2ddl.auto", "create-drop");
-                setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-                setProperty("hibernate.connection.CharSet", "utf8");
-                setProperty("hibernate.connection.characterEncoding", "utf8");
-                setProperty("hibernate.connection.useUnicode", "true");
-            }
-        };
+    public HibernateTransactionManager transactionManager(){
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
     }
 }

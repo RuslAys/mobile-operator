@@ -19,7 +19,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/pages**").addResourceLocations("/pages/");
+        registry.addResourceHandler("/pages/**").addResourceLocations("/pages/");
     }
 
     /**

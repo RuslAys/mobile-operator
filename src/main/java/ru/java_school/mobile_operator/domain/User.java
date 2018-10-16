@@ -2,8 +2,7 @@ package ru.java_school.mobile_operator.domain;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "USR")
+@Entity(name = "usr")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -10,10 +10,11 @@ import ru.java_school.mobile_operator.repository.GenericDao;
 import ru.java_school.mobile_operator.repository.UserDao;
 import ru.java_school.mobile_operator.service.UserService;
 
-@Service
+@Service("userService")
 public class UserServiceImpl extends GenericServiceImpl<User, Long>
         implements UserService {
 
+    @Autowired
     private UserDao userDao;
 
     public UserServiceImpl() {
