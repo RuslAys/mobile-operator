@@ -1,4 +1,4 @@
-package ru.java_school.mobile_operator.repository;
+package ru.javaschool.mobileoperator.repository;
 
 import java.util.List;
 

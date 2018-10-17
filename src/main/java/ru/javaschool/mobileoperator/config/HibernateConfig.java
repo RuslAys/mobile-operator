@@ -1,4 +1,4 @@
-package ru.java_school.mobile_operator.config;
+package ru.javaschool.mobileoperator.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -6,7 +6,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.java_school.mobile_operator.domain.User;
+import ru.javaschool.mobileoperator.domain.User;
 
 import java.util.Properties;
 
@@ -16,7 +16,7 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
 @ComponentScans(value = {@ComponentScan("ru.java_school.mobile_operator.repository"),
-    @ComponentScan("ru.java_school.mobile_operator.service")})
+    @ComponentScan("ru.javaschool.mobileoperator.service")})
 public class HibernateConfig {
     @Autowired
     private Environment environment;

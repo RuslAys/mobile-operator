@@ -1,4 +1,4 @@
-package ru.java_school.mobile_operator.service;
+package ru.javaschool.mobileoperator.service;
 
 import java.util.List;
 

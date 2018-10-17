@@ -1,4 +1,4 @@
-package ru.java_school.mobile_operator.enums;
+package ru.javaschool.mobileoperator.domain.enums;
 
 public enum UserRoleEnum {
     ADMIN,

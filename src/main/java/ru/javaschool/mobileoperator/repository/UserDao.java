@@ -1,6 +1,6 @@
-package ru.java_school.mobile_operator.repository;
+package ru.javaschool.mobileoperator.repository;
 
-import ru.java_school.mobile_operator.domain.User;
+import ru.javaschool.mobileoperator.domain.User;
 
 public interface UserDao extends GenericDao<User, Long> {
     boolean isUserActive(Long id);

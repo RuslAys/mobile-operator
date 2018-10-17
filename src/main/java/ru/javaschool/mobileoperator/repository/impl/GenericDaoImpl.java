@@ -1,11 +1,10 @@
-package ru.java_school.mobile_operator.repository.impl;
+package ru.javaschool.mobileoperator.repository.impl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import ru.java_school.mobile_operator.repository.GenericDao;
+import ru.javaschool.mobileoperator.repository.GenericDao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;

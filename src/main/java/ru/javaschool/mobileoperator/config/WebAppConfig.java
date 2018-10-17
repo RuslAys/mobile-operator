@@ -1,4 +1,4 @@
-package ru.java_school.mobile_operator.config;
+package ru.javaschool.mobileoperator.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("ru.java_school.mobile_operator")
+@ComponentScan("ru.javaschool.mobileoperator")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     /**

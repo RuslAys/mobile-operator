@@ -1,8 +1,12 @@
-package ru.java_school.mobile_operator.domain;
+package ru.javaschool.mobileoperator.domain;
+
+import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 
 import javax.persistence.*;
+import java.util.Set;
 
-@Entity(name = "usr")
+@Entity()
+@Table(name = "usr")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,6 +18,11 @@ public class User {
     private String password;
     @Column
     private boolean active;
+    @Column
+    @ElementCollection(targetClass = UserRoleEnum.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<UserRoleEnum> roles;
 
     public User(){
 
@@ -54,5 +63,13 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Set<UserRoleEnum> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRoleEnum> roles) {
+        this.roles = roles;
     }
 }

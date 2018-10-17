@@ -1,9 +1,9 @@
-package ru.java_school.mobile_operator.repository.impl;
+package ru.javaschool.mobileoperator.repository.impl;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-import ru.java_school.mobile_operator.domain.User;
-import ru.java_school.mobile_operator.repository.UserDao;
+import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.repository.UserDao;
 
 @Repository
 public class UserDaoImpl extends GenericDaoImpl<User, Long>

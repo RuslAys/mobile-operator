@@ -1,4 +1,4 @@
-package ru.java_school.mobile_operator.config;
+package ru.javaschool.mobileoperator.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -16,6 +16,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
                 new AnnotationConfigWebApplicationContext();
         context.register(WebAppConfig.class);
         context.register(HibernateConfig.class);
+        context.register(WebSecurityConfig.class);
         context.setServletContext(servletContext);
 
         ServletRegistration.Dynamic dispatcher =
