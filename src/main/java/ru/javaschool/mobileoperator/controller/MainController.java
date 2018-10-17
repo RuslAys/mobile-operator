@@ -21,15 +21,15 @@ public class MainController {
 
     @GetMapping("/")
     public String printHello(ModelMap modelMap){
-        System.out.println("controller works");
-        User user = new User("u", "p");
-        user.setActive(true);
-        Set<UserRoleEnum> set = new HashSet<>();
-        set.add(UserRoleEnum.USER);
-        set.add(UserRoleEnum.ADMIN);
-        set.add(UserRoleEnum.OPERATOR);
-        user.setRoles(set);
-        userService.add(user);
+//        System.out.println("controller works");
+//        User user = new User("u", "p");
+//        user.setActive(true);
+//        Set<UserRoleEnum> set = new HashSet<>();
+//        set.add(UserRoleEnum.USER);
+//        set.add(UserRoleEnum.ADMIN);
+//        set.add(UserRoleEnum.OPERATOR);
+//        user.setRoles(set);
+//        userService.add(user);
         modelMap.addAttribute("message", "Hi");
         return "main";
     }
