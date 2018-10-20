@@ -15,7 +15,7 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {@ComponentScan("ru.java_school.mobile_operator.repository"),
+@ComponentScans(value = {@ComponentScan("ru.javaschool.mobileoperator.repository"),
     @ComponentScan("ru.javaschool.mobileoperator.service")})
 public class HibernateConfig {
     @Autowired

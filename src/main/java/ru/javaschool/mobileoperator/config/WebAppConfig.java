@@ -1,40 +1,26 @@
 package ru.javaschool.mobileoperator.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("ru.javaschool.mobileoperator")
-@Import({WebSecurityConfig.class, HibernateConfig.class})
-public class WebAppConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackages = {"ru.javaschool.mobileoperator.controller"})
+public class WebAppConfig implements WebMvcConfigurer {
 
-    /**
-     * Позволяет видеть все ресурсы в папке pages
-     * @param registry
-     */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/pages/**").addResourceLocations("/pages/");
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp().prefix("/pages/").suffix(".jsp");
     }
 
-    /**
-     * Этот бин инициализирует View проекта
-     * @return
-     */
-
-    @Bean
-    public InternalResourceViewResolver setupViewResolver(){
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/pages/");
-        resolver.setSuffix(".jsp");
-
-        return resolver;
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 }
