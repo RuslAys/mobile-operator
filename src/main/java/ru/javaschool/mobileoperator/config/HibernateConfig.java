@@ -6,6 +6,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.javaschool.mobileoperator.domain.Authorities;
 import ru.javaschool.mobileoperator.domain.User;
 
 import java.util.Properties;
@@ -47,7 +48,7 @@ public class HibernateConfig {
                 environment.getProperty("hibernate.c3p0.max_statements"));
 
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(User.class);
+        factoryBean.setAnnotatedClasses(User.class, Authorities.class);
 
         return factoryBean;
     }

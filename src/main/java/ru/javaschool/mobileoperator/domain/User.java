@@ -3,43 +3,24 @@ package ru.javaschool.mobileoperator.domain;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity()
-@Table(name = "usr")
+@Table(name = "USERS")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(length = 100)
+    @Column(name = "USERNAME")
     private String username;
-    @Column(length = 100)
+
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
-    @Column
-    private boolean active;
-    @Column
-    @ElementCollection(targetClass = UserRoleEnum.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<UserRoleEnum> roles;
 
-    public User(){
+    @Column(name = "ENABLED", nullable = false)
+    private boolean enabled;
 
-    }
-
-    public User(String username, String password){
-        this.username = username;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Authorities> authorities = new HashSet<>();
 
     public String getUsername() {
         return username;
@@ -57,19 +38,19 @@ public class User {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public Set<UserRoleEnum> getRoles() {
-        return roles;
+    public Set<Authorities> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoles(Set<UserRoleEnum> roles) {
-        this.roles = roles;
+    public void setAuthorities(Set<Authorities> authorities) {
+        this.authorities = authorities;
     }
 }
