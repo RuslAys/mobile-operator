@@ -1,18 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>MSS</title>
-</head>
+<jsp:include page="parts/header.jsp" />
 <body>
-
-	<h1>MSS</h1>
 	<h4>Login Form</h4>
-	
-	<form action='<spring:url value="/loginAction"/>' method="post">
+
+	<form action="/loginAction" method="post">
     <table>
       <tr>
         <td>Username</td>

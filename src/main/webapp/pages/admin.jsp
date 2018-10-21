@@ -1,11 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<% String curUrl=request.getServletPath().toString(); %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>MSS</title>
+<jsp:include page="parts/header.jsp" />
 <body>
     <h1>Admin Panel</h1>
     <h2>Add new operator</h2>
@@ -30,5 +23,4 @@
     </form>
     <div> ${message} </div>
 </body>
-</head>
 </html>
