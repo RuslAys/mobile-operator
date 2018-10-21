@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 <jsp:include page="parts/header.jsp" />
 <body>
     <h1>Admin Panel</h1>
@@ -17,7 +21,7 @@
                  <td><input type="password" name="confirmPassword"></td>
                  </tr>
               <tr>
-                <td><button type="submit">Login</button></td>
+                <td><button type="submit">Add Operator</button></td>
               </tr>
             </table>
     </form>
