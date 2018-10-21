@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<h1>Spring MVC 5 + Spring Security 5 + Hibernate 5 example</h1>
+	<h1>MSS</h1>
 	<h4>Login Form</h4>
 	
 	<form action='<spring:url value="/loginAction"/>' method="post">

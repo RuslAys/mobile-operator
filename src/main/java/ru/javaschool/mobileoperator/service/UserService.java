@@ -5,4 +5,5 @@ import ru.javaschool.mobileoperator.domain.User;
 
 public interface UserService extends GenericService<User, String>, UserDetailsService {
     User getUser(String username);
+    void addOperator(String username, String password);
 }

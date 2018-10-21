@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "AUTHORITIES")
-public class Authorities {
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -15,6 +15,14 @@ public class Authorities {
     @ManyToOne
     @JoinColumn(name = "USERNAME")
     private User user;
+
+    public Authority() {
+    }
+
+    public Authority(User user, String authority) {
+        this.user = user;
+        this.authority = authority;
+    }
 
     public String getAuthority() {
         return authority;

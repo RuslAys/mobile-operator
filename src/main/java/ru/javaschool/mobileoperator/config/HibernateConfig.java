@@ -1,12 +1,13 @@
 package ru.javaschool.mobileoperator.config;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.javaschool.mobileoperator.domain.Authorities;
+import ru.javaschool.mobileoperator.domain.Authority;
 import ru.javaschool.mobileoperator.domain.User;
 
 import java.util.Properties;
@@ -48,15 +49,16 @@ public class HibernateConfig {
                 environment.getProperty("hibernate.c3p0.max_statements"));
 
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(User.class, Authorities.class);
+        factoryBean.setAnnotatedClasses(User.class, Authority.class);
 
         return factoryBean;
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager(){
+    public HibernateTransactionManager transactionManager(
+            @Autowired SessionFactory sessionFactory){
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
+        transactionManager.setSessionFactory(sessionFactory);
         return transactionManager;
     }
 }

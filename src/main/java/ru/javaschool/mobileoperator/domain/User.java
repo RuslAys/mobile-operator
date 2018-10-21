@@ -1,7 +1,5 @@
 package ru.javaschool.mobileoperator.domain;
 
-import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +18,7 @@ public class User {
     private boolean enabled;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Authorities> authorities = new HashSet<>();
+    private Set<Authority> authorities = new HashSet<>();
 
     public String getUsername() {
         return username;
@@ -46,11 +44,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<Authorities> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authorities> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 }
