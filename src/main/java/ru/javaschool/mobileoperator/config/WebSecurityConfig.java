@@ -32,36 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-//                .withUser("a").password("p").roles("USER","ADMIN")
-//                .and()
-//                .withUser("u").password("p").roles("USER");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests().anyRequest().authenticated()
-////                .and()
-////                    .authorizeRequests()
-////                    .antMatchers("/admin**")
-////                    .access("hasRole('ROLE_ADMIN')")
-//                .and()
-//                    .authorizeRequests().antMatchers("/login**").permitAll()
-//                .and()
-//                    .formLogin()
-//                    .loginPage("/login")
-//                    .loginProcessingUrl("/loginAction")
-//                    .permitAll()
-//                .and()
-//                    .logout().logoutSuccessUrl("/login").permitAll()
-//                .and()
-//                    .csrf().disable();
         http
-//                .authorizeRequests()
-//                    .anyRequest()
-//                    .authenticated()
-//                .and()
                 .authorizeRequests()
                     .antMatchers("/login**").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")

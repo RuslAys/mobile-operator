@@ -14,6 +14,7 @@ import ru.javaschool.mobileoperator.repository.GenericDao;
 import ru.javaschool.mobileoperator.repository.UserDao;
 import ru.javaschool.mobileoperator.service.UserService;
 import ru.javaschool.mobileoperator.service.converter.UserToUserDetails;
+import ru.javaschool.mobileoperator.service.exceptions.UserDisabledException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -63,6 +64,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userUserDetailsConverter.convert(getUser(username));
+        UserDetails userDetails = userUserDetailsConverter.convert(getUser(username));
+        if(userDetails == null) throw new UsernameNotFoundException("User not found");
+        if(!userDetails.isEnabled()) throw new UserDisabledException("User is disabled");
+        return userDetails;
     }
 }

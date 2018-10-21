@@ -1,3 +1,4 @@
+<%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <body>
 	<h4>Login Form</h4>
@@ -18,5 +19,6 @@
     </table>
   </form>
   <br/>
+  ${SPRING_SECURITY_LAST_EXCEPTION.message}
 </body>
 </html>
