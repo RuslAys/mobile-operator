@@ -47,4 +47,11 @@ public class Authority {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Authority{" +
+                "id=" + id +
+                ", authority='" + authority + "'}";
+    }
 }

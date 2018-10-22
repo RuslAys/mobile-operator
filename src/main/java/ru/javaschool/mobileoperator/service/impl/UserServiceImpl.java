@@ -17,7 +17,9 @@ import ru.javaschool.mobileoperator.service.converter.UserToUserDetails;
 import ru.javaschool.mobileoperator.service.exceptions.UserDisabledException;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("userService")
 public class UserServiceImpl extends GenericServiceImpl<User, String>
@@ -68,5 +70,19 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         if(userDetails == null) throw new UsernameNotFoundException("User not found");
         if(!userDetails.isEnabled()) throw new UserDisabledException("User is disabled");
         return userDetails;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<User> findAll(UserRoleEnum role) {
+        return findAll()
+                .stream()
+                .filter(user -> user.getAuthorities()
+                                .stream()
+                                .anyMatch(
+                                        authority -> authority.getAuthority().equals(role.name())
+                                )
+                        )
+                .collect(Collectors.toList());
     }
 }
