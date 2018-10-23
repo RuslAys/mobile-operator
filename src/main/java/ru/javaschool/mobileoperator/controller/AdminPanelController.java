@@ -53,10 +53,10 @@ public class AdminPanelController {
 
     @PostMapping("/editOperator")
     public String editOperator(@RequestParam String username,
-                               @RequestParam Boolean enabled){
-        User user = userService.getUser(username);
-        user.setEnabled(enabled);
-        userService.update(user);
-        return "redirect:/adminEditor";
+                               @RequestParam(value = "enabled",
+                                       required = false,
+                                       defaultValue = "false") Boolean enabled){
+        userService.setOperatorActive(username, enabled);
+        return "redirect:/admin";
     }
 }

@@ -10,4 +10,5 @@ public interface UserService extends GenericService<User, String>, UserDetailsSe
     User getUser(String username);
     List<User> findAll(UserRoleEnum role);
     void addOperator(String username, String password);
+    void setOperatorActive(String username, boolean status);
 }

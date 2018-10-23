@@ -86,4 +86,14 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
                         )
                 .collect(Collectors.toList());
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void setOperatorActive(String username, boolean status) {
+        User user = userDao.getUser(username);
+        if(user.isEnabled() != status) {
+            user.setEnabled(status);
+        }
+        userDao.update(user);
+    }
 }

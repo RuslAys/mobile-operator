@@ -28,6 +28,7 @@
                 <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Active</th>
                     <th>Role</th>
                     <th></th>
                 </tr>
@@ -37,6 +38,7 @@
                         <tr>
                             <td><a href="/admin/${operator.username}">
                                     <c:out value="${operator.username}" /> </a> </td>
+                            <td><c:out value="${operator.enabled}" /> </td>
                                 <c:forEach items="${operator.authorities}" var="auth">
                                     <td> <c:out value="${auth.authority}" /></td>
                                 </c:forEach>
