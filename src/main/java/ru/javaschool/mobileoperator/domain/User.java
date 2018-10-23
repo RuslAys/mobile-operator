@@ -17,7 +17,7 @@ public class User {
     @Column(name = "ENABLED", nullable = false)
     private boolean enabled;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
     public String getUsername() {
@@ -55,8 +55,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                "username='" + username + '\''+
                 ", enabled=" + enabled +
                 ", authorities=" + authorities +
                 '}';

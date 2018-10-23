@@ -2,6 +2,7 @@ package ru.javaschool.mobileoperator.repository.impl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.repository.GenericDao;
@@ -9,6 +10,7 @@ import ru.javaschool.mobileoperator.repository.GenericDao;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @SuppressWarnings("unchecked")

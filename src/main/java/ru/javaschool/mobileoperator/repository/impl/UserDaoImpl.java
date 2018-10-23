@@ -10,6 +10,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, String>
 
     @Override
     public User getUser(String username) {
+        username = username.toLowerCase();
         return currentSession().get(User.class, username);
     }
 }

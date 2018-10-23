@@ -53,6 +53,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void addOperator(String username, String password) {
+        username = username.toLowerCase();
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
@@ -79,7 +80,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
                 .stream()
                 .filter(user -> user.getAuthorities()
                                 .stream()
-                                .anyMatch(
+                                .allMatch(
                                         authority -> authority.getAuthority().equals(role.name())
                                 )
                         )

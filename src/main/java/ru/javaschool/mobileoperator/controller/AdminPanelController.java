@@ -5,11 +5,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.service.UserService;
+
+import java.util.List;
 
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -19,7 +20,9 @@ public class AdminPanelController {
     UserService userService;
 
     @GetMapping
-    public String admin(){
+    public String admin(Model model){
+        List<User> operatorList = userService.findAll(UserRoleEnum.OPERATOR);
+        model.addAttribute("operators", operatorList);
         return "admin";
     }
 
@@ -37,6 +40,23 @@ public class AdminPanelController {
         }else {
             userService.addOperator(username, password);
         }
-        return "admin";
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/{username}")
+    public String userEditForm(@PathVariable String username,
+                               Model model){
+        User user = userService.getUser(username);
+        model.addAttribute("user", user);
+        return "adminEditor";
+    }
+
+    @PostMapping("/editOperator")
+    public String editOperator(@RequestParam String username,
+                               @RequestParam Boolean enabled){
+        User user = userService.getUser(username);
+        user.setEnabled(enabled);
+        userService.update(user);
+        return "redirect:/adminEditor";
     }
 }
