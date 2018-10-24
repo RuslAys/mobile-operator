@@ -16,6 +16,11 @@
                 <a class="nav-link" href="/admin">Admin panel</a>
         </security:authorize>
       </li>
+      <li class="nav-item active">
+        <security:authorize access="hasRole('ROLE_OPERATOR')">
+              <a class="nav-link" href="/sale">Sale contract</a>
+        </security:authorize>
+      </li>
     </ul>
     <security:authorize access="isAuthenticated()">
         <form class="form-inline my-2 my-lg-0" action="/logout" method="post">

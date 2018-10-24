@@ -7,8 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.javaschool.mobileoperator.domain.Authority;
-import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.domain.*;
 
 import java.util.Properties;
 
@@ -49,7 +48,16 @@ public class HibernateConfig {
                 environment.getProperty("hibernate.c3p0.max_statements"));
 
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(User.class, Authority.class);
+        factoryBean.setAnnotatedClasses(
+                User.class,
+                Authority.class,
+                AbstractPO.class,
+                Customer.class,
+                Contract.class,
+                PersonalAccount.class,
+                TerminalDevice.class,
+                TariffPlan.class,
+                Option.class);
 
         return factoryBean;
     }
