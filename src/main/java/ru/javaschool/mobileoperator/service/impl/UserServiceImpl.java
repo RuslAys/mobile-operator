@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserToUserDetails userUserDetailsConverter;
@@ -56,7 +60,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         username = username.toLowerCase();
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setEnabled(true);
         Set<Authority> authorities = new HashSet<>();
         authorities.add(new Authority(user, UserRoleEnum.OPERATOR.name()));
