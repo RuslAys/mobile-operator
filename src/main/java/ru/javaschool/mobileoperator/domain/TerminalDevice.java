@@ -27,6 +27,15 @@ public class TerminalDevice extends AbstractPO {
     @JoinColumn(name = "phone_number_id")
     private PhoneNumber phoneNumber;
 
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "terminal_devices_locks",
+            joinColumns = { @JoinColumn(name = "terminal_device_id") },
+            inverseJoinColumns = { @JoinColumn(name = "lock_id") })
+    private Set<Lock> locks;
+
     public PersonalAccount getPersonalAccount() {
         return personalAccount;
     }

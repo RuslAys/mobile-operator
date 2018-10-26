@@ -58,7 +58,8 @@ public class HibernateConfig {
                 TerminalDevice.class,
                 TariffPlan.class,
                 Option.class,
-                PhoneNumber.class);
+                PhoneNumber.class,
+                Lock.class);
 
         return factoryBean;
     }
