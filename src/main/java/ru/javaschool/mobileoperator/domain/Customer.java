@@ -26,6 +26,9 @@ public class Customer extends AbstractPO {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "passport")
+    private String passport;
+
     public Set<Contract> getContracts() {
         return contracts;
     }
@@ -72,5 +75,13 @@ public class Customer extends AbstractPO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
     }
 }
