@@ -63,7 +63,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         user.setPassword(passwordEncoder.encode(password));
         user.setEnabled(true);
         Set<Authority> authorities = new HashSet<>();
-        authorities.add(new Authority(user, UserRoleEnum.OPERATOR.name()));
+        authorities.add(new Authority(user, UserRoleEnum.ROLE_OPERATOR.name()));
         user.setAuthorities(authorities);
         add(user);
     }
@@ -93,11 +93,11 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void setOperatorActive(String username, boolean status) {
+    public void setOperatorActiveStatus(String username, boolean status) {
         User user = userDao.getUser(username);
         if(user.isEnabled() != status) {
             user.setEnabled(status);
+            userDao.update(user);
         }
-        userDao.update(user);
     }
 }

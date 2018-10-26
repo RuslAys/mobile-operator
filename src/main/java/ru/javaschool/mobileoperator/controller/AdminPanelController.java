@@ -21,7 +21,7 @@ public class AdminPanelController {
 
     @GetMapping
     public String admin(Model model){
-        List<User> operatorList = userService.findAll(UserRoleEnum.OPERATOR);
+        List<User> operatorList = userService.findAll(UserRoleEnum.ROLE_OPERATOR);
         model.addAttribute("operators", operatorList);
         return "admin";
     }
@@ -56,7 +56,7 @@ public class AdminPanelController {
                                @RequestParam(value = "enabled",
                                        required = false,
                                        defaultValue = "false") Boolean enabled){
-        userService.setOperatorActive(username, enabled);
+        userService.setOperatorActiveStatus(username, enabled);
         return "redirect:/admin";
     }
 }
