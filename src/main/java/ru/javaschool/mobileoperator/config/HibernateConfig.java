@@ -57,7 +57,8 @@ public class HibernateConfig {
                 PersonalAccount.class,
                 TerminalDevice.class,
                 TariffPlan.class,
-                Option.class);
+                Option.class,
+                PhoneNumber.class);
 
         return factoryBean;
     }

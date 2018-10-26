@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "PERSONAL_ACCOUNT")
+@Table(name = "personal_accounts")
 public class PersonalAccount extends AbstractPO {
 
     @ManyToOne
@@ -14,11 +14,30 @@ public class PersonalAccount extends AbstractPO {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalAccount")
     private Set<TerminalDevice> terminalDevices;
 
+    @Column(name = "money")
+    private int money;
+
     public Set<TerminalDevice> getTerminalDevices() {
         return terminalDevices;
     }
 
     public void setTerminalDevices(Set<TerminalDevice> terminalDevices) {
         this.terminalDevices = terminalDevices;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }
