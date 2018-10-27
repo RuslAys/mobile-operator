@@ -14,6 +14,8 @@
       <li class="nav-item active">
         <security:authorize access="hasRole('ROLE_ADMIN')">
                 <a class="nav-link" href="/admin">Admin panel</a>
+                <a class="nav-link" href="/tariff">Add Tariff plan</a>
+                <a class="nav-link" href="/option">Add Option</a>
         </security:authorize>
       </li>
       <li class="nav-item active">

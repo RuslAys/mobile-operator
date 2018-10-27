@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,14 +30,36 @@ public class Option extends AbstractPO {
     @Column(name = "connection_cost")
     private Integer connectionCost;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_id")
-    private Option optionWithReferences;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "options_to_ex_options",
+            joinColumns = { @JoinColumn(name = "parent_option_id") },
+            inverseJoinColumns = { @JoinColumn(name = "child_option_id") })
+    private Set<Option> parentExclusive;
 
-    @OneToMany(mappedBy = "optionWithReferences")
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "options_to_in_options",
+            joinColumns = { @JoinColumn(name = "parent_option_id") },
+            inverseJoinColumns = { @JoinColumn(name = "child_option_id") })
+    private Set<Option> parentInclusive;
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    },
+            mappedBy = "parentExclusive")
     private Set<Option> exclusiveOptions;
 
-    @OneToMany(mappedBy = "optionWithReferences")
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    },
+            mappedBy = "parentInclusive")
     private Set<Option> inclusiveOptions;
 
     public Set<TariffPlan> getTariffPlans() {
@@ -79,12 +102,12 @@ public class Option extends AbstractPO {
         this.connectionCost = connectionCost;
     }
 
-    public Option getOptionWithReferences() {
-        return optionWithReferences;
+    public Set<Option> getParentExclusive() {
+        return parentExclusive;
     }
 
-    public void setOptionWithReferences(Option optionWithReferences) {
-        this.optionWithReferences = optionWithReferences;
+    public void setParentExclusive(Set<Option> parentExclusive) {
+        this.parentExclusive = parentExclusive;
     }
 
     public Set<Option> getExclusiveOptions() {
@@ -101,5 +124,31 @@ public class Option extends AbstractPO {
 
     public void setInclusiveOptions(Set<Option> inclusiveOptions) {
         this.inclusiveOptions = inclusiveOptions;
+    }
+
+    public Set<Option> getParentInclusive() {
+        return parentInclusive;
+    }
+
+    public void setParentInclusive(Set<Option> parentInclusive) {
+        this.parentInclusive = parentInclusive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Option option = (Option) o;
+        return Objects.equals(name, option.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -11,6 +11,9 @@ import java.util.Collection;
 
 @Component
 public class UserToUserDetails implements Converter<User, UserDetails> {
+
+    private static final String PREFIX = "ROLE_";
+
     @Override
     public UserDetails convert(User user) {
         UserDetailsImpl userDetails = new UserDetailsImpl();
@@ -20,7 +23,7 @@ public class UserToUserDetails implements Converter<User, UserDetails> {
             userDetails.setEnabled(user.isEnabled());
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getAuthorities().forEach(role ->
-                authorities.add(new SimpleGrantedAuthority(role.getAuthority()))
+                authorities.add(new SimpleGrantedAuthority(PREFIX + role.getAuthority()))
             );
             userDetails.setAuthorities(authorities);
         }

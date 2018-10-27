@@ -63,7 +63,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         user.setPassword(passwordEncoder.encode(password));
         user.setEnabled(true);
         Set<Authority> authorities = new HashSet<>();
-        authorities.add(new Authority(user, UserRoleEnum.ROLE_OPERATOR.name()));
+        authorities.add(new Authority(user, UserRoleEnum.OPERATOR.name()));
         user.setAuthorities(authorities);
         add(user);
     }
