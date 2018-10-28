@@ -66,4 +66,10 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         model.addAttribute("options", options);
         return "option";
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<Option> getOptionsByIds(List<Long> ids) {
+        return optionDao.getOptions(ids);
+    }
 }

@@ -22,6 +22,9 @@ public class TariffPlan extends AbstractPO {
     @Column(name = "price")
     private Integer price;
 
+    @Column(name = "name")
+    private String name;
+
     public Set<Option> getOptions() {
         return options;
     }
@@ -44,5 +47,13 @@ public class TariffPlan extends AbstractPO {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

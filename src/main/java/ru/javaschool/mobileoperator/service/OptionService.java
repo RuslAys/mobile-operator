@@ -11,4 +11,5 @@ public interface OptionService extends GenericService<Option, Long> {
                    List<Long> inclusiveOptions,
                    List<Long> exclusiveOptions);
     String getAll(Model model);
+    List<Option> getOptionsByIds(List<Long> ids);
 }
