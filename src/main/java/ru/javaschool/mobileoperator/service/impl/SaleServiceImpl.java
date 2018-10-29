@@ -49,6 +49,7 @@ public class SaleServiceImpl implements SaleService {
                                String street,
                                String house,
                                String email,
+                               String passport,
                                String password,
                                String confirmPassword,
                                Long tariffId,
@@ -58,18 +59,18 @@ public class SaleServiceImpl implements SaleService {
         }
         TariffPlan tariffPlan = tariffService.find(tariffId);
         PhoneNumber number = phoneNumberService.find(numberId);
+        if(number.getTerminalDevice() != null){
+            throw new IllegalArgumentException("Number already in use");
+        }
 
-        User user = new User();
-        user.setEnabled(true);
+        // Create user account
+        User user = new User(number.getNumber().toString(),
+                            passwordEncoder.encode(password),
+                            true, firstName, lastName, birthDate);
         user.getAuthorities().add(new Authority(user, UserRoleEnum.USER.name()));
-        user.setUsername(number.getNumber().toString());
-        user.setPassword(passwordEncoder.encode(password));
-
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setBirthDate(birthDate);
 
         user.setEmail(email);
+        user.setPassport(passport);
         user.getAddress().setCity(city);
         user.getAddress().setStreet(street);
         user.getAddress().setHouseNumber(house);

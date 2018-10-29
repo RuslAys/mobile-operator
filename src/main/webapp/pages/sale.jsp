@@ -44,6 +44,10 @@
                         id="emailField" placeholder="Email"/>
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" name="passport"
+                        id="passportField" placeholder="Passport"/>
+                </div>
+                <div class="form-group">
                     <input type="password" class="form-control" name="password"
                         id="passwordField" placeholder="Password"/>
                 </div><div class="form-group">

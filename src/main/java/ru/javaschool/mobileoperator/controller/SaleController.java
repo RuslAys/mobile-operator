@@ -38,12 +38,13 @@ public class SaleController {
                               @RequestParam(value = "street", required = false) String street,
                               @RequestParam(value = "house",required = false) String house,
                               @RequestParam(value = "email", required = false) String email,
+                              @RequestParam(value = "passport", required = false) String passport,
                               @RequestParam("password") String password,
                               @RequestParam("confirmPassword") String confirmPassword,
                               @RequestParam("tariff") Long tariffId,
                               @RequestParam("number") Long numberId){
         return saleService.saleContract(firstName,
                 lastName, birthDate, city, street, house,
-                email, password, confirmPassword, tariffId, numberId);
+                email, passport, password, confirmPassword, tariffId, numberId);
     }
 }

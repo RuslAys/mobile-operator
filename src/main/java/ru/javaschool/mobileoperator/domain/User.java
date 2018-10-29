@@ -43,6 +43,19 @@ public class User {
     @Column(name = "passport")
     private String passport;
 
+    public User() {
+    }
+
+    public User(String username, String password, boolean enabled,
+                String firstName, String lastName, Date birthDate) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
     public String getUsername() {
         return username;
     }
