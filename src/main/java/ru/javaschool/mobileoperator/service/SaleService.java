@@ -5,9 +5,8 @@ import org.springframework.ui.Model;
 import java.util.Date;
 
 public interface SaleService {
-    String getPageWithTariffsAndNumbers(Model model);
 
-    String saleContract(String firstName,
+    void saleContract(String firstName,
                         String lastName,
                         Date birthDate,
                         String city,

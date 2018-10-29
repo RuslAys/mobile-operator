@@ -32,14 +32,6 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public String getAllNumbers(Model model) {
-        List<PhoneNumber> phoneNumbers = phoneNumberDao.findAll();
-        model.addAttribute("numbers", phoneNumbers);
-        return "phone";
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<PhoneNumber> getAllNumbers() {
         return phoneNumberDao.findAll();
     }
@@ -52,7 +44,7 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public String addNumber(String number) {
+    public void addNumber(String number) {
         if(StringUtils.isEmpty(number)){
             throw new IllegalArgumentException("Number cannot be empty");
         }
@@ -60,6 +52,5 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
         PhoneNumber phoneNumber = new PhoneNumber();
         phoneNumber.setNumber(parseLong);
         phoneNumberDao.add(phoneNumber);
-        return "redirect:/admin/phone";
     }
 }

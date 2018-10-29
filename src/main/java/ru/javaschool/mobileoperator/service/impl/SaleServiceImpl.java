@@ -20,29 +20,35 @@ import java.util.Set;
 @Service("saleContractService")
 public class SaleServiceImpl implements SaleService {
     @Autowired
-    TariffService tariffService;
+    private TariffService tariffService;
 
     @Autowired
-    PhoneNumberService phoneNumberService;
+    private PhoneNumberService phoneNumberService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    @Override
-    public String getPageWithTariffsAndNumbers(Model model) {
-        List<TariffPlan> tariffPlans = tariffService.getAllTariffs();
-        List<PhoneNumber> phoneNumbers = phoneNumberService.getAllEmptyNumbers();
-        model.addAttribute("tariffs", tariffPlans);
-        model.addAttribute("numbers", phoneNumbers);
-        return "sale";
-    }
-
+    /**
+     * Method to create new customer
+     * @param firstName Customer`s name
+     * @param lastName Customer`s surname
+     * @param birthDate Customer`s birth date
+     * @param city Customer`s city
+     * @param street Customer`s street
+     * @param house Customer`s house
+     * @param email Customer`s email
+     * @param passport Customer`s passport
+     * @param password Password for account
+     * @param confirmPassword Password to confirm password`s correction
+     * @param tariffId Id of chosen tariff plan
+     * @param numberId Id of chosen phone number
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public String saleContract(String firstName,
+    public void saleContract(String firstName,
                                String lastName,
                                Date birthDate,
                                String city,
@@ -100,6 +106,6 @@ public class SaleServiceImpl implements SaleService {
 
         userService.add(user);
         phoneNumberService.update(number);
-        return "redirect:/sale";
+        return ;
     }
 }

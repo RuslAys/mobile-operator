@@ -38,25 +38,8 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public String getTariffsAndOptions(Model model) {
-        List<TariffPlan> tariffPlans = tariffDao.getAllTariffs();
-        List<Option> options = optionService.findAll();
-        model.addAttribute("tariffPlans", tariffPlans);
-        model.addAttribute("options", options);
-        return "tariff";
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<TariffPlan> getAllTariffs() {
-        return findAll();
-    }
-
-
-    @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public String addTariff(String name, String price, List<Long> optionIds) {
+    public void addTariff(String name, String price, List<Long> optionIds) {
         if(StringUtils.isEmpty(name)){
             throw new IllegalArgumentException("Name cannot be empty");
         }
@@ -70,7 +53,6 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         tariffPlan.setPrice(parsePrice);
         tariffPlan.setOptions(new HashSet<>(tariffOptions));
         add(tariffPlan);
-        return "redirect:/admin/tariff";
     }
 
     private boolean existConflicts(List<Option> options){

@@ -18,7 +18,7 @@
             <table>
                 <thead>
                 <tr>
-                    <th>Phone</th>
+                    <th>Phones</th>
                     <th></th>
                 </tr>
                 </thead>

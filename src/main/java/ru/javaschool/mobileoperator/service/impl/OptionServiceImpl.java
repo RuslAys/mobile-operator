@@ -31,7 +31,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public String addOption(String name,
+    public void addOption(String name,
                             List<Long> inclusiveOptions,
                             List<Long> exclusiveOptions) {
 
@@ -56,15 +56,6 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             option.setExclusiveOptions(new HashSet<>(exOptions));
         }
         add(option);
-        return "redirect:/admin/option";
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public String getAll(Model model) {
-        List<Option> options = findAll();
-        model.addAttribute("options", options);
-        return "option";
     }
 
     @Override

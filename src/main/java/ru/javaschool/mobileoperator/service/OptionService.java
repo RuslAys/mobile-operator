@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface OptionService extends GenericService<Option, Long> {
-    String addOption(String name,
+    void addOption(String name,
                    List<Long> inclusiveOptions,
                    List<Long> exclusiveOptions);
-    String getAll(Model model);
     List<Option> getOptionsByIds(List<Long> ids);
 }

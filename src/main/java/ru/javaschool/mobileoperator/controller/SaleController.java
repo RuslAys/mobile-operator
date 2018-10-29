@@ -6,14 +6,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.javaschool.mobileoperator.domain.PhoneNumber;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
+import ru.javaschool.mobileoperator.service.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.SaleService;
+import ru.javaschool.mobileoperator.service.TariffService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/sale")
 public class SaleController {
+
+    @Autowired
+    TariffService tariffService;
+
+    @Autowired
+    PhoneNumberService phoneNumberService;
 
     @Autowired
     SaleService saleService;
@@ -27,7 +38,9 @@ public class SaleController {
 
     @GetMapping
     public String salePage(Model model){
-        return saleService.getPageWithTariffsAndNumbers(model);
+        model.addAttribute("tariffs", tariffService.findAll());
+        model.addAttribute("numbers", phoneNumberService.getAllEmptyNumbers());
+        return "sale";
     }
 
     @PostMapping("/confirm")
@@ -43,8 +56,9 @@ public class SaleController {
                               @RequestParam("confirmPassword") String confirmPassword,
                               @RequestParam("tariff") Long tariffId,
                               @RequestParam("number") Long numberId){
-        return saleService.saleContract(firstName,
+        saleService.saleContract(firstName,
                 lastName, birthDate, city, street, house,
                 email, passport, password, confirmPassword, tariffId, numberId);
+        return "redirect:/sale";
     }
 }

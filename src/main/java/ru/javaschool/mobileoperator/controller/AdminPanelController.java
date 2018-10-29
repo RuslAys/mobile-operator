@@ -79,7 +79,8 @@ public class AdminPanelController {
 
     @GetMapping("/option")
     public String optionPage(Model model){
-        return optionService.getAll(model);
+        model.addAttribute("options", optionService.findAll());
+        return "option";
     }
 
     @PostMapping("/option/add")
@@ -88,12 +89,15 @@ public class AdminPanelController {
                                     List<Long> inclusiveOptions,
                             @RequestParam(required = false, value = "exclusiveOptions")
                                     List<Long> exclusiveOptions){
-        return optionService.addOption(name, inclusiveOptions, exclusiveOptions);
+        optionService.addOption(name, inclusiveOptions, exclusiveOptions);
+        return "redirect:/admin/option";
     }
 
     @GetMapping("/tariff")
     public String tariffPage(Model model){
-        return tariffService.getTariffsAndOptions(model);
+        model.addAttribute("tariffPlans", tariffService.findAll());
+        model.addAttribute("options", optionService.findAll());
+        return "tariff";
     }
 
     @PostMapping("/tariff/add")
@@ -101,16 +105,19 @@ public class AdminPanelController {
                                 @RequestParam String price,
                                 @RequestParam(value = "options",required = false)
                                         List<Long> options){
-        return tariffService.addTariff(name, price, options);
+        tariffService.addTariff(name, price, options);
+        return "redirect:/admin/tariff";
     }
 
     @GetMapping("/phone")
     public String phoneNumbersPage(Model model){
-        return phoneNumberService.getAllNumbers(model);
+        model.addAttribute("numbers", phoneNumberService.getAllNumbers());
+        return "phone";
     }
 
     @PostMapping("/phone/add")
     public String addPhoneNumber(@RequestParam String number){
-        return phoneNumberService.addNumber(number);
+        phoneNumberService.addNumber(number);
+        return "redirect:/admin/phone";
     }
 }
