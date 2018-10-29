@@ -107,12 +107,11 @@ public class SaleServiceImpl implements SaleService {
         terminalDevice.setPhoneNumber(number);
         number.setTerminalDevice(terminalDevice);
 
-        //Add all business data to user
+        //Add all business data to customer
         customer.getContracts().add(contract);
 
         customerDao.add(customer);
         userService.add(user);
         phoneNumberService.update(number);
-        return ;
     }
 }
