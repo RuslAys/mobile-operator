@@ -14,7 +14,7 @@ public class ProfileController {
     @Autowired
     UserService userService;
 
-    @GetMapping("{username}")
+    @GetMapping("/{username}")
     public String profilePage(Model model, @PathVariable String username){
         model.addAttribute("user", userService.getUser(username));
         return "profile";
