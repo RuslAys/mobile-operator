@@ -5,11 +5,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "phone_numbers")
 public class PhoneNumber extends AbstractPO {
-    @Column(name = "number")
+    @Column(name = "number",unique = true, nullable = false)
     private Long number;
 
     @OneToOne(mappedBy = "phoneNumber")
-    @JoinColumn(name = "terminal_device_id")
     private TerminalDevice terminalDevice;
 
     public Long getNumber() {
@@ -26,5 +25,10 @@ public class PhoneNumber extends AbstractPO {
 
     public void setTerminalDevice(TerminalDevice terminalDevice) {
         this.terminalDevice = terminalDevice;
+    }
+
+    @Override
+    public String toString() {
+        return Long.toString(number);
     }
 }

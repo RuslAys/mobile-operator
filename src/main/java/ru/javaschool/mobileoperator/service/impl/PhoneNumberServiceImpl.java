@@ -45,6 +45,12 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<PhoneNumber> getAllEmptyNumbers() {
+        return phoneNumberDao.getAllEmptyNumbers();
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public String addNumber(String number) {
         if(StringUtils.isEmpty(number)){

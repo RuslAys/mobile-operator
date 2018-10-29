@@ -1,25 +1,18 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "options")
 public class Option extends AbstractPO {
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    },
-            mappedBy = "options")
-    private Set<TariffPlan> tariffPlans;
+    @ManyToMany(mappedBy = "options")
+    private Set<TariffPlan> tariffPlans = new HashSet<>();
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    },
-            mappedBy = "options")
-    private Set<TerminalDevice> terminalDevices;
+    @ManyToMany(mappedBy = "options")
+    private Set<TerminalDevice> terminalDevices = new HashSet<>();
 
     @Column(name = "name")
     private String name;

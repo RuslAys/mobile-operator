@@ -17,6 +17,7 @@ import ru.javaschool.mobileoperator.service.UserService;
 import ru.javaschool.mobileoperator.service.converter.UserToUserDetails;
 import ru.javaschool.mobileoperator.service.exceptions.UserDisabledException;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,6 +62,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setFirstName("TEST");
+        user.setLastName("OPERATOR");
+        user.setBirthDate(new Date());
         user.setEnabled(true);
         Set<Authority> authorities = new HashSet<>();
         authorities.add(new Authority(user, UserRoleEnum.OPERATOR.name()));

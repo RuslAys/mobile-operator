@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,7 +13,7 @@ public class PersonalAccount extends AbstractPO {
     private Contract contract;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalAccount")
-    private Set<TerminalDevice> terminalDevices;
+    private Set<TerminalDevice> terminalDevices = new HashSet<>();
 
     @Column(name = "money")
     private int money;

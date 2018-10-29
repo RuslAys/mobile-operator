@@ -21,8 +21,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<Contract> contracts;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Contract> contracts = new HashSet<>();
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -35,7 +35,7 @@ public class User {
     private Date birthDate;
 
     @Embedded
-    private Address address;
+    private Address address = new Address();
 
     @Column(name = "email")
     private String email;

@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ public class TariffPlan extends AbstractPO {
     @JoinTable(name = "tariff_plans_options",
                 joinColumns = { @JoinColumn(name = "tariff_id") },
                 inverseJoinColumns = { @JoinColumn(name = "option_id") })
-    private Set<Option> options;
+    private Set<Option> options = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tariffPlan")
     private Set<TerminalDevice> terminalDevices;
