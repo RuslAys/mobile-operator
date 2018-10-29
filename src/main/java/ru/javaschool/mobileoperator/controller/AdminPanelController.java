@@ -8,6 +8,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
+import ru.javaschool.mobileoperator.service.OptionService;
+import ru.javaschool.mobileoperator.service.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.TariffService;
 import ru.javaschool.mobileoperator.service.UserService;
 
 import java.util.List;
@@ -19,14 +22,28 @@ public class AdminPanelController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    OptionService optionService;
+
+    @Autowired
+    TariffService tariffService;
+
+    @Autowired
+    PhoneNumberService phoneNumberService;
+
     @GetMapping
-    public String admin(Model model){
-        List<User> operatorList = userService.findAll(UserRoleEnum.OPERATOR);
-        model.addAttribute("operators", operatorList);
+    public String adminPage(Model model) {
         return "admin";
     }
 
-    @PostMapping("/add")
+    @GetMapping("/operator")
+    public String admin(Model model){
+        List<User> operatorList = userService.findAll(UserRoleEnum.OPERATOR);
+        model.addAttribute("operators", operatorList);
+        return "operator";
+    }
+
+    @PostMapping("/operator/add")
     public String addOperator(
             @RequestParam String username,
             @RequestParam String password,
@@ -40,23 +57,60 @@ public class AdminPanelController {
         }else {
             userService.addOperator(username, password);
         }
-        return "redirect:/admin";
+        return "redirect:/admin/operator";
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/operator/{username}")
     public String userEditForm(@PathVariable String username,
                                Model model){
         User user = userService.getUser(username);
         model.addAttribute("user", user);
-        return "adminEditor";
+        return "operatorEditor";
     }
 
-    @PostMapping("/editOperator")
+    @PostMapping("/operator/editOperator")
     public String editOperator(@RequestParam String username,
                                @RequestParam(value = "enabled",
                                        required = false,
                                        defaultValue = "false") Boolean enabled){
         userService.setOperatorActiveStatus(username, enabled);
-        return "redirect:/admin";
+        return "redirect:/admin/operator";
+    }
+
+    @GetMapping("/option")
+    public String optionPage(Model model){
+        return optionService.getAll(model);
+    }
+
+    @PostMapping("/option/add")
+    public String addOption(@RequestParam String name,
+                            @RequestParam(value = "inclusiveOptions",required = false)
+                                    List<Long> inclusiveOptions,
+                            @RequestParam(required = false, value = "exclusiveOptions")
+                                    List<Long> exclusiveOptions){
+        return optionService.addOption(name, inclusiveOptions, exclusiveOptions);
+    }
+
+    @GetMapping("/tariff")
+    public String tariffPage(Model model){
+        return tariffService.getTariffsAndOptions(model);
+    }
+
+    @PostMapping("/tariff/add")
+    public String addTariffPlan(@RequestParam String name,
+                                @RequestParam String price,
+                                @RequestParam(value = "options",required = false)
+                                        List<Long> options){
+        return tariffService.addTariff(name, price, options);
+    }
+
+    @GetMapping("/phone")
+    public String phoneNumbersPage(Model model){
+        return phoneNumberService.getAllNumbers(model);
+    }
+
+    @PostMapping("/phone/add")
+    public String addPhoneNumber(@RequestParam String number){
+        return phoneNumberService.addNumber(number);
     }
 }

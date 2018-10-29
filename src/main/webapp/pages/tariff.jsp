@@ -7,9 +7,14 @@
         <div>
             <form name="add-new-tariff" action="tariff/add" method="post">
                 <div class="form-group">
-                    <label for="optionNameField">Tariff plan name</label>
+                    <label for="tariffNameField">Tariff plan name</label>
                     <input type="text" class="form-control" name="name"
-                        id="optionNameField" placeholder="Tariff`s name">
+                        id="tariffNameField" placeholder="Tariff name">
+                </div>
+                 <div class="form-group">
+                    <label for="tariffPriceField">Tariff plan name</label>
+                    <input type="text" class="form-control" name="price"
+                        id="tariffPriceField" placeholder="Tariff price">
                 </div>
                 <div class="form-group">
                     <label for="optionsField">Add options</label>
@@ -34,8 +39,8 @@
                 <tbody>
                     <c:forEach items="${tariffPlans}" var="tariffPlan">
                         <tr>
-                            <td><a href="/tariff/${tariffPlan.name}">
-                                <c:out value="${tariffPlan.name}" /> </a>
+                            <td><a href="/tariff/${tariffPlan.id}">
+                                <c:out value="${tariffPlan}" /> </a>
                             </td>
                         </tr>
                     </c:forEach>

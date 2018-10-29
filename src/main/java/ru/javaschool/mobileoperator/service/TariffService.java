@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface TariffService extends GenericService<TariffPlan, Long> {
     String getTariffsAndOptions(Model model);
-    String addTariff(String name, List<Long> optionIds);
+    List<TariffPlan> getAllTariffs();
+    String addTariff(String name, String price, List<Long> optionIds);
 }

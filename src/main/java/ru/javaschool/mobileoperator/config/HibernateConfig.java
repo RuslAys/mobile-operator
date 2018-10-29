@@ -52,7 +52,6 @@ public class HibernateConfig {
                 User.class,
                 Authority.class,
                 AbstractPO.class,
-                Customer.class,
                 Contract.class,
                 PersonalAccount.class,
                 TerminalDevice.class,

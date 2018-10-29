@@ -56,7 +56,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             option.setExclusiveOptions(new HashSet<>(exOptions));
         }
         add(option);
-        return "redirect:/option";
+        return "redirect:/admin/option";
     }
 
     @Override

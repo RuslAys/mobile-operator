@@ -10,7 +10,7 @@
           </c:forEach>
        </h5>
 
-        <form name="edit-operator" action="/admin/editOperator" method="post">
+        <form name="edit-operator" action="/admin/operator/editOperator" method="post">
             <input type="hidden" class="form-control" name="username"
                 value = "${user.username}"id="usernameField" placeholder="${user.username}">
            <div class="form-check">
@@ -28,7 +28,7 @@
     </div>
     <div>
         <!--
-        <form name="edit-operator" action="admin/editOperator" method="post">
+        <form name="edit-operator" action="admin/operator/editOperator" method="post">
             //TODO
             Сделать возможность редактировать пароль пользователю самому
             ???Нужно ли редактирование имени???

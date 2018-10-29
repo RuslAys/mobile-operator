@@ -6,17 +6,17 @@ import javax.persistence.*;
 @Table(name = "phone_numbers")
 public class PhoneNumber extends AbstractPO {
     @Column(name = "number")
-    private String number;
+    private Long number;
 
     @OneToOne(mappedBy = "phoneNumber")
     @JoinColumn(name = "terminal_device_id")
     private TerminalDevice terminalDevice;
 
-    public String getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 

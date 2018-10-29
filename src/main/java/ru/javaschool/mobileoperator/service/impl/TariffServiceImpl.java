@@ -48,8 +48,15 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<TariffPlan> getAllTariffs() {
+        return findAll();
+    }
+
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public String addTariff(String name, List<Long> optionIds) {
+    public String addTariff(String name, String price, List<Long> optionIds) {
         if(StringUtils.isEmpty(name)){
             throw new IllegalArgumentException("Name cannot be empty");
         }
@@ -57,11 +64,13 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         if(existConflicts(tariffOptions)){
             throw new IllegalArgumentException("Exist options conflicts");
         }
+        int parsePrice = Integer.parseInt(price);
         TariffPlan tariffPlan = new TariffPlan();
         tariffPlan.setName(name);
+        tariffPlan.setPrice(parsePrice);
         tariffPlan.setOptions(new HashSet<>(tariffOptions));
         add(tariffPlan);
-        return "redirect:/tariff";
+        return "redirect:/admin/tariff";
     }
 
     private boolean existConflicts(List<Option> options){

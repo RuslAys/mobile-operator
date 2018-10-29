@@ -56,4 +56,11 @@ public class TariffPlan extends AbstractPO {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "TariffPlan:" +
+                " name=" + name +
+                ", price=" + price;
+    }
 }
