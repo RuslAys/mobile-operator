@@ -10,17 +10,17 @@ public class Contract extends AbstractPO {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private User user;
+    private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private Set<PersonalAccount> personalAccounts = new HashSet<>();
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Set<PersonalAccount> getPersonalAccounts() {

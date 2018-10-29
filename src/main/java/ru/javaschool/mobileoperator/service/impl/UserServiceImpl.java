@@ -62,9 +62,6 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        user.setFirstName("TEST");
-        user.setLastName("OPERATOR");
-        user.setBirthDate(new Date());
         user.setEnabled(true);
         Set<Authority> authorities = new HashSet<>();
         authorities.add(new Authority(user, UserRoleEnum.OPERATOR.name()));

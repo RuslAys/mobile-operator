@@ -5,16 +5,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import ru.javaschool.mobileoperator.domain.*;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
+import ru.javaschool.mobileoperator.repository.CustomerDao;
 import ru.javaschool.mobileoperator.service.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.SaleService;
 import ru.javaschool.mobileoperator.service.TariffService;
 import ru.javaschool.mobileoperator.service.UserService;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Service("saleContractService")
@@ -30,6 +29,9 @@ public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CustomerDao customerDao;
 
     /**
      * Method to create new customer
@@ -72,14 +74,18 @@ public class SaleServiceImpl implements SaleService {
         // Create user account
         User user = new User(number.getNumber().toString(),
                             passwordEncoder.encode(password),
-                            true, firstName, lastName, birthDate);
+                            true);
         user.getAuthorities().add(new Authority(user, UserRoleEnum.USER.name()));
 
-        user.setEmail(email);
-        user.setPassport(passport);
-        user.getAddress().setCity(city);
-        user.getAddress().setStreet(street);
-        user.getAddress().setHouseNumber(house);
+        // Create customer
+        Customer customer = new Customer(firstName, lastName, birthDate);
+        customer.setEmail(email);
+        customer.setPassport(passport);
+        customer.getAddress().setCity(city);
+        customer.getAddress().setStreet(street);
+        customer.getAddress().setHouseNumber(house);
+        customer.getUsers().add(user);
+        user.setCustomer(customer);
 
         //Create contract and personal account
         Contract contract = new Contract();
@@ -102,8 +108,9 @@ public class SaleServiceImpl implements SaleService {
         number.setTerminalDevice(terminalDevice);
 
         //Add all business data to user
-        user.getContracts().add(contract);
+        customer.getContracts().add(contract);
 
+        customerDao.add(customer);
         userService.add(user);
         phoneNumberService.update(number);
         return ;
