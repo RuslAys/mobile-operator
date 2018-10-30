@@ -7,6 +7,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    ${user}
+    <a href="/profile/${user.username}">${user.username}</a>
 </body>
 </html>

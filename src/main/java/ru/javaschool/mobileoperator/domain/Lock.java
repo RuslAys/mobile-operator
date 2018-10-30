@@ -42,4 +42,12 @@ public class Lock extends AbstractPO {
     public void setTerminalDevices(Set<TerminalDevice> terminalDevices) {
         this.terminalDevices = terminalDevices;
     }
+
+    @Override
+    public String toString() {
+        return "Lock{" +
+                "name='" + name + '\'' +
+                ", canBeDeletedByUser=" + canBeDeletedByUser +
+                '}';
+    }
 }

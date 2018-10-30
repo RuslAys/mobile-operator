@@ -1,6 +1,9 @@
 package ru.javaschool.mobileoperator.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +18,8 @@ public class ProfileController {
     UserService userService;
 
     @GetMapping("/{username}")
-    public String profilePage(Model model, @PathVariable String username){
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String profilePage(Model model, @PathVariable("username") String username){
         model.addAttribute("user", userService.getUser(username));
         return "profile";
     }

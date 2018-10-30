@@ -3,6 +3,7 @@ package ru.javaschool.mobileoperator.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -11,6 +12,7 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 @Configuration
 @EnableWebMvc
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan(basePackages = {"ru.javaschool.mobileoperator.controller"})
 public class WebAppConfig implements WebMvcConfigurer {
 

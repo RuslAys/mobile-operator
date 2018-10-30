@@ -15,5 +15,8 @@
         <li>
             <a href="/admin/phone">Phone number editor</a>
         </li>
+        <li>
+            <a href="/admin/lock">Lock editor</a>
+        </li>
     </ul>
 </body>

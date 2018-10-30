@@ -8,10 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-import ru.javaschool.mobileoperator.service.OptionService;
-import ru.javaschool.mobileoperator.service.PhoneNumberService;
-import ru.javaschool.mobileoperator.service.TariffService;
-import ru.javaschool.mobileoperator.service.UserService;
+import ru.javaschool.mobileoperator.service.*;
 
 import java.util.List;
 
@@ -30,6 +27,9 @@ public class AdminPanelController {
 
     @Autowired
     PhoneNumberService phoneNumberService;
+
+    @Autowired
+    LockService lockService;
 
     @GetMapping
     public String adminPage(Model model) {
@@ -120,4 +120,20 @@ public class AdminPanelController {
         phoneNumberService.addNumber(number);
         return "redirect:/admin/phone";
     }
+
+    @GetMapping("lock")
+    public String lockPage(Model model){
+        model.addAttribute("locks", lockService.findAll());
+        return "lock";
+    }
+
+    @PostMapping("/lock/add")
+    public String addLock(@RequestParam("name") String name,
+                          @RequestParam(value = "deletedByUser",
+                                  defaultValue = "false",
+                                  required = false) Boolean deletedByUser){
+        lockService.addLock(name, deletedByUser);
+        return "redirect:/admin/lock";
+    }
+
 }
