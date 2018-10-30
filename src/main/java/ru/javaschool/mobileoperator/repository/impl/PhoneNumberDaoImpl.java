@@ -2,7 +2,7 @@ package ru.javaschool.mobileoperator.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
-import ru.javaschool.mobileoperator.repository.PhoneNumberDao;
+import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
 
 import java.util.List;
 

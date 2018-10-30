@@ -1,18 +1,16 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "customers")
 public class Customer extends AbstractPO{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<Contract> contracts = new HashSet<>();
+    private List<Contract> contracts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<User> users = new HashSet<>();
+    private List<User> users = new ArrayList<>();
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -42,19 +40,19 @@ public class Customer extends AbstractPO{
     public Customer() {
     }
 
-    public Set<Contract> getContracts() {
+    public List<Contract> getContracts() {
         return contracts;
     }
 
-    public void setContracts(Set<Contract> contracts) {
+    public void setContracts(List<Contract> contracts) {
         this.contracts = contracts;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

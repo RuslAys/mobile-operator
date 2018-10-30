@@ -1,7 +1,9 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,7 +20,7 @@ public class TerminalDevice extends AbstractPO {
     @JoinTable(name = "terminal_devices_options",
             joinColumns = { @JoinColumn(name = "terminal_device_id") },
             inverseJoinColumns = { @JoinColumn(name = "option_id") })
-    private Set<Option> options = new HashSet<>();
+    private List<Option> options = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "tariff_plan_id")
@@ -37,7 +39,7 @@ public class TerminalDevice extends AbstractPO {
     @JoinTable(name = "terminal_devices_locks",
             joinColumns = { @JoinColumn(name = "terminal_device_id") },
             inverseJoinColumns = { @JoinColumn(name = "lock_id") })
-    private Set<Lock> locks;
+    private List<Lock> locks = new ArrayList<>();
 
     public PersonalAccount getPersonalAccount() {
         return personalAccount;
@@ -47,12 +49,20 @@ public class TerminalDevice extends AbstractPO {
         this.personalAccount = personalAccount;
     }
 
-    public Set<Option> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(Set<Option> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
+    }
+
+    public List<Lock> getLocks() {
+        return locks;
+    }
+
+    public void setLocks(List<Lock> locks) {
+        this.locks = locks;
     }
 
     public TariffPlan getTariffPlan() {

@@ -2,33 +2,29 @@ package ru.javaschool.mobileoperator.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import ru.javaschool.mobileoperator.domain.PhoneNumber;
-import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.service.PhoneNumberService;
-import ru.javaschool.mobileoperator.service.SaleService;
-import ru.javaschool.mobileoperator.service.TariffService;
+import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.api.SaleService;
+import ru.javaschool.mobileoperator.service.api.TariffService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("/sale")
 public class SaleController {
 
     @Autowired
-    TariffService tariffService;
+    private TariffService tariffService;
 
     @Autowired
-    PhoneNumberService phoneNumberService;
+    private PhoneNumberService phoneNumberService;
 
     @Autowired
-    SaleService saleService;
+    private SaleService saleService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder){

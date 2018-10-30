@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.mobileoperator.domain.Authority;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-import ru.javaschool.mobileoperator.repository.GenericDao;
-import ru.javaschool.mobileoperator.repository.UserDao;
-import ru.javaschool.mobileoperator.service.UserService;
+import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.repository.api.UserDao;
+import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.service.converter.UserToUserDetails;
 import ru.javaschool.mobileoperator.service.exceptions.UserDisabledException;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +63,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEnabled(true);
-        Set<Authority> authorities = new HashSet<>();
+        List<Authority> authorities = new ArrayList<>();
         authorities.add(new Authority(user, UserRoleEnum.OPERATOR.name()));
         user.setAuthorities(authorities);
         add(user);

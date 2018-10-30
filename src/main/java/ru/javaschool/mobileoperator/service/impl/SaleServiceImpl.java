@@ -7,13 +7,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.mobileoperator.domain.*;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-import ru.javaschool.mobileoperator.repository.CustomerDao;
-import ru.javaschool.mobileoperator.service.PhoneNumberService;
-import ru.javaschool.mobileoperator.service.SaleService;
-import ru.javaschool.mobileoperator.service.TariffService;
-import ru.javaschool.mobileoperator.service.UserService;
+import ru.javaschool.mobileoperator.repository.api.CustomerDao;
+import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.api.SaleService;
+import ru.javaschool.mobileoperator.service.api.TariffService;
+import ru.javaschool.mobileoperator.service.api.UserService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Service("saleContractService")
@@ -100,7 +101,7 @@ public class SaleServiceImpl implements SaleService {
 
         //Fill terminal device by options and tariff
         terminalDevice.setTariffPlan(tariffPlan);
-        Set<Option> options = tariffPlan.getOptions();
+        List<Option> options = tariffPlan.getOptions();
         terminalDevice.getOptions().addAll(options);
 
         //Create references to number and terminal device

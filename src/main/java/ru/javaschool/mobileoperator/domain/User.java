@@ -1,25 +1,23 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User {
     @Id
-    @Column(name = "USERNAME")
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "ENABLED", nullable = false)
+    @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Authority> authorities = new HashSet<>();
+    private List<Authority> authorities = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -58,11 +56,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<Authority> getAuthorities() {
+    public List<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
+    public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }
 

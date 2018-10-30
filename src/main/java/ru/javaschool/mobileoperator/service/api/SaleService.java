@@ -1,6 +1,4 @@
-package ru.javaschool.mobileoperator.service;
-
-import org.springframework.ui.Model;
+package ru.javaschool.mobileoperator.service.api;
 
 import java.util.Date;
 

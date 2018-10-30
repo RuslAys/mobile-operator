@@ -1,7 +1,9 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,10 +17,10 @@ public class TariffPlan extends AbstractPO {
     @JoinTable(name = "tariff_plans_options",
                 joinColumns = { @JoinColumn(name = "tariff_id") },
                 inverseJoinColumns = { @JoinColumn(name = "option_id") })
-    private Set<Option> options = new HashSet<>();
+    private List<Option> options = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tariffPlan")
-    private Set<TerminalDevice> terminalDevices;
+    private List<TerminalDevice> terminalDevices = new ArrayList<>();
 
     @Column(name = "price")
     private Integer price;
@@ -26,19 +28,19 @@ public class TariffPlan extends AbstractPO {
     @Column(name = "name")
     private String name;
 
-    public Set<Option> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(Set<Option> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 
-    public Set<TerminalDevice> getTerminalDevices() {
+    public List<TerminalDevice> getTerminalDevices() {
         return terminalDevices;
     }
 
-    public void setTerminalDevices(Set<TerminalDevice> terminalDevices) {
+    public void setTerminalDevices(List<TerminalDevice> terminalDevices) {
         this.terminalDevices = terminalDevices;
     }
 

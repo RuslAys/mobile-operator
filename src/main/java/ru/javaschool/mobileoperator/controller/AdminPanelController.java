@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-import ru.javaschool.mobileoperator.service.*;
+import ru.javaschool.mobileoperator.service.api.*;
 
 import java.util.List;
 
@@ -17,19 +17,19 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminPanelController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    OptionService optionService;
+    private OptionService optionService;
 
     @Autowired
-    TariffService tariffService;
+    private TariffService tariffService;
 
     @Autowired
-    PhoneNumberService phoneNumberService;
+    private PhoneNumberService phoneNumberService;
 
     @Autowired
-    LockService lockService;
+    private LockService lockService;
 
     @GetMapping
     public String adminPage(Model model) {

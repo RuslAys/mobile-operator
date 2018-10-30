@@ -2,8 +2,7 @@ package ru.javaschool.mobileoperator.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class SpringMvcInitializer
-        extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] {HibernateConfig.class, WebSecurityConfig.class};

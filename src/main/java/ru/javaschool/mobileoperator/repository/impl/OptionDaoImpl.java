@@ -2,7 +2,7 @@ package ru.javaschool.mobileoperator.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.repository.OptionDao;
+import ru.javaschool.mobileoperator.repository.api.OptionDao;
 
 import java.util.ArrayList;
 import java.util.List;

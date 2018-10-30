@@ -3,8 +3,8 @@ package ru.javaschool.mobileoperator.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaschool.mobileoperator.repository.GenericDao;
-import ru.javaschool.mobileoperator.service.GenericService;
+import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.service.api.GenericService;
 
 import java.util.List;
 

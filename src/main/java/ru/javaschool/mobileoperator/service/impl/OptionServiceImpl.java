@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.repository.GenericDao;
-import ru.javaschool.mobileoperator.repository.OptionDao;
-import ru.javaschool.mobileoperator.service.OptionService;
+import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.repository.api.OptionDao;
+import ru.javaschool.mobileoperator.service.api.OptionService;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,11 +48,11 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         }
         if(!inOptions.isEmpty()){
             inOptions.forEach(option1 -> option1.getParentInclusive().add(option));
-            option.setInclusiveOptions(new HashSet<>(inOptions));
+            option.setInclusiveOptions(inOptions);
         }
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
-            option.setExclusiveOptions(new HashSet<>(exOptions));
+            option.setExclusiveOptions(exOptions);
         }
         add(option);
     }

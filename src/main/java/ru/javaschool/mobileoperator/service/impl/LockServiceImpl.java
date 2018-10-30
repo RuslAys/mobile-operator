@@ -7,12 +7,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Lock;
-import ru.javaschool.mobileoperator.repository.GenericDao;
-import ru.javaschool.mobileoperator.repository.LockDao;
-import ru.javaschool.mobileoperator.service.GenericService;
-import ru.javaschool.mobileoperator.service.LockService;
-
-import java.util.List;
+import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.repository.api.LockDao;
+import ru.javaschool.mobileoperator.service.api.LockService;
 
 @Service("lockService")
 public class LockServiceImpl extends GenericServiceImpl<Lock, Long>

@@ -1,4 +1,4 @@
-package ru.javaschool.mobileoperator.repository;
+package ru.javaschool.mobileoperator.repository.api;
 
 import ru.javaschool.mobileoperator.domain.User;
 

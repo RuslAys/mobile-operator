@@ -2,7 +2,7 @@ package ru.javaschool.mobileoperator.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.repository.TariffDao;
+import ru.javaschool.mobileoperator.repository.api.TariffDao;
 
 import java.util.List;
 

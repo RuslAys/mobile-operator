@@ -1,6 +1,5 @@
-package ru.javaschool.mobileoperator.service;
+package ru.javaschool.mobileoperator.service.api;
 
-import org.springframework.ui.Model;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 
 import java.util.List;

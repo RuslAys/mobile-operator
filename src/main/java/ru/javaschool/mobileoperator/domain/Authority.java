@@ -3,17 +3,17 @@ package ru.javaschool.mobileoperator.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "AUTHORITIES")
+@Table(name = "authorities")
 public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "AUTHORITY")
+    @Column(name = "authority")
     private String authority;
 
     @ManyToOne
-    @JoinColumn(name = "USERNAME")
+    @JoinColumn(name = "username")
     private User user;
 
     public Authority() {

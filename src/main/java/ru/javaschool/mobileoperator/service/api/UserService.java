@@ -1,4 +1,4 @@
-package ru.javaschool.mobileoperator.service;
+package ru.javaschool.mobileoperator.service.api;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.javaschool.mobileoperator.domain.User;

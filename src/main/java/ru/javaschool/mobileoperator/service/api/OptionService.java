@@ -1,10 +1,8 @@
-package ru.javaschool.mobileoperator.service;
+package ru.javaschool.mobileoperator.service.api;
 
-import org.springframework.ui.Model;
 import ru.javaschool.mobileoperator.domain.Option;
 
 import java.util.List;
-import java.util.Set;
 
 public interface OptionService extends GenericService<Option, Long> {
     void addOption(String name,

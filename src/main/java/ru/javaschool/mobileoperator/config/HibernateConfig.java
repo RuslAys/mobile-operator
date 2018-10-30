@@ -16,8 +16,7 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {@ComponentScan("ru.javaschool.mobileoperator.repository"),
-    @ComponentScan("ru.javaschool.mobileoperator.service")})
+@ComponentScans(value = {@ComponentScan("ru.javaschool.mobileoperator.repository")})
 public class HibernateConfig {
     @Autowired
     private Environment environment;
@@ -48,25 +47,13 @@ public class HibernateConfig {
                 environment.getProperty("hibernate.c3p0.max_statements"));
 
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(
-                User.class,
-                Authority.class,
-                AbstractPO.class,
-                Customer.class,
-                Contract.class,
-                PersonalAccount.class,
-                TerminalDevice.class,
-                TariffPlan.class,
-                Option.class,
-                PhoneNumber.class,
-                Lock.class);
+        factoryBean.setPackagesToScan("ru.javaschool.mobileoperator.domain");
 
         return factoryBean;
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager(
-            @Autowired SessionFactory sessionFactory){
+    public HibernateTransactionManager transactionManager(@Autowired SessionFactory sessionFactory){
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory);
         return transactionManager;

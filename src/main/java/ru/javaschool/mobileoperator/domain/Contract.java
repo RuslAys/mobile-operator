@@ -1,7 +1,9 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,7 +15,7 @@ public class Contract extends AbstractPO {
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
-    private Set<PersonalAccount> personalAccounts = new HashSet<>();
+    private List<PersonalAccount> personalAccounts = new ArrayList<>();
 
     public Customer getCustomer() {
         return customer;
@@ -23,11 +25,11 @@ public class Contract extends AbstractPO {
         this.customer = customer;
     }
 
-    public Set<PersonalAccount> getPersonalAccounts() {
+    public List<PersonalAccount> getPersonalAccounts() {
         return personalAccounts;
     }
 
-    public void setPersonalAccounts(Set<PersonalAccount> personalAccounts) {
+    public void setPersonalAccounts(List<PersonalAccount> personalAccounts) {
         this.personalAccounts = personalAccounts;
     }
 }

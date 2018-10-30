@@ -5,14 +5,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.repository.GenericDao;
-import ru.javaschool.mobileoperator.repository.TariffDao;
-import ru.javaschool.mobileoperator.service.OptionService;
-import ru.javaschool.mobileoperator.service.TariffService;
+import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.repository.api.TariffDao;
+import ru.javaschool.mobileoperator.service.api.OptionService;
+import ru.javaschool.mobileoperator.service.api.TariffService;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -51,7 +50,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         TariffPlan tariffPlan = new TariffPlan();
         tariffPlan.setName(name);
         tariffPlan.setPrice(parsePrice);
-        tariffPlan.setOptions(new HashSet<>(tariffOptions));
+        tariffPlan.setOptions(tariffOptions);
         add(tariffPlan);
     }
 

@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
-import ru.javaschool.mobileoperator.repository.GenericDao;
-import ru.javaschool.mobileoperator.repository.PhoneNumberDao;
-import ru.javaschool.mobileoperator.service.PhoneNumberService;
+import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
+import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 
 import java.util.List;
 

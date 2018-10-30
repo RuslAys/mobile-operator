@@ -1,6 +1,8 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,12 +14,8 @@ public class Lock extends AbstractPO {
     @Column(name = "delete_by_user")
     private Boolean canBeDeletedByUser;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    },
-            mappedBy = "locks")
-    private Set<TerminalDevice> terminalDevices;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "locks")
+    private List<TerminalDevice> terminalDevices = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -35,11 +33,11 @@ public class Lock extends AbstractPO {
         this.canBeDeletedByUser = canBeDeletedByUser;
     }
 
-    public Set<TerminalDevice> getTerminalDevices() {
+    public List<TerminalDevice> getTerminalDevices() {
         return terminalDevices;
     }
 
-    public void setTerminalDevices(Set<TerminalDevice> terminalDevices) {
+    public void setTerminalDevices(List<TerminalDevice> terminalDevices) {
         this.terminalDevices = terminalDevices;
     }
 

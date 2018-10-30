@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.javaschool.mobileoperator.service.UserService;
+import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 @Controller
@@ -17,10 +17,10 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
 public class IndexController {
 
     @Autowired
-    RoleHelper roleHelper;
+    private RoleHelper roleHelper;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal UserDetails user){
