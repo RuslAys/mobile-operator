@@ -20,7 +20,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         implements OptionService {
 
     @Autowired
-    OptionDao optionDao;
+    private OptionDao optionDao;
 
     @Autowired
     public OptionServiceImpl(@Qualifier("optionDaoImpl") GenericDao<Option, Long> genericDao){

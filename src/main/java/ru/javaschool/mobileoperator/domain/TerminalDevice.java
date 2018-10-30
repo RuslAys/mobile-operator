@@ -13,12 +13,8 @@ public class TerminalDevice extends AbstractPO {
     @JoinColumn(name = "personal_account_id")
     private PersonalAccount personalAccount;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "terminal_devices_options",
-            joinColumns = { @JoinColumn(name = "terminal_device_id") },
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "terminal_devices_options", joinColumns = { @JoinColumn(name = "terminal_device_id") },
             inverseJoinColumns = { @JoinColumn(name = "option_id") })
     private List<Option> options = new ArrayList<>();
 
@@ -32,12 +28,8 @@ public class TerminalDevice extends AbstractPO {
             inverseJoinColumns = @JoinColumn(name = "phone_number_id"))
     private PhoneNumber phoneNumber;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "terminal_devices_locks",
-            joinColumns = { @JoinColumn(name = "terminal_device_id") },
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "terminal_devices_locks", joinColumns = { @JoinColumn(name = "terminal_device_id") },
             inverseJoinColumns = { @JoinColumn(name = "lock_id") })
     private List<Lock> locks = new ArrayList<>();
 
@@ -80,4 +72,6 @@ public class TerminalDevice extends AbstractPO {
     public void setPhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
 }

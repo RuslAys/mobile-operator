@@ -15,7 +15,7 @@ import ru.javaschool.mobileoperator.service.api.LockService;
 public class LockServiceImpl extends GenericServiceImpl<Lock, Long>
         implements LockService {
     @Autowired
-    LockDao lockDao;
+    private LockDao lockDao;
 
     @Autowired
     public LockServiceImpl(@Qualifier("lockDaoImpl") GenericDao<Lock, Long> genericDao) {

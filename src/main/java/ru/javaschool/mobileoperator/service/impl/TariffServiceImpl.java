@@ -22,10 +22,10 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         implements TariffService {
 
     @Autowired
-    OptionService optionService;
+    private OptionService optionService;
 
     @Autowired
-    TariffDao tariffDao;
+    private TariffDao tariffDao;
 
     public TariffServiceImpl() {
     }

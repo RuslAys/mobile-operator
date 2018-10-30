@@ -27,4 +27,12 @@ public class AbstractPO {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractPO{" +
+                "id=" + id +
+                ", version=" + version +
+                '}';
+    }
 }

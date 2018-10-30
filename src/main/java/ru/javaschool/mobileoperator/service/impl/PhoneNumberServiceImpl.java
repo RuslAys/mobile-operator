@@ -18,7 +18,7 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
         implements PhoneNumberService {
 
     @Autowired
-    PhoneNumberDao phoneNumberDao;
+    private PhoneNumberDao phoneNumberDao;
 
     public PhoneNumberServiceImpl() {
     }
