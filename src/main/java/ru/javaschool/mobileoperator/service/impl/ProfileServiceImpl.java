@@ -16,10 +16,10 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public TerminalDevice getTerminalDeviceByNumber(String number) {
+    public TerminalDevice getFullCustomerInfoByNumber(String number) {
         if(StringUtils.isEmpty(number)){
             throw new IllegalArgumentException("Number cannot be empty");
         }
-        return terminalDeviceDao.getTerminalDeviceByNumber(Long.parseLong(number));
+        return terminalDeviceDao.getFullTerminalDeviceByNumber(Long.parseLong(number));
     }
 }

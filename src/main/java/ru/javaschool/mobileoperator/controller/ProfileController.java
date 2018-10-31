@@ -24,7 +24,7 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profilePage(Model model, @PathVariable("username") String username){
         model.addAttribute("user", userService.getUser(username));
-        model.addAttribute("terminalDevice", profileService.getTerminalDeviceByNumber(username));
+        model.addAttribute("terminalDevice", profileService.getFullCustomerInfoByNumber(username));
         return "profile";
     }
 }
