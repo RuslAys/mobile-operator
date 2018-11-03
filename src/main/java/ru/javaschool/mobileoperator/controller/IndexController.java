@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,7 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
 @Controller
 @RequestMapping("/")
 public class IndexController {
+    private static final Logger logger = LogManager.getLogger(IndexController.class.getName());
 
     @Autowired
     private RoleHelper roleHelper;
@@ -22,6 +25,12 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Get method to index page
+     * @param model ui model
+     * @param user Auth principal
+     * @return if user redirect to profile, else show the search page
+     */
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal UserDetails user){
         if(roleHelper.isOnlyUser(user)){
@@ -30,6 +39,12 @@ public class IndexController {
         return "index";
     }
 
+    /**
+     * Post method to search by users by username
+     * @param model ui model
+     * @param username username to search
+     * @return redirect to index {@link #index(Model, UserDetails)}
+     */
     @PostMapping("/search")
     public String search(Model model, @RequestParam("username") String username){
         model.addAttribute("user", userService.getUser(username));

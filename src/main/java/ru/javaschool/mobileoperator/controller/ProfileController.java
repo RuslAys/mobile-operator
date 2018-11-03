@@ -1,5 +1,6 @@
 package ru.javaschool.mobileoperator.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ import ru.javaschool.mobileoperator.service.api.UserService;
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
+
+    private static final Logger logger = Logger.getLogger(ProfileController.class);
+
     @Autowired
     private UserService userService;
 
@@ -27,7 +31,12 @@ public class ProfileController {
     @Autowired
     private OptionService optionService;
 
-
+    /**
+     * Get method for profile page
+     * @param model ui model
+     * @param username username to profile
+     * @return return profile page
+     */
     @GetMapping("/{username}")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profilePage(Model model, @PathVariable("username") String username){
@@ -36,6 +45,12 @@ public class ProfileController {
         return "profile";
     }
 
+    /**
+     * Get method for user tariff page
+     * @param model ui model
+     * @param username username to profile
+     * @return profile tariff page
+     */
     @GetMapping("/{username}/tariff")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileTariffPage(Model model, @PathVariable("username") String username){

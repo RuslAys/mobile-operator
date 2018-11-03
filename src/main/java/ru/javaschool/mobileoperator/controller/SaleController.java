@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.controller;
 
+import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import java.util.Date;
 @RequestMapping("/sale")
 public class SaleController {
 
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(SaleController.class);
+
     @Autowired
     private TariffService tariffService;
 
@@ -33,6 +37,11 @@ public class SaleController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
     }
 
+    /**
+     * Get method for sale page
+     * @param model ui model
+     * @return sale page
+     */
     @GetMapping
     public String salePage(Model model){
         model.addAttribute("tariffs", tariffService.findAll());
@@ -40,6 +49,22 @@ public class SaleController {
         return "sale";
     }
 
+    /**
+     * Post method to sale contract
+     * @param firstName user first name
+     * @param lastName user last name
+     * @param birthDate user birth date
+     * @param city user city
+     * @param street user street
+     * @param house user house
+     * @param email user email
+     * @param passport user passport
+     * @param password user password
+     * @param confirmPassword string for password confirmation
+     * @param tariffId choosen tariff id
+     * @param numberId choosen number id
+     * @return redirect to sale page {@link #salePage(Model)}
+     */
     @PostMapping("/confirm")
     public String confirmSale(@RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName,
