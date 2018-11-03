@@ -13,4 +13,13 @@ public class TariffDaoImpl extends
     public List<TariffPlan> getAllTariffs() {
         return findAll();
     }
+
+    @Override
+    public TariffPlan getTariffByNumber(Long number) {
+        return (TariffPlan) currentSession()
+                .createQuery("SELECT td.tariffPlan FROM TerminalDevice td WHERE " +
+                        "td.phoneNumber.number = :number")
+                .setParameter("number", number)
+                .getSingleResult();
+    }
 }

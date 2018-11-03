@@ -7,4 +7,5 @@ import java.util.List;
 public interface OptionDao extends GenericDao<Option, Long>{
     List<Option> getOptions();
     List<Option> getOptions(List<Long> ids);
+    List<Option> getOptionsByNumber(Long number);
 }

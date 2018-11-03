@@ -8,25 +8,24 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.mobileoperator.domain.*;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
-import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
+import ru.javaschool.mobileoperator.repository.api.TariffDao;
+import ru.javaschool.mobileoperator.repository.api.UserDao;
 import ru.javaschool.mobileoperator.service.api.SaleService;
-import ru.javaschool.mobileoperator.service.api.TariffService;
-import ru.javaschool.mobileoperator.service.api.UserService;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service("saleContractService")
 public class SaleServiceImpl implements SaleService {
     @Autowired
-    private TariffService tariffService;
+    private TariffDao tariffDao;
 
     @Autowired
-    private PhoneNumberService phoneNumberService;
+    private PhoneNumberDao phoneNumberDao;
 
     @Autowired
-    private UserService userService;
+    private UserDao userDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -66,8 +65,8 @@ public class SaleServiceImpl implements SaleService {
         if(password == null || !password.equals(confirmPassword)){
             throw new IllegalArgumentException("Passwords are not equal");
         }
-        TariffPlan tariffPlan = tariffService.find(tariffId);
-        PhoneNumber number = phoneNumberService.find(numberId);
+        TariffPlan tariffPlan = tariffDao.find(tariffId);
+        PhoneNumber number = phoneNumberDao.find(numberId);
         if(number.getTerminalDevice() != null){
             throw new IllegalArgumentException("Number already in use");
         }
@@ -112,7 +111,7 @@ public class SaleServiceImpl implements SaleService {
         customer.getContracts().add(contract);
 
         customerDao.add(customer);
-        userService.add(user);
-        phoneNumberService.update(number);
+        userDao.add(user);
+        phoneNumberDao.update(number);
     }
 }

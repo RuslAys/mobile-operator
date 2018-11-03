@@ -9,12 +9,11 @@ public class TerminalDeviceDaoImpl extends GenericDaoImpl<TerminalDevice, Long> 
 
     @Override
     public TerminalDevice getFullTerminalDeviceByNumber(Long number) {
-        TerminalDevice terminalDevice = (TerminalDevice) currentSession()
+        return (TerminalDevice) currentSession()
                 .createQuery("SELECT td FROM TerminalDevice td " +
                         "LEFT JOIN FETCH td.personalAccount LEFT JOIN FETCH td.tariffPlan LEFT JOIN FETCH td.options" +
                         " WHERE td.phoneNumber.number = :number")
                 .setParameter("number", number)
                 .getSingleResult();
-        return terminalDevice;
     }
 }

@@ -44,7 +44,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);
 
         if(!Collections.disjoint(inOptions, exOptions)){
-            throw new IllegalArgumentException("Sets contain common elements");
+            throw new IllegalArgumentException("There are common elements");
         }
         if(!inOptions.isEmpty()){
             inOptions.forEach(option1 -> option1.getParentInclusive().add(option));
@@ -52,6 +52,8 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         }
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
+            exOptions.forEach(option1 -> option1.getExclusiveOptions().add(option));
+            option.setParentExclusive(exOptions);
             option.setExclusiveOptions(exOptions);
         }
         add(option);
@@ -62,4 +64,5 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     public List<Option> getOptionsByIds(List<Long> ids) {
         return optionDao.getOptions(ids);
     }
+
 }

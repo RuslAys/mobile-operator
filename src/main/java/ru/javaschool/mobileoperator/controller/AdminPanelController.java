@@ -38,8 +38,7 @@ public class AdminPanelController {
 
     @GetMapping("/operator")
     public String admin(Model model){
-        List<User> operatorList = userService.findAll(UserRoleEnum.OPERATOR);
-        model.addAttribute("operators", operatorList);
+        model.addAttribute("operators", userService.findAll(UserRoleEnum.OPERATOR));
         return "operator";
     }
 

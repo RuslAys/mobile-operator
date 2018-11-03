@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
+import ru.javaschool.mobileoperator.service.api.TariffService;
 import ru.javaschool.mobileoperator.service.api.UserService;
 
 @Controller
@@ -19,6 +21,12 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private TariffService tariffService;
+
+    @Autowired
+    private OptionService optionService;
+
 
     @GetMapping("/{username}")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
@@ -26,5 +34,13 @@ public class ProfileController {
         model.addAttribute("user", userService.getUser(username));
         model.addAttribute("terminalDevice", profileService.getFullCustomerInfoByNumber(username));
         return "profile";
+    }
+
+    @GetMapping("/{username}/tariff")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String profileTariffPage(Model model, @PathVariable("username") String username){
+        model.addAttribute("tariffPlan", profileService.getTariffPlanOnTerminalDeviceByNumber(username));
+        model.addAttribute("options", profileService.getOptionsOnTerminalDeviceByNumber(username));
+        return "profileTariff";
     }
 }

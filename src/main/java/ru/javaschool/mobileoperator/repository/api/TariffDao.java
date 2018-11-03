@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TariffDao extends GenericDao<TariffPlan, Long> {
     List<TariffPlan> getAllTariffs();
+    TariffPlan getTariffByNumber(Long number);
 }

@@ -25,4 +25,12 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
                 .createQuery("SELECT o FROM Option o where o.id IN :ids")
                 .setParameter("ids", ids).getResultList();
     }
+
+    @Override
+    public List<Option> getOptionsByNumber(Long number) {
+        return currentSession()
+                .createQuery("SELECT td.options FROM TerminalDevice td WHERE " +
+                        "td.phoneNumber.number = :number")
+                .setParameter("number", number).getResultList();
+    }
 }
