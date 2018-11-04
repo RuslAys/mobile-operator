@@ -11,10 +11,10 @@
                 value="${lock.id}" readonly > ${lock.name} </input>
             <security:authorize access="hasRole('ROLE_USER')">
                 <c:if test="${lock.canBeDeletedByUser == true}">
-                    <button type="button" class="btn btn-primary">Remove</button>
+                    <button type="submit" class="btn btn-primary">Remove</button>
                 </c:if>
                 <c:if test="${lock.canBeDeletedByUser == false}">
-                    <button type="button" class="btn btn-primary" disabled>Can be removed only by operator</button>
+                    <button type="submit" class="btn btn-primary" disabled>Can be removed only by operator</button>
                 </c:if>
             </security:authorize>
             <security:authorize access="hasRole('ROLE_OPERATOR')">
