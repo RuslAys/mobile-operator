@@ -7,9 +7,16 @@
         <div>
             <form name="add-new-option" action="option/add" method="post">
                 <div class="form-group">
-                    <label for="optionNameField">Username</label>
                     <input type="text" class="form-control" name="name"
                         id="optionNameField" placeholder="Option`s name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="price"
+                        id="priceField" placeholder="Price">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="connectionCost"
+                        id="connectionCostField" placeholder="Connection cost">
                 </div>
                 <div class="form-group">
                     <label for="inclusiveOptionsField">Inclusive options</label>
@@ -37,7 +44,8 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th></th>
+                    <th>Price</th>
+                    <th>Connection cost</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,6 +53,12 @@
                         <tr>
                             <td><a href="/option/${option.name}">
                                 <c:out value="${option.name}" /> </a>
+                            </td>
+                            <td>
+                               <c:out value="${option.price}" />
+                            </td>
+                            <td>
+                                <c:out value="${option.connectionCost}" />
                             </td>
                         </tr>
                     </c:forEach>

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface OptionService extends GenericService<Option, Long> {
     void addOption(String name,
+                   String price,
+                   String connectionCost,
                    List<Long> inclusiveOptions,
                    List<Long> exclusiveOptions);
     List<Option> getOptionsByIds(List<Long> ids);

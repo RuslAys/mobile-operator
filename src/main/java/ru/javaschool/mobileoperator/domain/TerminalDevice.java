@@ -14,6 +14,7 @@ public class TerminalDevice extends AbstractPO {
     private PersonalAccount personalAccount;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OrderColumn
     @JoinTable(name = "terminal_devices_options", joinColumns = { @JoinColumn(name = "terminal_device_id") },
             inverseJoinColumns = { @JoinColumn(name = "option_id") })
     private List<Option> options = new ArrayList<>();

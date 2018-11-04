@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
 import ru.javaschool.mobileoperator.service.api.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
@@ -57,5 +58,44 @@ public class ProfileController {
         model.addAttribute("tariffPlan", profileService.getTariffPlanOnTerminalDeviceByNumber(username));
         model.addAttribute("options", profileService.getOptionsOnTerminalDeviceByNumber(username));
         return "profileTariff";
+    }
+
+    /**
+     * Get method for profile lock page
+     * @param model ui model
+     * @param username username to profle
+     * @return profile lock page
+     */
+    @GetMapping("/{username}/lock")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String profileLockPage(Model model, @PathVariable("username") String username){
+        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(username);
+        model.addAttribute("terminalDevice", terminalDevice);
+        model.addAttribute("freeLocks", profileService.getLocksNotOnTerminalDevice(terminalDevice));
+        return "profileLock";
+    }
+
+    /**
+     * Post method for add lock to terminal device
+     * @param model ui model
+     * @param username profile username
+     * @param id terminal device id
+     * @param ids list of lock ids
+     * @return redirect to profile lock page {@link #profileLockPage(Model, String)}
+     */
+    @PostMapping("/{username}/lock/add")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String addLockToTerminalDevice(Model model,
+                                          @PathVariable("username") String username,
+                                          @RequestParam("terminalDeviceId") Long id,
+                                          @RequestParam("freeLocks") List<Long> ids){
+        profileService.addLock(id, ids);
+        return "redirect:/profile/" + username + "/lock";
+    }
+
+    @GetMapping("/{username}/options")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String profileOptionsPage(Model model, @PathVariable("username") String username){
+        return "profileOptions";
     }
 }

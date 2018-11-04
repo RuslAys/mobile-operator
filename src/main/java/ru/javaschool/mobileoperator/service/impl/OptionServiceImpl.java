@@ -31,14 +31,18 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void addOption(String name,
-                            List<Long> inclusiveOptions,
-                            List<Long> exclusiveOptions) {
+                          String price,
+                          String connectionCost,
+                          List<Long> inclusiveOptions,
+                          List<Long> exclusiveOptions) {
 
         if(StringUtils.isEmpty(name)){
             throw new IllegalArgumentException("Option name can`t be empty");
         }
         Option option = new Option();
         option.setName(name);
+        option.setPrice(Integer.parseInt(price));
+        option.setConnectionCost(Integer.parseInt(connectionCost));
 
         List<Option> inOptions = optionDao.getOptions(inclusiveOptions);
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);

@@ -128,11 +128,13 @@ public class AdminPanelController {
      */
     @PostMapping("/option/add")
     public String addOption(@RequestParam String name,
+                            @RequestParam String price,
+                            @RequestParam String connectionCost,
                             @RequestParam(value = "inclusiveOptions",required = false)
                                     List<Long> inclusiveOptions,
                             @RequestParam(required = false, value = "exclusiveOptions")
                                     List<Long> exclusiveOptions){
-        optionService.addOption(name, inclusiveOptions, exclusiveOptions);
+        optionService.addOption(name, price, connectionCost,inclusiveOptions, exclusiveOptions);
         return "redirect:/admin/option";
     }
 

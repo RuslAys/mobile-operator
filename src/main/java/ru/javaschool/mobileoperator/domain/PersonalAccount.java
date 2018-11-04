@@ -18,7 +18,7 @@ public class PersonalAccount extends AbstractPO {
     private List<TerminalDevice> terminalDevices = new ArrayList<>();
 
     @Column(name = "money")
-    private int money;
+    private Integer money = 0;
 
     public List<TerminalDevice> getTerminalDevices() {
         return terminalDevices;
@@ -36,11 +36,11 @@ public class PersonalAccount extends AbstractPO {
         this.contract = contract;
     }
 
-    public int getMoney() {
+    public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(Integer money) {
         this.money = money;
     }
 
