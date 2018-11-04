@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +15,10 @@ import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
+import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service("profileService")
@@ -31,6 +34,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private LockDao lockDao;
+
+    @Autowired
+    private RoleHelper roleHelper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -80,5 +86,43 @@ public class ProfileServiceImpl implements ProfileService {
         terminalDevice.getLocks().addAll(locks);
         locks.forEach(lock -> lockDao.update(lock));
         terminalDeviceDao.update(terminalDevice);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeLock(UserDetails user, Long id, Long lockId) {
+        TerminalDevice terminalDevice = terminalDeviceDao.find(id);
+        Lock lock = lockDao.find(lockId);
+        boolean isUser = roleHelper.isOnlyUser(user);
+        if(isUser && lock.getCanBeDeletedByUser()){
+            removeLock(terminalDevice, lock);
+        }else if(isUser && !lock.getCanBeDeletedByUser()){
+            throw new IllegalArgumentException("Lock can`t be deleted by user");
+        }else {
+            removeLock(terminalDevice, lock);
+        }
+        terminalDeviceDao.update(terminalDevice);
+        lockDao.update(lock);
+    }
+
+    private int getLockIndex(TerminalDevice terminalDevice, Lock lock){
+        return Collections.binarySearch(terminalDevice.getLocks(), lock, (Lock l1, Lock l2) ->
+            l1.getId().compareTo(l2.getId())
+        );
+    }
+
+    private int getTdIndex(TerminalDevice terminalDevice, Lock lock){
+        return Collections.binarySearch(lock.getTerminalDevices(), terminalDevice,
+                (TerminalDevice td1, TerminalDevice td2) -> td1.getId().compareTo(td2.getId())
+        );
+    }
+
+    private void removeLock(TerminalDevice terminalDevice, Lock lock){
+        int lockIndex = getLockIndex(terminalDevice, lock);
+        int tdIndex = getTdIndex(terminalDevice, lock);
+        if(lockIndex >= 0){
+            terminalDevice.getLocks().remove(lockIndex);
+            lock.getTerminalDevices().remove(tdIndex);
+        }
     }
 }

@@ -3,6 +3,8 @@ package ru.javaschool.mobileoperator.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +92,26 @@ public class ProfileController {
                                           @RequestParam("terminalDeviceId") Long id,
                                           @RequestParam("freeLocks") List<Long> ids){
         profileService.addLock(id, ids);
+        return "redirect:/profile/" + username + "/lock";
+    }
+
+    /**
+     * Post method for remove lock from terminal device
+     * @param model ui model
+     * @param username profile username
+     * @param terminalDeviceId terminal device id
+     * @param lockId lock id
+     * @param user auth principal
+     * @return redirect to profile lock page {@link #profileLockPage(Model, String)}
+     */
+    @PostMapping("/{username}/lock/remove")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String removeLockFromTerminalDevice(Model model,
+                                               @PathVariable("username") String username,
+                                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                                               @RequestParam("lockId") Long lockId,
+                                               @AuthenticationPrincipal UserDetails user){
+        profileService.removeLock(user, terminalDeviceId, lockId);
         return "redirect:/profile/" + username + "/lock";
     }
 

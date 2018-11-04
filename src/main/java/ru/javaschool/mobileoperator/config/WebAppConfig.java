@@ -25,9 +25,4 @@ public class WebAppConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
     }
-
-    @Bean
-    public RoleHelper roleHelper(){
-        return new RoleHelper();
-    }
 }

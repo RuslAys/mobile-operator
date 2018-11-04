@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.javaschool.mobileoperator.service.api.UserService;
+import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 /**
  * Security configuration
@@ -21,12 +22,17 @@ import ru.javaschool.mobileoperator.service.api.UserService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    };
+    }
+
+    @Bean
+    public RoleHelper roleHelper(){
+        return new RoleHelper();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -5,7 +5,10 @@
     ${terminalDevice.phoneNumber.number}
     <c:forEach items="${terminalDevice.locks}" var="lock" varStatus="loop">
         <form name="add-lock-${loop.count}" action="lock/remove" method="post">
-            <input class="form-control" type=text value="${lock.name}"readonly placeholder="${lock.name}">
+            <input type="hidden" class="form-control" name="terminalDeviceId"
+                value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">
+            <input class="form-control-plaintext" type="hidden" name="lockId"
+                value="${lock.id}" readonly > ${lock.name} </input>
             <security:authorize access="hasRole('ROLE_USER')">
                 <c:if test="${lock.canBeDeletedByUser == true}">
                     <button type="button" class="btn btn-primary">Remove</button>
@@ -17,7 +20,6 @@
             <security:authorize access="hasRole('ROLE_OPERATOR')">
                 <button type="submit" class="btn btn-primary">Remove</button>
             </security:authorize>
-
         </form>
     </c:forEach>
 
