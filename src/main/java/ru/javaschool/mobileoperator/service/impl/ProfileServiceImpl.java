@@ -10,10 +10,7 @@ import ru.javaschool.mobileoperator.domain.Lock;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
-import ru.javaschool.mobileoperator.repository.api.LockDao;
-import ru.javaschool.mobileoperator.repository.api.OptionDao;
-import ru.javaschool.mobileoperator.repository.api.TariffDao;
-import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
+import ru.javaschool.mobileoperator.repository.api.*;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
@@ -34,6 +31,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private LockDao lockDao;
+
+    @Autowired
+    private PersonalAccountDao personalAccountDao;
 
     @Autowired
     private RoleHelper roleHelper;
@@ -105,6 +105,46 @@ public class ProfileServiceImpl implements ProfileService {
         lockDao.update(lock);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan) {
+        return tariffDao.getTariffNotIn(tariffPlan);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void changeTariff(Long terminalDeviceId, Long newTariffId) {
+        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
+        if(!terminalDevice.getLocks().isEmpty()){
+            throw new IllegalArgumentException("Terminal device is locked");
+        }
+        TariffPlan tariffPlan = tariffDao.find(newTariffId);
+
+        //remove old tariff and options
+        removeTdFromOptions(terminalDevice);
+        removeTdFromTariffPlan(terminalDevice);
+        tariffDao.update(terminalDevice.getTariffPlan());
+        terminalDevice.getOptions().forEach(option -> optionDao.update(option));
+
+        //add new tariff and options to terminal device
+        List<Option> options = optionDao.getOptions(tariffPlan);
+        terminalDevice.setTariffPlan(tariffPlan);
+        terminalDevice.setOptions(options);
+
+        //add terminal device to tariff and options
+        tariffPlan.getTerminalDevices().add(terminalDevice);
+        tariffPlan.getOptions().forEach(
+                option -> option.getTerminalDevices().add(terminalDevice)
+        );
+
+        //update personal account
+        int currentMoney = terminalDevice.getPersonalAccount().getMoney();
+        terminalDevice.getPersonalAccount().setMoney(currentMoney - tariffPlan.getPrice());
+        terminalDeviceDao.update(terminalDevice);
+        tariffDao.update(tariffPlan);
+        personalAccountDao.update(terminalDevice.getPersonalAccount());
+    }
+
     private int getLockIndex(TerminalDevice terminalDevice, Lock lock){
         return Collections.binarySearch(terminalDevice.getLocks(), lock, (Lock l1, Lock l2) ->
             l1.getId().compareTo(l2.getId())
@@ -124,5 +164,17 @@ public class ProfileServiceImpl implements ProfileService {
             terminalDevice.getLocks().remove(lockIndex);
             lock.getTerminalDevices().remove(tdIndex);
         }
+    }
+
+    private void removeTdFromOptions(TerminalDevice terminalDevice){
+        terminalDevice.getOptions().forEach(
+                option -> option.getTerminalDevices()
+                        .removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1))
+        );
+    }
+
+    private void removeTdFromTariffPlan(TerminalDevice terminalDevice){
+        terminalDevice.getTariffPlan().getTerminalDevices().removeIf(
+                terminalDevice1 -> terminalDevice.equals(terminalDevice1));
     }
 }

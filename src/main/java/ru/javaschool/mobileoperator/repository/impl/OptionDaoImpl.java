@@ -2,6 +2,8 @@ package ru.javaschool.mobileoperator.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
+import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 
 import java.util.ArrayList;
@@ -32,5 +34,12 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
                 .createQuery("SELECT td.options FROM TerminalDevice td WHERE " +
                         "td.phoneNumber.number = :number")
                 .setParameter("number", number).getResultList();
+    }
+
+    @Override
+    public List<Option> getOptions(TariffPlan tariffPlan) {
+        return currentSession()
+                .createQuery("SELECT o FROM Option o LEFT JOIN o.tariffPlans tp WHERE tp = :tp")
+                .setParameter("tp", tariffPlan).getResultList();
     }
 }

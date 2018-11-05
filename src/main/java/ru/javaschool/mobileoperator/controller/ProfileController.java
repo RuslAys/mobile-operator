@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
@@ -57,11 +58,24 @@ public class ProfileController {
     @GetMapping("/{username}/tariff")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileTariffPage(Model model, @PathVariable("username") String username){
-        model.addAttribute("tariffPlan", profileService.getTariffPlanOnTerminalDeviceByNumber(username));
-        model.addAttribute("options", profileService.getOptionsOnTerminalDeviceByNumber(username));
+        TerminalDevice terminalDevice = profileService.getFullCustomerInfoByNumber(username);
+        TariffPlan tariffPlan = terminalDevice.getTariffPlan();
+        model.addAttribute("terminalDevice", terminalDevice);
+        model.addAttribute("tariffPlan", tariffPlan);
+        model.addAttribute("options", terminalDevice.getOptions());
+        model.addAttribute("freeTariffs", profileService.getTariffsExcept(tariffPlan));
         return "profileTariff";
     }
 
+    @PostMapping("/{username}/tariff/change")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String changeTariff(Model model,
+                               @PathVariable("username") String username,
+                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                               @RequestParam("newTariffId") Long newTariffId){
+        profileService.changeTariff(terminalDeviceId, newTariffId);
+        return "redirect:/profile/" + username + "/tariff";
+    }
     /**
      * Get method for profile lock page
      * @param model ui model
@@ -115,6 +129,12 @@ public class ProfileController {
         return "redirect:/profile/" + username + "/lock";
     }
 
+    /**
+     * Get method for options page
+     * @param model ui model
+     * @param username profile username
+     * @return options page
+     */
     @GetMapping("/{username}/options")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileOptionsPage(Model model, @PathVariable("username") String username){

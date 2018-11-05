@@ -8,6 +8,9 @@ import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.List;
 
+/**
+ * Service to work with user profile
+ */
 public interface ProfileService {
     /**
      * Method to return all customer information by number
@@ -58,4 +61,18 @@ public interface ProfileService {
      * @param lockId lock id to remove
      */
     void removeLock(UserDetails user, Long terminalDeviceId, Long lockId);
+
+    /**
+     * Method to get tariffs except specified
+     * @param tariffPlan specified tariff plan
+     * @return List of tariff plans
+     */
+    List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan);
+
+    /**
+     * Method to change tariff plan on terminal device
+     * @param terminalDeviceId terminal device id
+     * @param newTariffId new tariff plan id
+     */
+    void changeTariff(Long terminalDeviceId, Long newTariffId);
 }
