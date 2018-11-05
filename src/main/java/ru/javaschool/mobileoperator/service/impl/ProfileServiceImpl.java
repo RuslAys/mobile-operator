@@ -12,11 +12,10 @@ import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.repository.api.*;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
+import ru.javaschool.mobileoperator.utils.OptionHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service("profileService")
 public class ProfileServiceImpl implements ProfileService {
@@ -37,6 +36,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private RoleHelper roleHelper;
+
+    @Autowired
+    private OptionHelper optionHelper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -127,7 +129,7 @@ public class ProfileServiceImpl implements ProfileService {
         terminalDevice.getOptions().forEach(option -> optionDao.update(option));
 
         //add new tariff and options to terminal device
-        List<Option> options = optionDao.getOptions(tariffPlan);
+        List<Option> options = new ArrayList<>(tariffPlan.getOptions());
         terminalDevice.setTariffPlan(tariffPlan);
         terminalDevice.setOptions(options);
 
@@ -145,25 +147,63 @@ public class ProfileServiceImpl implements ProfileService {
         personalAccountDao.update(terminalDevice.getPersonalAccount());
     }
 
-    private int getLockIndex(TerminalDevice terminalDevice, Lock lock){
-        return Collections.binarySearch(terminalDevice.getLocks(), lock, (Lock l1, Lock l2) ->
-            l1.getId().compareTo(l2.getId())
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addOption(Long terminalDeviceId, Long optionId) {
+        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
+        if(!terminalDevice.getLocks().isEmpty()){
+            throw new IllegalArgumentException("Terminal device is locked");
+        }
+        List<Option> tdOptions = terminalDevice.getOptions();
+        Option newOption = optionDao.find(optionId);
+        List<Option> optionsToAdd = new ArrayList<>();
+
+        // Find options to add
+        optionsToAdd = optionHelper.getAllOptions(newOption, optionsToAdd);
+
+        // Find options to delete
+        List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
+        if(!exclusiveOptions.isEmpty()){
+            List<Option> optionToDelete = new ArrayList<>();
+            optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
+            removeOptionsFromTd(terminalDevice, optionToDelete);
+            optionToDelete.forEach(
+                    option -> optionDao.update(option)
+            );
+        }
+        int money = terminalDevice.getPersonalAccount().getMoney();
+        for(Option option: optionsToAdd){
+            money -= option.getConnectionCost();
+        }
+        terminalDevice.getPersonalAccount().setMoney(money);
+        terminalDevice.getOptions().addAll(optionsToAdd);
+        List<Option> withoutDuplicates = new ArrayList<>(
+                new HashSet<>(terminalDevice.getOptions())
         );
+        terminalDevice.setOptions(withoutDuplicates);
+        terminalDeviceDao.update(terminalDevice);
+        personalAccountDao.update(terminalDevice.getPersonalAccount());
     }
 
-    private int getTdIndex(TerminalDevice terminalDevice, Lock lock){
-        return Collections.binarySearch(lock.getTerminalDevices(), terminalDevice,
-                (TerminalDevice td1, TerminalDevice td2) -> td1.getId().compareTo(td2.getId())
-        );
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeOption(Long terminalDeviceId, Long optionId) {
+        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
+        if(!terminalDevice.getLocks().isEmpty()){
+            throw new IllegalArgumentException("Terminal device is locked");
+        }
+        Option optionToDelete = optionDao.find(optionId);
+        if(optionHelper.existInclusiveConflicts(terminalDevice.getOptions(), optionToDelete)){
+            throw new IllegalArgumentException("Cannot delete option. It is required option");
+        }
+        removeOptionFromTd(terminalDevice, optionToDelete);
+        terminalDeviceDao.update(terminalDevice);
+        optionDao.update(optionToDelete);
     }
 
     private void removeLock(TerminalDevice terminalDevice, Lock lock){
-        int lockIndex = getLockIndex(terminalDevice, lock);
-        int tdIndex = getTdIndex(terminalDevice, lock);
-        if(lockIndex >= 0){
-            terminalDevice.getLocks().remove(lockIndex);
-            lock.getTerminalDevices().remove(tdIndex);
-        }
+        terminalDevice.getLocks().removeIf(lock1 -> lock.equals(lock1));
+        lock.getTerminalDevices().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
     }
 
     private void removeTdFromOptions(TerminalDevice terminalDevice){
@@ -176,5 +216,19 @@ public class ProfileServiceImpl implements ProfileService {
     private void removeTdFromTariffPlan(TerminalDevice terminalDevice){
         terminalDevice.getTariffPlan().getTerminalDevices().removeIf(
                 terminalDevice1 -> terminalDevice.equals(terminalDevice1));
+    }
+
+    private void removeOptionsFromTd(TerminalDevice terminalDevice, List<Option> options){
+        terminalDevice.getOptions().removeAll(options);
+        options.forEach(
+                option -> option.getTerminalDevices().removeIf(
+                        terminalDevice1 -> terminalDevice.equals(terminalDevice1)
+                )
+        );
+    }
+
+    private void removeOptionFromTd(TerminalDevice terminalDevice, Option option){
+        terminalDevice.getOptions().removeIf(option1 -> option.equals(option1));
+        option.getTerminalDevices().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
     }
 }

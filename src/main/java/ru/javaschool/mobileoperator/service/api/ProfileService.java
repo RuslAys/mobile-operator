@@ -75,4 +75,18 @@ public interface ProfileService {
      * @param newTariffId new tariff plan id
      */
     void changeTariff(Long terminalDeviceId, Long newTariffId);
+
+    /**
+     * Method to add option on terminal device
+     * @param terminalDeviceId terminal device id
+     * @param optionId option id to add
+     */
+    void addOption(Long terminalDeviceId, Long optionId);
+
+    /**
+     * Method to remove option from terminal device
+     * @param terminalDeviceId terminal device id
+     * @param optionId option id to remove
+     */
+    void removeOption(Long terminalDeviceId, Long optionId);
 }

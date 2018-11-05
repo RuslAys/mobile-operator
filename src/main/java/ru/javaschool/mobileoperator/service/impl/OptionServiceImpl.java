@@ -69,4 +69,13 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         return optionDao.getOptions(ids);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<Option> getOptionsNotIn(List<Option> options) {
+        if(options.isEmpty()){
+            return findAll();
+        }
+        return optionDao.getOptionsNotIn(options);
+    }
+
 }

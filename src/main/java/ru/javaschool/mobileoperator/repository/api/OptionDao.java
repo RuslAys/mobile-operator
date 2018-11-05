@@ -12,4 +12,6 @@ public interface OptionDao extends GenericDao<Option, Long>{
     List<Option> getOptionsByNumber(Long number);
 
     List<Option> getOptions(TariffPlan tariffPlan);
+
+    List<Option> getOptionsNotIn(List<Option> options);
 }

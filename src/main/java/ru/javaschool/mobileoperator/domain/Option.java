@@ -9,7 +9,7 @@ public class Option extends AbstractPO {
     @ManyToMany(mappedBy = "options")
     private List<TariffPlan> tariffPlans = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "options")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "options")
     private List<TerminalDevice> terminalDevices = new ArrayList<>();
 
     @Column(name = "name")
@@ -118,12 +118,13 @@ public class Option extends AbstractPO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Option option = (Option) o;
-        return Objects.equals(name, option.name);
+        return Objects.equals(name, option.name) &&
+                Objects.equals(price, option.price) && Objects.equals(id, option.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name, price, id);
     }
 
     @Override

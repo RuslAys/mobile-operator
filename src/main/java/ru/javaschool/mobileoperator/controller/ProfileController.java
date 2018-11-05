@@ -135,9 +135,33 @@ public class ProfileController {
      * @param username profile username
      * @return options page
      */
-    @GetMapping("/{username}/options")
+    @GetMapping("/{username}/option")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileOptionsPage(Model model, @PathVariable("username") String username){
-        return "profileOptions";
+        TerminalDevice terminalDevice = profileService.getFullCustomerInfoByNumber(username);
+        model.addAttribute("terminalDevice", terminalDevice);
+        model.addAttribute("options", terminalDevice.getOptions());
+        model.addAttribute("freeOptions", optionService.getOptionsNotIn(terminalDevice.getOptions()));
+        return "profileOption";
+    }
+
+    @PostMapping("/{username}/option/add")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String addOption(Model model,
+                            @PathVariable("username") String username,
+                            @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                            @RequestParam("optionId") Long optionId){
+        profileService.addOption(terminalDeviceId, optionId);
+        return "redirect:/profile/" + username + "/option";
+    }
+
+    @PostMapping("/{username}/option/remove")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String removeOption(Model model,
+                            @PathVariable("username") String username,
+                            @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                            @RequestParam("optionId") Long optionId){
+        profileService.removeOption(terminalDeviceId, optionId);
+        return "redirect:/profile/" + username + "/option";
     }
 }

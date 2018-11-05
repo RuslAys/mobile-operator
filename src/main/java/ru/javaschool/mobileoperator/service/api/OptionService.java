@@ -11,4 +11,6 @@ public interface OptionService extends GenericService<Option, Long> {
                    List<Long> inclusiveOptions,
                    List<Long> exclusiveOptions);
     List<Option> getOptionsByIds(List<Long> ids);
+
+    List<Option> getOptionsNotIn(List<Option> options);
 }

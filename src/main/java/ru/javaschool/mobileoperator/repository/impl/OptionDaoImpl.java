@@ -42,4 +42,11 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
                 .createQuery("SELECT o FROM Option o LEFT JOIN o.tariffPlans tp WHERE tp = :tp")
                 .setParameter("tp", tariffPlan).getResultList();
     }
+
+    @Override
+    public List<Option> getOptionsNotIn(List<Option> options) {
+        return currentSession()
+                .createQuery("SELECT o FROM Option o WHERE o NOT IN :options")
+                .setParameter("options", options).getResultList();
+    }
 }

@@ -12,6 +12,7 @@ import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
+import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 import java.util.*;
 
@@ -24,6 +25,9 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
 
     @Autowired
     private TariffDao tariffDao;
+
+    @Autowired
+    private OptionHelper optionHelper;
 
     public TariffServiceImpl() {
     }
@@ -49,7 +53,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
                 }
         );
         List<Option> optionsToAdd = new ArrayList<>(uniqueOptionsToAdd);
-        if(existConflicts(optionsToAdd)){
+        if(optionHelper.existConflicts(optionsToAdd)){
             throw new IllegalArgumentException("Exist options conflicts");
         }
         int parsePrice = Integer.parseInt(price);
@@ -58,10 +62,5 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         tariffPlan.setPrice(parsePrice);
         tariffPlan.setOptions(optionsToAdd);
         add(tariffPlan);
-    }
-
-    private boolean existConflicts(List<Option> options){
-        return options.stream()
-                .anyMatch(option -> !Collections.disjoint(options, option.getExclusiveOptions()));
     }
 }
