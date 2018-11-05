@@ -37,8 +37,8 @@ public class OptionHelper {
 
     public List<Option> getAllOptionsWithInclusiveParents(List<Option> options, List<Option> list){
         for(Option option: options){
+            list.add(option);
             if(!option.getParentInclusive().isEmpty()){
-                list.add(option);
                 return getAllOptionsWithInclusiveParents(option.getParentInclusive(), list);
             }
         }

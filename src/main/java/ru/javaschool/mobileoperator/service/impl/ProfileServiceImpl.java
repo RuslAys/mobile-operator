@@ -15,7 +15,9 @@ import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @Service("profileService")
 public class ProfileServiceImpl implements ProfileService {
