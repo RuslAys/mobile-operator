@@ -13,9 +13,7 @@ import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service("tariffService")
 public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
@@ -43,14 +41,22 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
             throw new IllegalArgumentException("Name cannot be empty");
         }
         List<Option> tariffOptions = optionService.getOptionsByIds(optionIds);
-        if(existConflicts(tariffOptions)){
+        Set<Option> uniqueOptionsToAdd = new HashSet<>();
+        tariffOptions.forEach(
+                option -> {
+                    uniqueOptionsToAdd.add(option);
+                    uniqueOptionsToAdd.addAll(option.getInclusiveOptions());
+                }
+        );
+        List<Option> optionsToAdd = new ArrayList<>(uniqueOptionsToAdd);
+        if(existConflicts(optionsToAdd)){
             throw new IllegalArgumentException("Exist options conflicts");
         }
         int parsePrice = Integer.parseInt(price);
         TariffPlan tariffPlan = new TariffPlan();
         tariffPlan.setName(name);
         tariffPlan.setPrice(parsePrice);
-        tariffPlan.setOptions(tariffOptions);
+        tariffPlan.setOptions(optionsToAdd);
         add(tariffPlan);
     }
 
