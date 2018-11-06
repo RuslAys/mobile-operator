@@ -6,7 +6,9 @@
     <form name="add-option" action="option/add" method="post">
         <div class="form-group">
             <input type="hidden" class="form-control" name="terminalDeviceId"
-                        value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">
+                value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">
+            <input type="hidden" class="form-control" name="username"
+                value = "${terminalDevice.phoneNumber.number}"id="phoneNumber" placeholder="${terminalDevice.phoneNumber.number}">
             <label for="freeOptionsField">Add option</label>
             <select class="form-control" id="freeOptionsField"
                 name="optionId">
@@ -14,7 +16,8 @@
                     <option value="${option.id}"> <c:out value="${option.name} Price: ${option.price} Connection cost ${option.connectionCost}"/> </option>
                 </c:forEach>
             </select>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" name="add" class="btn btn-primary">Add</button>
+            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
         </div>
     </form>
 
