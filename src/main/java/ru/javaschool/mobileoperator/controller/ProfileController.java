@@ -9,11 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.javaschool.mobileoperator.domain.*;
-import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.service.api.CartOptionService;
 import ru.javaschool.mobileoperator.service.api.*;
+import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,6 +42,12 @@ public class ProfileController {
 
     @Autowired
     private TerminalDeviceService terminalDeviceService;
+
+    @Autowired
+    private CartOptionService cartOptionService;
+
+    @Autowired
+    private CartHelper cartHelper;
 
     /**
      * Get method for profile page
@@ -160,13 +166,16 @@ public class ProfileController {
      * @param optionId option id to add
      * @return redirect to profile option page {@link #profileOptionsPage(Model, String)}
      */
-    @PostMapping(value = "/{username}/option/add", params = "add")
+    @PostMapping(value = "/{username}/option/add", params = "confirm")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String addOption(@PathVariable("username") String username,
+    public String addOption(Model model,
+                            @PathVariable("username") String username,
                             @RequestParam("terminalDeviceId") Long terminalDeviceId,
-                            @RequestParam("optionId") Long optionId){
-        profileService.addOption(terminalDeviceId, optionId);
-        return "redirect:/profile/" + username + "/option";
+                            @RequestParam("optionId") Long optionId,
+                            HttpSession session){
+        cartOptionService.addOption(terminalDeviceId, optionId, session);
+        model.addAttribute("cart", cartHelper.getCart(session));
+        return "redirect:/cart";
     }
 
     /**
@@ -178,28 +187,13 @@ public class ProfileController {
      */
     @PostMapping(value = "/{username}/option/add", params = "add_to_cart")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String addOptionToCart(@PathVariable("username") String username,
+    public String addOptionToCart(Model model,
+                                  @PathVariable("username") String username,
                                   @RequestParam("terminalDeviceId") Long terminalDeviceId,
                                   @RequestParam("optionId") Long optionId,
                                   HttpSession session){
-        TerminalDevice terminalDevice = terminalDeviceService.find(terminalDeviceId);
-        Option option = optionService.find(optionId);
-        Cart cart = (Cart) session.getAttribute("cart");
-        if(cart == null){
-            cart = new Cart();
-        }
-        int id = 0;
-        if(!cart.getCartItems().isEmpty()){
-            id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
-        }
-
-        //TODO
-        //Реализовать проверку на дубликаты
-        CartItem item = cartItemService.createItem(
-                id, OperationType.ADD_OPTION, null, option, null, null, terminalDevice);
-        cartService.addItem(cart, item);
-        session.setAttribute("cart", cart);
-        System.out.println((Cart) session.getAttribute("cart"));
+        cartOptionService.addOption(terminalDeviceId, optionId, session);
+        model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/profile/" + username + "/option";
     }
 

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.javaschool.mobileoperator.service.api.CartSaleService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,6 +31,9 @@ public class SaleController {
 
     @Autowired
     private SaleService saleService;
+
+    @Autowired
+    private CartSaleService cartSaleService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder){
@@ -59,8 +64,6 @@ public class SaleController {
      * @param house user house
      * @param email user email
      * @param passport user passport
-     * @param password user password
-     * @param confirmPassword string for password confirmation
      * @param tariffId choosen tariff id
      * @param numberId choosen number id
      * @return redirect to sale page {@link #salePage(Model)}
@@ -74,13 +77,12 @@ public class SaleController {
                               @RequestParam(value = "house",required = false) String house,
                               @RequestParam(value = "email", required = false) String email,
                               @RequestParam(value = "passport", required = false) String passport,
-                              @RequestParam("password") String password,
-                              @RequestParam("confirmPassword") String confirmPassword,
                               @RequestParam("tariff") Long tariffId,
-                              @RequestParam("number") Long numberId){
-        saleService.saleContract(firstName,
+                              @RequestParam("number") Long numberId,
+                              HttpSession session){
+        cartSaleService.sale(firstName,
                 lastName, birthDate, city, street, house,
-                email, passport, password, confirmPassword, tariffId, numberId);
+                email, passport, tariffId, numberId, session);
         return "redirect:/sale";
     }
 }

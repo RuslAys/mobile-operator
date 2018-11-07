@@ -12,6 +12,8 @@ public class CartItem {
     private Lock lock;
     private Customer customer;
     private TerminalDevice terminalDevice;
+    private PhoneNumber phoneNumber;
+    private boolean completed;
 
     public int getId() {
         return id;
@@ -67,6 +69,22 @@ public class CartItem {
 
     public void setTerminalDevice(TerminalDevice terminalDevice) {
         this.terminalDevice = terminalDevice;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override

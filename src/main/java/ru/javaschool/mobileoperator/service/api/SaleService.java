@@ -1,19 +1,9 @@
 package ru.javaschool.mobileoperator.service.api;
 
-import java.util.Date;
+import ru.javaschool.mobileoperator.domain.Customer;
+import ru.javaschool.mobileoperator.domain.PhoneNumber;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
 
 public interface SaleService {
-
-    void saleContract(String firstName,
-                        String lastName,
-                        Date birthDate,
-                        String city,
-                        String street,
-                        String house,
-                        String email,
-                        String passport,
-                        String password,
-                        String confirmPassword,
-                        Long tariffId,
-                        Long numberId);
+    void saleContract(Customer customer, TariffPlan tariffPlan, PhoneNumber phoneNumber);
 }

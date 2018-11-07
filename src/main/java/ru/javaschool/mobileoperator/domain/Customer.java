@@ -103,4 +103,21 @@ public class Customer extends AbstractPO{
     public void setPassport(String passport) {
         this.passport = passport;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(firstName, customer.firstName) &&
+                Objects.equals(lastName, customer.lastName) &&
+                Objects.equals(birthDate, customer.birthDate) &&
+                Objects.equals(email, customer.email) &&
+                Objects.equals(passport, customer.passport);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, birthDate, email, passport);
+    }
 }

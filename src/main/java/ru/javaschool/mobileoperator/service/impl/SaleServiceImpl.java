@@ -35,56 +35,23 @@ public class SaleServiceImpl implements SaleService {
 
     /**
      * Method to create new customer
-     * @param firstName Customer`s name
-     * @param lastName Customer`s surname
-     * @param birthDate Customer`s birth date
-     * @param city Customer`s city
-     * @param street Customer`s street
-     * @param house Customer`s house
-     * @param email Customer`s email
-     * @param passport Customer`s passport
-     * @param password Password for account
-     * @param confirmPassword Password to confirm password`s correction
-     * @param tariffId Id of chosen tariff plan
-     * @param numberId Id of chosen phone number
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void saleContract(String firstName,
-                               String lastName,
-                               Date birthDate,
-                               String city,
-                               String street,
-                               String house,
-                               String email,
-                               String passport,
-                               String password,
-                               String confirmPassword,
-                               Long tariffId,
-                               Long numberId) {
-        if(password == null || !password.equals(confirmPassword)){
-            throw new IllegalArgumentException("Passwords are not equal");
-        }
-        TariffPlan tariffPlan = tariffDao.find(tariffId);
-        PhoneNumber number = phoneNumberDao.find(numberId);
-        if(number.getTerminalDevice() != null){
+    public void saleContract(Customer customer,
+                               TariffPlan tariffPlan,
+                               PhoneNumber phoneNumber) {
+        if(phoneNumber.getTerminalDevice() != null){
             throw new IllegalArgumentException("Number already in use");
         }
 
+        String password = "p";
+
         // Create user account
-        User user = new User(number.getNumber().toString(),
+        User user = new User(phoneNumber.getNumber().toString(),
                             passwordEncoder.encode(password),
                             true);
         user.getAuthorities().add(new Authority(user, UserRoleEnum.USER.name()));
-
-        // Create customer
-        Customer customer = new Customer(firstName, lastName, birthDate);
-        customer.setEmail(email);
-        customer.setPassport(passport);
-        customer.getAddress().setCity(city);
-        customer.getAddress().setStreet(street);
-        customer.getAddress().setHouseNumber(house);
-        customer.getUsers().add(user);
         user.setCustomer(customer);
 
         //Create contract and personal account
@@ -104,14 +71,14 @@ public class SaleServiceImpl implements SaleService {
         terminalDevice.getOptions().addAll(options);
 
         //Create references to number and terminal device
-        terminalDevice.setPhoneNumber(number);
-        number.setTerminalDevice(terminalDevice);
+        terminalDevice.setPhoneNumber(phoneNumber);
+        phoneNumber.setTerminalDevice(terminalDevice);
 
         //Add all business data to customer
         customer.getContracts().add(contract);
 
         customerDao.add(customer);
         userDao.add(user);
-        phoneNumberDao.update(number);
+        phoneNumberDao.update(phoneNumber);
     }
 }
