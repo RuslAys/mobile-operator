@@ -51,7 +51,7 @@ public class CartLockServiceImpl implements CartLockService {
     }
 
     @Override
-    public void removeLock(Long terminalDeviceId, Long lockId, HttpSession session) {
+    public void removeLock(Long terminalDeviceId, Long lockId, HttpSession session, UserDetails user) {
         Cart cart = (Cart) session.getAttribute("cart");
         if(cart == null){
             cart = new Cart();
@@ -64,6 +64,7 @@ public class CartLockServiceImpl implements CartLockService {
         CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.REMOVE_LOCK)
                 .setTerminalDeviceId(terminalDeviceId)
                 .setLockId(lockId)
+                .setUserDetails(user)
                 .build();
         CartItem item = cartItemService.createItem(builder);
         cartService.addItem(cart, item);

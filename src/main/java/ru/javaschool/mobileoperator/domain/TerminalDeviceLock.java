@@ -14,11 +14,11 @@ public class TerminalDeviceLock extends AbstractPO{
     @Column(name = "added_by", nullable = false)
     private boolean canBeDeletedByUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "terminal_device_id")
     private TerminalDevice terminalDevice;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "lock_id")
     private Lock lock;
 

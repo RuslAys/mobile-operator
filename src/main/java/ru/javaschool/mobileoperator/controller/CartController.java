@@ -31,6 +31,6 @@ public class CartController {
     @PostMapping("/confirm")
     public String confirmItems(HttpSession session){
         cartService.confirm(cartHelper.getCart(session));
-        return "cart";
+        return "redirect:/cart";
     }
 }

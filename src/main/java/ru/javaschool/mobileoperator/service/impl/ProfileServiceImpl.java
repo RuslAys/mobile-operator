@@ -19,6 +19,7 @@ import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceLockDao;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
+import ru.javaschool.mobileoperator.utils.LockHelper;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
@@ -51,6 +52,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private OptionHelper optionHelper;
+
+    @Autowired
+    private LockHelper lockHelper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -105,6 +109,8 @@ public class ProfileServiceImpl implements ProfileService {
         }
         terminalDevice.getTerminalDeviceLocks().add(terminalDeviceLock);
         lock.getTerminalDeviceLocks().add(terminalDeviceLock);
+        terminalDeviceLock.setTerminalDevice(terminalDevice);
+        terminalDeviceLock.setLock(lock);
         lockDao.update(lock);
         terminalDeviceDao.update(terminalDevice);
         terminalDeviceLockDao.add(terminalDeviceLock);
@@ -116,7 +122,8 @@ public class ProfileServiceImpl implements ProfileService {
         TerminalDevice terminalDevice = terminalDeviceDao.find(id);
         Lock lock = lockDao.find(lockId);
         boolean isUser = roleHelper.isOnlyUser(user);
-        if(isUser && lock.getCanBeDeletedByUser()){
+        TerminalDeviceLock tdl = lockHelper.getTerminalDeviceLock(terminalDevice, lock);
+        if(isUser && lockHelper.canBeDeleted(terminalDevice, lock)){
             removeLock(terminalDevice, lock);
         }else if(isUser && !lock.getCanBeDeletedByUser()){
             throw new IllegalArgumentException("Lock can`t be deleted by user");
@@ -125,6 +132,7 @@ public class ProfileServiceImpl implements ProfileService {
         }
         terminalDeviceDao.update(terminalDevice);
         lockDao.update(lock);
+        terminalDeviceLockDao.remove(tdl);
     }
 
     @Override

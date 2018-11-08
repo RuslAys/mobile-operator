@@ -186,7 +186,7 @@ public class ProfileController {
                                                @RequestParam("lockId") Long lockId,
                                                @AuthenticationPrincipal UserDetails user,
                                                HttpSession session){
-        profileService.removeLock(user, terminalDeviceId, lockId);
+        cartLockService.removeLock(terminalDeviceId, lockId, session, user);
         return "redirect:/cart";
     }
 
@@ -198,7 +198,7 @@ public class ProfileController {
                                                      @RequestParam("lockId") Long lockId,
                                                      @AuthenticationPrincipal UserDetails user,
                                                      HttpSession session){
-        profileService.removeLock(user, terminalDeviceId, lockId);
+        cartLockService.removeLock(terminalDeviceId, lockId, session, user);
         return "redirect:/profile/" + username + "/lock";
     }
 
