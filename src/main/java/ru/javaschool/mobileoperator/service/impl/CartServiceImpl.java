@@ -8,6 +8,8 @@ import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
+import java.util.Iterator;
+
 @Service("cartService")
 public class CartServiceImpl implements CartService {
 
@@ -16,6 +18,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartItemService cartItemService;
+
+    @Autowired
+    private CartService cartService;
 
     @Override
     public void addItem(Cart cart, CartItem item) {
@@ -36,8 +41,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void confirm(Cart cart) {
-        for(CartItem cartItem: cart.getCartItems()){
-            cartItemService.proceed(cartItem);
+        Iterator<CartItem> itemIterator = cart.getCartItems().iterator();
+        while (itemIterator.hasNext()){
+            cartItemService.proceed(itemIterator.next());
+            itemIterator.remove();
         }
     }
 }

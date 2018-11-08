@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.utils;
 
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,5 +56,19 @@ public class OptionHelper {
                 }
         );
         return result;
+    }
+
+    public void removeOptionsFromTd(TerminalDevice terminalDevice, List<Option> options){
+        terminalDevice.getOptions().removeAll(options);
+        options.forEach(
+                option -> option.getTerminalDevices().removeIf(
+                        terminalDevice1 -> terminalDevice.equals(terminalDevice1)
+                )
+        );
+    }
+
+    public void removeOptionFromTd(TerminalDevice terminalDevice, Option option){
+        terminalDevice.getOptions().removeIf(option1 -> option.equals(option1));
+        option.getTerminalDevices().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
     }
 }

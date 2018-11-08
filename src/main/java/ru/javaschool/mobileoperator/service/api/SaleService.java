@@ -5,5 +5,5 @@ import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 
 public interface SaleService {
-    void saleContract(Customer customer, TariffPlan tariffPlan, PhoneNumber phoneNumber);
+    void saleContract(Customer customer, Long tariffPlanId, Long phoneNumberId);
 }

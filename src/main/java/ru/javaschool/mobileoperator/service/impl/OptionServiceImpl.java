@@ -7,10 +7,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
+import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
+import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
+import ru.javaschool.mobileoperator.utils.OptionHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +26,15 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Autowired
     private OptionDao optionDao;
+
+    @Autowired
+    private TerminalDeviceDao terminalDeviceDao;
+
+    @Autowired
+    private PersonalAccountDao personalAccountDao;
+
+    @Autowired
+    private OptionHelper optionHelper;
 
     @Autowired
     public OptionServiceImpl(@Qualifier("optionDaoImpl") GenericDao<Option, Long> genericDao){
@@ -78,4 +92,65 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         return optionDao.getOptionsNotIn(options);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public Option getFullOptionById(Long id) {
+        return optionDao.getFullOptionById(id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addOption(Long terminalDeviceId, Long optionId) {
+        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
+            throw new IllegalArgumentException("Terminal device is locked");
+        }
+        Option newOption = optionDao.find(optionId);
+        List<Option> tdOptions = terminalDevice.getOptions();
+        List<Option> optionsToAdd = new ArrayList<>();
+
+        // Find options to add
+        optionsToAdd = optionHelper.getAllOptions(newOption, optionsToAdd);
+
+        // Find options to delete
+        List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
+        if(!exclusiveOptions.isEmpty()){
+            List<Option> optionToDelete = new ArrayList<>();
+            optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
+            optionHelper.removeOptionsFromTd(terminalDevice, optionToDelete);
+            optionToDelete.forEach(
+                    option -> optionDao.update(option)
+            );
+        }
+        int money = terminalDevice.getPersonalAccount().getMoney();
+        for(Option option: optionsToAdd){
+            money -= option.getConnectionCost();
+        }
+        terminalDevice.getPersonalAccount().setMoney(money);
+        terminalDevice.getOptions().addAll(optionsToAdd);
+        List<Option> withoutDuplicates = new ArrayList<>(
+                new HashSet<>(terminalDevice.getOptions())
+        );
+        terminalDevice.setOptions(withoutDuplicates);
+        terminalDeviceDao.update(terminalDevice);
+        personalAccountDao.update(terminalDevice.getPersonalAccount());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeOption(Long terminalDeviceId, Long optionId) {
+        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
+            throw new IllegalArgumentException("Terminal device is locked");
+        }
+
+        Option optionToDelete = optionDao.find(optionId);
+
+        if(optionHelper.existInclusiveConflicts(terminalDevice.getOptions(), optionToDelete)){
+            throw new IllegalArgumentException("Cannot delete option. It is required option");
+        }
+        optionHelper.removeOptionFromTd(terminalDevice, optionToDelete);
+        terminalDeviceDao.update(terminalDevice);
+        optionDao.update(optionToDelete);
+    }
 }

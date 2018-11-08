@@ -2,11 +2,10 @@ package ru.javaschool.mobileoperator.service.api;
 
 import ru.javaschool.mobileoperator.domain.*;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 public interface CartItemService {
-    CartItem createItem(int id, OperationType oType, TariffPlan tp, Option o,
-                        Lock l, Customer c, TerminalDevice td, PhoneNumber phoneNumber);
-    CartItem updateItem(CartItem item, OperationType operationType,  TariffPlan tp, Option o,
-                        Lock l, Customer c, TerminalDevice td, PhoneNumber phoneNumber);
+    CartItem createItem(CartItemBuilder cartItemBuilder);
+    CartItem updateItem(CartItem cartItem, CartItemBuilder cartItemBuilder);
     void proceed(CartItem cartItem);
 }

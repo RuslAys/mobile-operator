@@ -1,19 +1,35 @@
 package ru.javaschool.mobileoperator.domain;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import java.util.Objects;
 
 public class CartItem {
     private int id;
     private OperationType operationType;
-    private TariffPlan tariffPlan;
-    private Option option;
-    private Lock lock;
+    private long tariffPlanId;
+    private long optionId;
+    private long lockId;
     private Customer customer;
-    private TerminalDevice terminalDevice;
-    private PhoneNumber phoneNumber;
+    private long terminalDeviceId;
+    private long phoneNumberId;
     private boolean completed;
+    private UserDetails user;
+
+    public CartItem(CartItemBuilder builder){
+        this.id = builder.getId();
+        this.operationType = builder.getOperationType();
+        this.tariffPlanId = builder.getTariffPlanId();
+        this.optionId = builder.getOptionId();
+        this.lockId = builder.getLockId();
+        this.customer = builder.getCustomer();
+        this.terminalDeviceId = builder.getTerminalDeviceId();
+        this.phoneNumberId = builder.getPhoneNumberId();
+        this.completed = builder.isCompleted();
+        this.user = builder.getUserDetails();
+    }
 
     public int getId() {
         return id;
@@ -31,20 +47,28 @@ public class CartItem {
         this.operationType = operationType;
     }
 
-    public TariffPlan getTariffPlan() {
-        return tariffPlan;
+    public long getTariffPlanId() {
+        return tariffPlanId;
     }
 
-    public void setTariffPlan(TariffPlan tariffPlan) {
-        this.tariffPlan = tariffPlan;
+    public void setTariffPlanId(long tariffPlanId) {
+        this.tariffPlanId = tariffPlanId;
     }
 
-    public Option getOption() {
-        return option;
+    public long getOptionId() {
+        return optionId;
     }
 
-    public void setOption(Option option) {
-        this.option = option;
+    public void setOptionId(long optionId) {
+        this.optionId = optionId;
+    }
+
+    public long getLockId() {
+        return lockId;
+    }
+
+    public void setLockId(long lockId) {
+        this.lockId = lockId;
     }
 
     public Customer getCustomer() {
@@ -55,20 +79,20 @@ public class CartItem {
         this.customer = customer;
     }
 
-    public Lock getLock() {
-        return lock;
+    public long getTerminalDeviceId() {
+        return terminalDeviceId;
     }
 
-    public void setLock(Lock lock) {
-        this.lock = lock;
+    public void setTerminalDeviceId(long terminalDeviceId) {
+        this.terminalDeviceId = terminalDeviceId;
     }
 
-    public TerminalDevice getTerminalDevice() {
-        return terminalDevice;
+    public long getPhoneNumberId() {
+        return phoneNumberId;
     }
 
-    public void setTerminalDevice(TerminalDevice terminalDevice) {
-        this.terminalDevice = terminalDevice;
+    public void setPhoneNumberId(long phoneNumberId) {
+        this.phoneNumberId = phoneNumberId;
     }
 
     public boolean isCompleted() {
@@ -79,12 +103,12 @@ public class CartItem {
         this.completed = completed;
     }
 
-    public PhoneNumber getPhoneNumber() {
-        return phoneNumber;
+    public UserDetails getUser() {
+        return user;
     }
 
-    public void setPhoneNumber(PhoneNumber phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setUser(UserDetails user) {
+        this.user = user;
     }
 
     @Override

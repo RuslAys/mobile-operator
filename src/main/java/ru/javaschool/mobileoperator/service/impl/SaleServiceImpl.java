@@ -5,7 +5,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaschool.mobileoperator.domain.*;
+import ru.javaschool.mobileoperator.domain.Authority;
+import ru.javaschool.mobileoperator.domain.Contract;
+import ru.javaschool.mobileoperator.domain.Customer;
+import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.PersonalAccount;
+import ru.javaschool.mobileoperator.domain.PhoneNumber;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
+import ru.javaschool.mobileoperator.domain.TerminalDevice;
+import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
 import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
@@ -38,12 +46,13 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void saleContract(Customer customer,
-                               TariffPlan tariffPlan,
-                               PhoneNumber phoneNumber) {
+    public void saleContract(Customer customer, Long tariffPlanId, Long phoneNumberId) {
+        PhoneNumber phoneNumber = phoneNumberDao.find(phoneNumberId);
         if(phoneNumber.getTerminalDevice() != null){
             throw new IllegalArgumentException("Number already in use");
         }
+
+        TariffPlan tariffPlan = tariffDao.find(tariffPlanId);
 
         String password = "p";
 

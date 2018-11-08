@@ -50,6 +50,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     public User getUser(String username) {
         User user = userDao.getUser(username);
         if(user == null) {
+            //TODO написать обработчик ошибки
             throw new UsernameNotFoundException("User not found");
         }
         return user;

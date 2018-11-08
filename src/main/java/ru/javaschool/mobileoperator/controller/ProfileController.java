@@ -27,7 +27,6 @@ import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
@@ -100,14 +99,28 @@ public class ProfileController {
         return "profileTariff";
     }
 
-    @PostMapping("/{username}/tariff/change")
+    @PostMapping(value = "/{username}/tariff/change",params = "add_to_cart")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String changeTariff(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("terminalDeviceId") Long terminalDeviceId,
-                               @RequestParam("newTariffId") Long newTariffId){
-        profileService.changeTariff(terminalDeviceId, newTariffId);
+                               @RequestParam("newTariffId") Long newTariffId,
+                               HttpSession session){
+        cartTariffService.changeTariffPlan(terminalDeviceId, newTariffId, session);
+        model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/profile/" + username + "/tariff";
+    }
+
+    @PostMapping(value = "/{username}/tariff/change",params = "confirm")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String changeTariffToCart(Model model,
+                               @PathVariable("username") String username,
+                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                               @RequestParam("newTariffId") Long newTariffId,
+                               HttpSession session){
+        cartTariffService.changeTariffPlan(terminalDeviceId, newTariffId, session);
+        model.addAttribute("cart", cartHelper.getCart(session));
+        return "redirect:/cart";
     }
     /**
      * Get method for profile lock page
@@ -138,8 +151,9 @@ public class ProfileController {
                                           @PathVariable("username") String username,
                                           @RequestParam("terminalDeviceId") Long terminalDeviceId,
                                           @RequestParam("lockId") Long lockId,
-                                          HttpSession session){
-        cartLockService.addLock(terminalDeviceId, lockId, session);
+                                          HttpSession session,
+                                          @AuthenticationPrincipal UserDetails user){
+        cartLockService.addLock(terminalDeviceId, lockId, session, user);
         return "redirect:/cart";
     }
 
@@ -149,8 +163,9 @@ public class ProfileController {
                                                 @PathVariable("username") String username,
                                                 @RequestParam("terminalDeviceId") Long terminalDeviceId,
                                                 @RequestParam("lockId") Long lockId,
-                                                HttpSession session){
-        cartLockService.addLock(terminalDeviceId, lockId, session);
+                                                HttpSession session,
+                                                @AuthenticationPrincipal UserDetails user){
+        cartLockService.addLock(terminalDeviceId, lockId, session, user);
         return "redirect:/profile/" + username + "/lock";
     }
 

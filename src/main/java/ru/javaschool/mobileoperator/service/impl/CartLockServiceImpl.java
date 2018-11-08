@@ -1,14 +1,17 @@
 package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import ru.javaschool.mobileoperator.domain.*;
+import ru.javaschool.mobileoperator.domain.Cart;
+import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
 import ru.javaschool.mobileoperator.service.api.CartLockService;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.service.api.LockService;
 import ru.javaschool.mobileoperator.service.api.TerminalDeviceService;
+import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,9 +31,7 @@ public class CartLockServiceImpl implements CartLockService {
     private CartItemService cartItemService;
 
     @Override
-    public void addLock(Long terminalDeviceId, Long lockId, HttpSession session) {
-        TerminalDevice terminalDevice = terminalDeviceService.find(terminalDeviceId);
-        Lock lock = lockService.find(lockId);
+    public void addLock(Long terminalDeviceId, Long lockId, HttpSession session, UserDetails user) {
         Cart cart = (Cart) session.getAttribute("cart");
         if(cart == null){
             cart = new Cart();
@@ -39,17 +40,18 @@ public class CartLockServiceImpl implements CartLockService {
         if(!cart.getCartItems().isEmpty()){
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
-
-        CartItem item = cartItemService.createItem(
-                id, OperationType.ADD_LOCK, null, null, lock, null, terminalDevice, null);
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.ADD_LOCK)
+                .setTerminalDeviceId(terminalDeviceId)
+                .setLockId(lockId)
+                .setUserDetails(user)
+                .build();
+        CartItem item = cartItemService.createItem(builder);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }
 
     @Override
     public void removeLock(Long terminalDeviceId, Long lockId, HttpSession session) {
-        TerminalDevice terminalDevice = terminalDeviceService.find(terminalDeviceId);
-        Lock lock = lockService.find(lockId);
         Cart cart = (Cart) session.getAttribute("cart");
         if(cart == null){
             cart = new Cart();
@@ -59,8 +61,11 @@ public class CartLockServiceImpl implements CartLockService {
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
 
-        CartItem item = cartItemService.createItem(
-                id, OperationType.REMOVE_LOCK, null, null, lock, null, terminalDevice, null);
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.REMOVE_LOCK)
+                .setTerminalDeviceId(terminalDeviceId)
+                .setLockId(lockId)
+                .build();
+        CartItem item = cartItemService.createItem(builder);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }

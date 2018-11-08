@@ -3,6 +3,8 @@ package ru.javaschool.mobileoperator.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
@@ -18,5 +20,11 @@ public class TerminalDeviceServiceImpl extends GenericServiceImpl<TerminalDevice
     public TerminalDeviceServiceImpl(@Qualifier("terminalDeviceDaoImpl") GenericDao<TerminalDevice, Long> genericDao) {
         super(genericDao);
         terminalDeviceDao = (TerminalDeviceDao) genericDao;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public TerminalDevice getFullTerminalDevice(Long id) {
+        return terminalDeviceDao.getFullTerminalDeviceById(id);
     }
 }

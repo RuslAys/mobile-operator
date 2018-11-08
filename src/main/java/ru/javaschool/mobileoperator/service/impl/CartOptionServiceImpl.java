@@ -12,6 +12,7 @@ import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.TerminalDeviceService;
+import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,8 +33,6 @@ public class CartOptionServiceImpl implements CartOptionService {
 
     @Override
     public void addOption(Long terminalDeviceId, Long optionId, HttpSession session) {
-        TerminalDevice terminalDevice = terminalDeviceService.find(terminalDeviceId);
-        Option option = optionService.find(optionId);
         Cart cart = (Cart) session.getAttribute("cart");
         if(cart == null){
             cart = new Cart();
@@ -42,17 +41,17 @@ public class CartOptionServiceImpl implements CartOptionService {
         if(!cart.getCartItems().isEmpty()){
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
-
-        CartItem item = cartItemService.createItem(
-                id, OperationType.ADD_OPTION, null, option, null, null, terminalDevice, null);
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.ADD_OPTION)
+                .setOptionId(optionId)
+                .setTerminalDeviceId(terminalDeviceId)
+                .build();
+        CartItem item = cartItemService.createItem(builder);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }
 
     @Override
     public void removeOption(Long terminalDeviceId, Long optionId, HttpSession session) {
-        TerminalDevice terminalDevice = terminalDeviceService.find(terminalDeviceId);
-        Option option = optionService.find(optionId);
         Cart cart = (Cart) session.getAttribute("cart");
         if(cart == null){
             cart = new Cart();
@@ -61,9 +60,11 @@ public class CartOptionServiceImpl implements CartOptionService {
         if(!cart.getCartItems().isEmpty()){
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
-
-        CartItem item = cartItemService.createItem(
-                id, OperationType.REMOVE_OPTION, null, option, null, null, terminalDevice, null);
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.REMOVE_OPTION)
+                .setOptionId(optionId)
+                .setTerminalDeviceId(terminalDeviceId)
+                .build();
+        CartItem item = cartItemService.createItem(builder);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }

@@ -1,13 +1,18 @@
 package ru.javaschool.mobileoperator.domain;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "terminal_device_lock")
 public class TerminalDeviceLock extends AbstractPO{
 
     @Column(name = "added_by", nullable = false)
-    private String addedBy;
+    private boolean canBeDeletedByUser;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "terminal_device_id")
@@ -17,12 +22,12 @@ public class TerminalDeviceLock extends AbstractPO{
     @JoinColumn(name = "lock_id")
     private Lock lock;
 
-    public String getAddedBy() {
-        return addedBy;
+    public boolean isCanBeDeletedByUser() {
+        return canBeDeletedByUser;
     }
 
-    public void setAddedBy(String addedBy) {
-        this.addedBy = addedBy;
+    public void setCanBeDeletedByUser(boolean canBeDeletedByUser) {
+        this.canBeDeletedByUser = canBeDeletedByUser;
     }
 
     public TerminalDevice getTerminalDevice() {

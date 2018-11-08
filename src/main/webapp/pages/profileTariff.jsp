@@ -17,7 +17,9 @@
                     <option value="${tariffPlan.id}"> <c:out value="${tariffPlan.name} Price: ${tariffPlan.price}"/> </option>
                 </c:forEach>
             </select>
-            <button type="submit" class="btn btn-primary">Change</button>
+            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
         </div>
     </form>
+<jsp:include page="parts/footer.jsp" />
 </body>

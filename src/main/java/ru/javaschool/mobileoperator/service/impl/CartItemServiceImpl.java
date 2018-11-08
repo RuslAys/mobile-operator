@@ -2,11 +2,13 @@ package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.javaschool.mobileoperator.domain.*;
-import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
+import ru.javaschool.mobileoperator.service.api.LockService;
+import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
+import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 @Service("cartItemService")
 public class CartItemServiceImpl implements CartItemService {
@@ -17,31 +19,28 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private SaleService saleService;
 
+    @Autowired
+    private OptionService optionService;
+
+    @Autowired
+    private LockService lockService;
+
     @Override
-    public CartItem createItem(int id, OperationType oType, TariffPlan tp,
-                               Option o, Lock l, Customer c, TerminalDevice td, PhoneNumber phoneNumber) {
-        CartItem cartItem = new CartItem();
-        cartItem.setId(id);
-        cartItem.setOperationType(oType);
-        cartItem.setTariffPlan(tp);
-        cartItem.setOption(o);
-        cartItem.setLock(l);
-        cartItem.setCustomer(c);
-        cartItem.setTerminalDevice(td);
-        cartItem.setPhoneNumber(phoneNumber);
+    public CartItem createItem(CartItemBuilder cartItemBuilder) {
+        CartItem cartItem = new CartItem(cartItemBuilder);
         return cartItem;
     }
 
     @Override
-    public CartItem updateItem(CartItem item, OperationType oType, TariffPlan tp,
-                               Option o, Lock l, Customer c, TerminalDevice td, PhoneNumber phoneNumber) {
-        item.setOperationType(oType);
-        item.setTariffPlan(tp);
-        item.setOption(o);
-        item.setLock(l);
-        item.setCustomer(c);
-        item.setTerminalDevice(td);
-        item.setPhoneNumber(phoneNumber);
+    public CartItem updateItem(CartItem item, CartItemBuilder cartItemBuilder) {
+        item.setOperationType(cartItemBuilder.getOperationType());
+        item.setTariffPlanId(cartItemBuilder.getTariffPlanId());
+        item.setOptionId(cartItemBuilder.getOptionId());
+        item.setLockId(cartItemBuilder.getLockId());
+        item.setCustomer(cartItemBuilder.getCustomer());
+        item.setTerminalDeviceId(cartItemBuilder.getTerminalDeviceId());
+        item.setPhoneNumberId(cartItemBuilder.getPhoneNumberId());
+        item.setUser(cartItemBuilder.getUserDetails());
         return item;
     }
 
@@ -49,17 +48,22 @@ public class CartItemServiceImpl implements CartItemService {
     public void proceed(CartItem cartItem) {
         switch (cartItem.getOperationType()){
             case SALE:
-                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlan(), cartItem.getPhoneNumber());
+                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
                 break;
             case ADD_OPTION:
+                optionService.addOption(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
                 break;
             case REMOVE_OPTION:
+                optionService.removeOption(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
                 break;
             case ADD_LOCK:
+                profileService.addLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
                 break;
             case REMOVE_LOCK:
+                profileService.removeLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
                 break;
             case CHANGE_TARIFF:
+                profileService.changeTariff(cartItem.getTerminalDeviceId(), cartItem.getTariffPlanId());
                 break;
         }
     }

@@ -11,7 +11,7 @@ public class CartHelper {
             case SALE:
                 for (CartItem cartItem1: cart.getCartItems()){
                     if (cartItem.getCustomer().equals(cartItem1.getCustomer())
-                            && cartItem.getPhoneNumber().equals(cartItem1.getPhoneNumber())) {
+                            && cartItem.getPhoneNumberId() == cartItem1.getPhoneNumberId()) {
                         return true;
                     }
                 }
@@ -26,8 +26,8 @@ public class CartHelper {
                 return optionConflict(cart, cartItem);
             case CHANGE_TARIFF:
                 for (CartItem cartItem1: cart.getCartItems()){
-                    if (cartItem.getTariffPlan().equals(cartItem1.getTariffPlan())
-                            && cartItem.getTerminalDevice().equals(cartItem1.getTerminalDevice())) {
+                    if (cartItem.getTariffPlanId() == cartItem1.getTariffPlanId()
+                            && cartItem.getTerminalDeviceId() == cartItem1.getTerminalDeviceId()) {
                         return true;
                     }
                 }
@@ -46,8 +46,8 @@ public class CartHelper {
 
     private boolean lockConflict(Cart cart, CartItem cartItem){
         for (CartItem cartItem1: cart.getCartItems()){
-            if (cartItem.getLock().equals(cartItem1.getLock())
-                    && cartItem.getTerminalDevice().equals(cartItem1.getTerminalDevice())) {
+            if (cartItem.getLockId() == cartItem1.getLockId()
+                    && cartItem.getTerminalDeviceId() == cartItem1.getTerminalDeviceId()) {
                 return true;
             }
         }
@@ -56,8 +56,8 @@ public class CartHelper {
 
     private boolean optionConflict(Cart cart, CartItem cartItem){
         for (CartItem cartItem1: cart.getCartItems()){
-            if (cartItem.getOption().equals(cartItem1.getOption())
-                    && cartItem.getTerminalDevice().equals(cartItem1.getTerminalDevice())) {
+            if (cartItem.getOptionId() == cartItem1.getOptionId()
+                    && cartItem.getTerminalDeviceId() == cartItem1.getTerminalDeviceId()) {
                 return true;
             }
         }

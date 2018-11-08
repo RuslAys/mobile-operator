@@ -2,10 +2,19 @@ package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.javaschool.mobileoperator.domain.*;
+import ru.javaschool.mobileoperator.domain.Cart;
+import ru.javaschool.mobileoperator.domain.CartItem;
+import ru.javaschool.mobileoperator.domain.Customer;
+import ru.javaschool.mobileoperator.domain.PhoneNumber;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
-import ru.javaschool.mobileoperator.service.api.*;
+import ru.javaschool.mobileoperator.service.api.CartItemService;
+import ru.javaschool.mobileoperator.service.api.CartSaleService;
+import ru.javaschool.mobileoperator.service.api.CartService;
+import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.api.TariffService;
+import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -32,8 +41,6 @@ public class CartSaleServiceImpl implements CartSaleService {
     public void sale(String firstName, String lastName, Date birthDate, String city, String street,
                      String house, String email, String passport, Long tariffId, Long numberId,
                      HttpSession session) {
-        TariffPlan tariffPlan = tariffService.findTariffWithOptions(tariffId);
-        PhoneNumber phoneNumber = phoneNumberService.find(numberId);
         Customer customer = new Customer(firstName, lastName, birthDate);
         customer.getAddress().setCity(city);
         customer.getAddress().setStreet(street);
@@ -49,9 +56,12 @@ public class CartSaleServiceImpl implements CartSaleService {
         if(!cart.getCartItems().isEmpty()){
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
-
-        CartItem item = cartItemService.createItem(
-                id, OperationType.SALE, tariffPlan, null, null, customer, null, phoneNumber);
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.SALE)
+                .setCustomer(customer)
+                .setTariffPlanId(tariffId)
+                .setPhoneNumberId(numberId)
+                .build();
+        CartItem item = cartItemService.createItem(builder);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }
