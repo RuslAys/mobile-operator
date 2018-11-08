@@ -7,4 +7,5 @@ public interface CartService {
     void addItem(Cart cart, CartItem item);
     void removeItem(Cart cart, CartItem item);
     void updateItem(Cart cart, CartItem item);
+    void confirm(Cart cart);
 }

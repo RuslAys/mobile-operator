@@ -1,13 +1,18 @@
 package ru.javaschool.mobileoperator.controller;
 
-import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.service.api.CartSaleService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
@@ -21,7 +26,7 @@ import java.util.Date;
 @RequestMapping("/sale")
 public class SaleController {
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(SaleController.class);
+    private static final Logger logger = LogManager.getLogger(SaleController.class);
 
     @Autowired
     private TariffService tariffService;
@@ -68,7 +73,25 @@ public class SaleController {
      * @param numberId choosen number id
      * @return redirect to sale page {@link #salePage(Model)}
      */
-    @PostMapping("/confirm")
+    @PostMapping(value = "/confirm", params = "confirm")
+    public String confirmSaleToCart(@RequestParam("firstName") String firstName,
+                                    @RequestParam("lastName") String lastName,
+                                    @RequestParam("birthDate") Date birthDate,
+                                    @RequestParam(value = "city", required = false) String city,
+                                    @RequestParam(value = "street", required = false) String street,
+                                    @RequestParam(value = "house",required = false) String house,
+                                    @RequestParam(value = "email", required = false) String email,
+                                    @RequestParam(value = "passport", required = false) String passport,
+                                    @RequestParam("tariff") Long tariffId,
+                                    @RequestParam("number") Long numberId,
+                                    HttpSession session){
+        cartSaleService.sale(firstName,
+                lastName, birthDate, city, street, house,
+                email, passport, tariffId, numberId, session);
+        return "redirect:/cart";
+    }
+
+    @PostMapping(value = "/confirm", params = "add_to_cart")
     public String confirmSale(@RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName,
                               @RequestParam("birthDate") Date birthDate,

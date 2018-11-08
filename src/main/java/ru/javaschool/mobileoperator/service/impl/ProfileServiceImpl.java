@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import ru.javaschool.mobileoperator.domain.Lock;
-import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
+import ru.javaschool.mobileoperator.domain.*;
+import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.*;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
@@ -35,6 +33,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private PersonalAccountDao personalAccountDao;
+
+    @Autowired
+    private TerminalDeviceLockDao terminalDeviceLockDao;
 
     @Autowired
     private RoleHelper roleHelper;
@@ -73,8 +74,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<Lock> getLocksNotOnTerminalDevice(TerminalDevice terminalDevice) {
         List<Long> ids = new ArrayList<>();
-        terminalDevice.getLocks().forEach(
-                lock -> ids.add(lock.getId())
+        terminalDevice.getTerminalDeviceLocks().forEach(
+                terminalDeviceLock -> ids.add(terminalDeviceLock.getLock().getId())
         );
         if(ids.isEmpty()){
             return lockDao.findAll();
@@ -84,12 +85,20 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void addLock(Long terminalDeviceId, List<Long> lockIds) {
+    public void addLock(UserDetails user, Long terminalDeviceId, Long lockId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        List<Lock> locks = lockDao.findBy(lockIds);
-        terminalDevice.getLocks().addAll(locks);
-        locks.forEach(lock -> lockDao.update(lock));
+        Lock lock = lockDao.find(lockId);
+        TerminalDeviceLock terminalDeviceLock = new TerminalDeviceLock();
+        if(roleHelper.isOnlyUser(user)){
+            terminalDeviceLock.setAddedBy(UserRoleEnum.USER.name());
+        }else{
+            terminalDeviceLock.setAddedBy(UserRoleEnum.OPERATOR.name());
+        }
+        terminalDevice.getTerminalDeviceLocks().add(terminalDeviceLock);
+        lock.getTerminalDeviceLocks().add(terminalDeviceLock);
+        lockDao.update(lock);
         terminalDeviceDao.update(terminalDevice);
+        terminalDeviceLockDao.add(terminalDeviceLock);
     }
 
     @Override
@@ -119,7 +128,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void changeTariff(Long terminalDeviceId, Long newTariffId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        if(!terminalDevice.getLocks().isEmpty()){
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new IllegalArgumentException("Terminal device is locked");
         }
         TariffPlan tariffPlan = tariffDao.find(newTariffId);
@@ -153,7 +162,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void addOption(Long terminalDeviceId, Long optionId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        if(!terminalDevice.getLocks().isEmpty()){
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new IllegalArgumentException("Terminal device is locked");
         }
         List<Option> tdOptions = terminalDevice.getOptions();
@@ -191,7 +200,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeOption(Long terminalDeviceId, Long optionId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        if(!terminalDevice.getLocks().isEmpty()){
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new IllegalArgumentException("Terminal device is locked");
         }
         Option optionToDelete = optionDao.find(optionId);
@@ -204,8 +213,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private void removeLock(TerminalDevice terminalDevice, Lock lock){
-        terminalDevice.getLocks().removeIf(lock1 -> lock.equals(lock1));
-        lock.getTerminalDevices().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
+        terminalDevice.getTerminalDeviceLocks().removeIf(lock1 -> lock.equals(lock1));
+        lock.getTerminalDeviceLocks().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
     }
 
     private void removeTdFromOptions(TerminalDevice terminalDevice){

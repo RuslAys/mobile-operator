@@ -37,7 +37,7 @@ public class CartTariffServiceImpl implements CartTariffService {
         }
 
         CartItem item = cartItemService.createItem(
-                id, OperationType.ADD_OPTION, tariffPlan, null, null, null, terminalDevice, null);
+                id, OperationType.CHANGE_TARIFF, tariffPlan, null, null, null, terminalDevice, null);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }

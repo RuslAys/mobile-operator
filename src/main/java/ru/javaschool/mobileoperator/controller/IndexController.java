@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
@@ -47,7 +48,12 @@ public class IndexController {
      */
     @PostMapping("/search")
     public String search(Model model, @RequestParam("username") String username){
-        model.addAttribute("user", userService.getUser(username));
+        User user = userService.getUser(username);
+        if(user == null){
+            model.addAttribute("user", "Not found");
+        }else{
+            model.addAttribute("user", userService.getUser(username));
+        }
         return "index";
     }
 }

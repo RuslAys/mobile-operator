@@ -9,7 +9,7 @@ public class TerminalDeviceDaoImpl extends GenericDaoImpl<TerminalDevice, Long> 
 
     @Override
     public TerminalDevice getFullTerminalDeviceByNumber(Long number) {
-        String query = "SELECT td FROM TerminalDevice td LEFT JOIN FETCH td.personalAccount LEFT JOIN FETCH td.locks " +
+        String query = "SELECT td FROM TerminalDevice td LEFT JOIN FETCH td.personalAccount LEFT JOIN FETCH td.terminalDeviceLocks " +
                 "LEFT JOIN FETCH td.tariffPlan LEFT JOIN FETCH td.options " +
                 "WHERE td.phoneNumber.number = :number";
         return (TerminalDevice) currentSession()
@@ -20,7 +20,7 @@ public class TerminalDeviceDaoImpl extends GenericDaoImpl<TerminalDevice, Long> 
 
     @Override
     public TerminalDevice getTerminalDeviceWithLocksByNumber(Long number) {
-        String query = "SELECT td FROM TerminalDevice td LEFT JOIN FETCH td.locks WHERE td.phoneNumber.number = :number";
+        String query = "SELECT td FROM TerminalDevice td LEFT JOIN FETCH td.terminalDeviceLocks WHERE td.phoneNumber.number = :number";
         return (TerminalDevice) currentSession()
                 .createQuery(query)
                 .setParameter("number", number)

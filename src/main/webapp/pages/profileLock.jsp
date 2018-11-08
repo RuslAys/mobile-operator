@@ -4,25 +4,40 @@
     <h1>Lock management</h1>
     ${terminalDevice.phoneNumber.number}
     <c:forEach items="${terminalDevice.locks}" var="lock" varStatus="loop">
-        <form name="add-lock-${loop.count}" action="lock/remove" method="post">
+        <form name="remove-lock-${loop.count}" action="lock/remove" method="post">
             <input type="hidden" class="form-control" name="terminalDeviceId"
                 value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">
             <input class="form-control-plaintext" type="hidden" name="lockId"
                 value="${lock.id}" readonly > ${lock.name} </input>
             <security:authorize access="hasRole('ROLE_USER')">
                 <c:if test="${lock.canBeDeletedByUser == true}">
-                    <button type="submit" class="btn btn-primary">Remove</button>
+                    <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+                    <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
                 </c:if>
                 <c:if test="${lock.canBeDeletedByUser == false}">
                     <button type="submit" class="btn btn-primary" disabled>Can be removed only by operator</button>
                 </c:if>
             </security:authorize>
             <security:authorize access="hasRole('ROLE_OPERATOR')">
-                <button type="submit" class="btn btn-primary">Remove</button>
+                <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+                <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
             </security:authorize>
         </form>
     </c:forEach>
 
+
+    <c:forEach items="${freeLocks}" var="lock" varStatus="loop">
+        <form name="add-lock-${loop.count}" action="lock/remove" method="post">
+            <input type="hidden" class="form-control" name="terminalDeviceId"
+                value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">
+            <input class="form-control-plaintext" type="hidden" name="lockId"
+                value="${lock.id}" readonly > ${lock.name} </input>
+            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
+        </form>
+    </c:forEach>
+
+    <!--
     <form name="add-lock" action="lock/add" method="post">
         <div class="form-group">
             <input type="hidden" class="form-control" name="terminalDeviceId"
@@ -34,7 +49,10 @@
                     <option value="${lock.id}"> <c:out value="${lock.name} Can be deleted by user ${lock.canBeDeletedByUser}"/> </option>
                 </c:forEach>
             </select>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
         </div>
     </form>
+    -->
+<jsp:include page="parts/footer.jsp" />
 </body>

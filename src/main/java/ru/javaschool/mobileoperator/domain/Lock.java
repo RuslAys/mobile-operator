@@ -15,8 +15,8 @@ public class Lock extends AbstractPO {
     @Column(name = "delete_by_user")
     private Boolean canBeDeletedByUser;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "locks")
-    private List<TerminalDevice> terminalDevices = new ArrayList<>();
+    @OneToMany(mappedBy = "lock")
+    private List<TerminalDeviceLock> terminalDeviceLocks = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -34,12 +34,12 @@ public class Lock extends AbstractPO {
         this.canBeDeletedByUser = canBeDeletedByUser;
     }
 
-    public List<TerminalDevice> getTerminalDevices() {
-        return terminalDevices;
+    public List<TerminalDeviceLock> getTerminalDeviceLocks() {
+        return terminalDeviceLocks;
     }
 
-    public void setTerminalDevices(List<TerminalDevice> terminalDevices) {
-        this.terminalDevices = terminalDevices;
+    public void setTerminalDeviceLocks(List<TerminalDeviceLock> terminalDeviceLocks) {
+        this.terminalDeviceLocks = terminalDeviceLocks;
     }
 
     @Override

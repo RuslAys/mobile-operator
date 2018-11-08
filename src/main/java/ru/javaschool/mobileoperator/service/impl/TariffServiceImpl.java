@@ -63,4 +63,10 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         tariffPlan.setOptions(optionsToAdd);
         add(tariffPlan);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public TariffPlan findTariffWithOptions(Long tariffId) {
+        return tariffDao.getTariffWithOptions(tariffId);
+    }
 }

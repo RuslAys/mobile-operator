@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class AbstractPO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     protected Long id;
 
     @Version

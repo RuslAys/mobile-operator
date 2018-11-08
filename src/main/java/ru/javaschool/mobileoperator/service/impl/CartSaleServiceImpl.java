@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.*;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.*;
 
 import javax.servlet.http.HttpSession;
@@ -22,13 +23,16 @@ public class CartSaleServiceImpl implements CartSaleService {
     private TariffService tariffService;
 
     @Autowired
+    private TariffDao tariffDao;
+
+    @Autowired
     private PhoneNumberService phoneNumberService;
 
     @Override
     public void sale(String firstName, String lastName, Date birthDate, String city, String street,
                      String house, String email, String passport, Long tariffId, Long numberId,
                      HttpSession session) {
-        TariffPlan tariffPlan = tariffService.find(tariffId);
+        TariffPlan tariffPlan = tariffService.findTariffWithOptions(tariffId);
         PhoneNumber phoneNumber = phoneNumberService.find(numberId);
         Customer customer = new Customer(firstName, lastName, birthDate);
         customer.getAddress().setCity(city);
@@ -47,7 +51,7 @@ public class CartSaleServiceImpl implements CartSaleService {
         }
 
         CartItem item = cartItemService.createItem(
-                id, OperationType.ADD_OPTION, tariffPlan, null, null, customer, null, phoneNumber);
+                id, OperationType.SALE, tariffPlan, null, null, customer, null, phoneNumber);
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }

@@ -8,4 +8,5 @@ public interface CartItemService {
                         Lock l, Customer c, TerminalDevice td, PhoneNumber phoneNumber);
     CartItem updateItem(CartItem item, OperationType operationType,  TariffPlan tp, Option o,
                         Lock l, Customer c, TerminalDevice td, PhoneNumber phoneNumber);
+    void proceed(CartItem cartItem);
 }

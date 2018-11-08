@@ -48,13 +48,6 @@
                         id="passportField" placeholder="Passport"/>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" name="password"
-                        id="passwordField" placeholder="Password"/>
-                </div><div class="form-group">
-                    <input type="password" class="form-control" name="confirmPassword"
-                        id="passwordField" placeholder="Confirm password"/>
-                </div>
-                <div class="form-group">
                     <label for="tariffField">Choose tariff</label>
                     <select class="form-control" id="tariffField"
                         name="tariff">
@@ -72,37 +65,12 @@
                         </c:forEach>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+                <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
             </form>
         </div>
-
-        <!--
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Active</th>
-                    <th>Role</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${operators}" var="operator">
-                        <tr>
-                            <td><a href="operator/${operator.username}">
-                                    <c:out value="${operator.username}" /> </a> </td>
-                            <td><c:out value="${operator.enabled}" /> </td>
-                                <c:forEach items="${operator.authorities}" var="auth">
-                                    <td> <c:out value="${auth.authority}" /></td>
-                                </c:forEach>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
-        -->
     </div>
+    <jsp:include page="parts/footer.jsp" />
 </body>
 
 </html>

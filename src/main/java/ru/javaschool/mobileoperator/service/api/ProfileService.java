@@ -49,10 +49,11 @@ public interface ProfileService {
 
     /**
      * Method to add locks on terminal device
+     * @param user principal
      * @param terminalDeviceId terminal device id to add locks
-     * @param lockIds list with locks to add
+     * @param lockId lock id to add
      */
-    void addLock(Long terminalDeviceId, List<Long> lockIds);
+    void addLock(UserDetails user, Long terminalDeviceId, Long lockId);
 
     /**
      * Method to remove lock from terminal device

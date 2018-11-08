@@ -9,6 +9,6 @@
     ${terminalDevice.personalAccount}
     ${terminalDevice.options}
     ${terminalDevice.tariffPlan}
-    ${terminalDevice.locks}
+    ${terminalDevice.terminalDeviceLocks}
 </body>
 </html>

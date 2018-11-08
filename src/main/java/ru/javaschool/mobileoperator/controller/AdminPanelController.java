@@ -6,10 +6,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-import ru.javaschool.mobileoperator.service.api.*;
+import ru.javaschool.mobileoperator.service.api.LockService;
+import ru.javaschool.mobileoperator.service.api.OptionService;
+import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.api.TariffService;
+import ru.javaschool.mobileoperator.service.api.UserService;
 
 import java.util.List;
 

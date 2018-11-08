@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
+import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
@@ -12,6 +13,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartHelper cartHelper;
+
+    @Autowired
+    private CartItemService cartItemService;
 
     @Override
     public void addItem(Cart cart, CartItem item) {
@@ -28,5 +32,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public void updateItem(Cart cart, CartItem item) {
         cart.updateItem(item);
+    }
+
+    @Override
+    public void confirm(Cart cart) {
+        for(CartItem cartItem: cart.getCartItems()){
+            cartItemService.proceed(cartItem);
+        }
     }
 }

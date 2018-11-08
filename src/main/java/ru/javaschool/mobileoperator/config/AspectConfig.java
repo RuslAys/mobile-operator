@@ -10,8 +10,4 @@ import ru.javaschool.mobileoperator.apects.LoggingAspect;
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "ru.javaschool.mobileoperator.aspects")
 public class AspectConfig {
-    @Bean
-    LoggingAspect loggingAspect(){
-        return new LoggingAspect();
-    }
 }

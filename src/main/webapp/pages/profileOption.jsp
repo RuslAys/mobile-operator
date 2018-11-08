@@ -16,7 +16,7 @@
                     <option value="${option.id}"> <c:out value="${option.name} Price: ${option.price} Connection cost ${option.connectionCost}"/> </option>
                 </c:forEach>
             </select>
-            <button type="submit" name="confirm" class="btn btn-primary">Add</button>
+            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
             <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
         </div>
     </form>
@@ -32,7 +32,8 @@
                     <option value="${option.id}"> <c:out value="${option.name} Price: ${option.price}"/> </option>
                 </c:forEach>
             </select>
-            <button type="submit" class="btn btn-primary">Remove</button>
+            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
+            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
         </div>
     </form>
 <jsp:include page="parts/footer.jsp" />

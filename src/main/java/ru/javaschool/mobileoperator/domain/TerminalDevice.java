@@ -1,7 +1,9 @@
 package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "terminal_devices")
@@ -26,10 +28,8 @@ public class TerminalDevice extends AbstractPO {
             inverseJoinColumns = @JoinColumn(name = "phone_number_id"))
     private PhoneNumber phoneNumber;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "terminal_devices_locks", joinColumns = { @JoinColumn(name = "terminal_device_id") },
-            inverseJoinColumns = { @JoinColumn(name = "lock_id") })
-    private List<Lock> locks = new ArrayList<>();
+    @OneToMany(mappedBy = "terminalDevice")
+    private List<TerminalDeviceLock> terminalDeviceLocks = new ArrayList<>();
 
     public PersonalAccount getPersonalAccount() {
         return personalAccount;
@@ -47,12 +47,12 @@ public class TerminalDevice extends AbstractPO {
         this.options = options;
     }
 
-    public List<Lock> getLocks() {
-        return locks;
+    public List<TerminalDeviceLock> getTerminalDeviceLocks() {
+        return terminalDeviceLocks;
     }
 
-    public void setLocks(List<Lock> locks) {
-        this.locks = locks;
+    public void setTerminalDeviceLocks(List<TerminalDeviceLock> terminalDeviceLocks) {
+        this.terminalDeviceLocks = terminalDeviceLocks;
     }
 
     public TariffPlan getTariffPlan() {
