@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.javaschool.mobileoperator.apects.LoggingAspect;
-import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 @Configuration
 @EnableWebMvc

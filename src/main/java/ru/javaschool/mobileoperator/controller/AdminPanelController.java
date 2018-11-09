@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.service.api.LockService;
@@ -168,10 +169,58 @@ public class AdminPanelController {
     @PostMapping("/tariff/add")
     public String addTariffPlan(@RequestParam String name,
                                 @RequestParam String price,
-                                @RequestParam(value = "options",required = false)
-                                        List<Long> options){
+                                @RequestParam(value = "options",required = false) List<Long> options){
         tariffService.addTariff(name, price, options);
         return "redirect:/admin/tariff";
+    }
+
+    @PostMapping("/tariff/remove")
+    public String removeTariffPlan(@RequestParam("tariffId") Long tariffId){
+        tariffService.removeTariff(tariffId);
+        return "redirect:/admin/tariff";
+    }
+
+    /**
+     * Get method to tariff editor page
+     * @param model ui model
+     * @param tariffId tariff plan id
+     * @return tariff plan editor page
+     */
+    @GetMapping("/tariff/{id}")
+    public String tariffEditorPage(Model model,
+                                    @PathVariable("id") Long tariffId){
+        TariffPlan tariffPlan = tariffService.findTariffWithOptions(tariffId);
+        model.addAttribute("tariff", tariffPlan);
+        model.addAttribute("freeOptions", optionService.getOptionsNotIn(tariffPlan.getOptions()));
+        return "tariffEditor";
+    }
+
+    /**
+     * Post method to remove option from tariff
+     * @param model ui model
+     * @param tariffId tariff id
+     * @return redirect to tariff editor page {@link #tariffEditorPage(Model, Long)}
+     */
+    @PostMapping("/tariff/{id}/remove")
+    public String removeOptionFromTariff(Model model,
+                                         @PathVariable("id") Long tariffId,
+                                         @RequestParam("optionId") Long optionId){
+        tariffService.removeOptionFromTariff(tariffId, optionId);
+        return "redirect:/admin/tariff/"+tariffId;
+    }
+
+    /**
+     * Post method to remove option from tariff
+     * @param model ui model
+     * @param tariffId tariff id
+     * @return
+     */
+    @PostMapping("/tariff/{id}/add")
+    public String addOptionFromTariff(Model model,
+                                         @PathVariable("id") Long tariffId,
+                                         @RequestParam("optionId") Long optionId){
+        tariffService.addOptionToTariff(tariffId, optionId);
+        return "redirect:/admin/tariff/"+tariffId;
     }
 
     /**

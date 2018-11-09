@@ -37,16 +37,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${tariffPlans}" var="tariffPlan">
-                        <tr>
-                            <td><a href="/tariff/${tariffPlan.id}">
-                                <c:out value="${tariffPlan}" /> </a>
-                            </td>
-                        </tr>
-                    </c:forEach>
+
                 </tbody>
             </table>
         </div>
+
+        <c:forEach items="${tariffPlans}" var="tariffPlan">
+            <form name="remove-option" action="tariff/remove" method="post">
+               <label for="tariffs">Tariff</label>
+               <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
+               <a href="tariff/${tariffPlan.id}"><c:out value="${tariffPlan}" /> </a>
+               <button type="submit" class="btn btn-primary">Remove</button>
+            </form>
+        </c:forEach>
     </div>
 </body>
 </html>

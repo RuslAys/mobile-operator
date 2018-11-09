@@ -26,19 +26,6 @@
         </form>
     </c:forEach>
 
-
-<!--
-    <c:forEach items="${freeLocks}" var="lock" varStatus="loop">
-        <form name="add-lock-${loop.count}" action="lock/remove" method="post">
-            <input type="hidden" class="form-control" name="terminalDeviceId"
-                value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">
-            <input class="form-control-plaintext" type="hidden" name="lockId"
-                value="${lock.id}" readonly > ${lock.name} </input>
-            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
-            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
-        </form>
-    </c:forEach>
--->
     <form name="add-lock" action="lock/add" method="post">
         <div class="form-group">
             <input type="hidden" class="form-control" name="terminalDeviceId"

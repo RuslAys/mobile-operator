@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
+import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
@@ -21,10 +22,10 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         implements TariffService {
 
     @Autowired
-    private OptionService optionService;
+    private TariffDao tariffDao;
 
     @Autowired
-    private TariffDao tariffDao;
+    private OptionDao optionDao;
 
     @Autowired
     private OptionHelper optionHelper;
@@ -44,7 +45,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         if(StringUtils.isEmpty(name)){
             throw new IllegalArgumentException("Name cannot be empty");
         }
-        List<Option> tariffOptions = optionService.getOptionsByIds(optionIds);
+        List<Option> tariffOptions = optionDao.getOptions(optionIds);
         Set<Option> uniqueOptionsToAdd = new HashSet<>();
         tariffOptions.forEach(
                 option -> {
@@ -68,5 +69,59 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public TariffPlan findTariffWithOptions(Long tariffId) {
         return tariffDao.getTariffWithOptions(tariffId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeOptionFromTariff(Long tariffId, Long optionId) {
+        TariffPlan tariffPlan = tariffDao.find(tariffId);
+        Option optionToDelete = optionDao.find(optionId);
+        if(optionHelper.existInclusiveConflicts(tariffPlan.getOptions(), optionToDelete)){
+            throw new IllegalArgumentException("Cannot delete option. It is required option");
+        }
+        optionHelper.removeOptionFromTp(tariffPlan, optionToDelete);
+        tariffDao.update(tariffPlan);
+        optionDao.update(optionToDelete);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addOptionToTariff(Long tariffId, Long optionId) {
+        TariffPlan tariffPlan = tariffDao.find(tariffId);
+        Option newOption = optionDao.find(optionId);
+        List<Option> tdOptions = tariffPlan.getOptions();
+        List<Option> optionsToAdd = new ArrayList<>();
+
+        // Find options to add
+        optionsToAdd = optionHelper.getAllOptions(newOption, optionsToAdd);
+
+        // Find options to delete
+        List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
+        if(!exclusiveOptions.isEmpty()){
+            List<Option> optionToDelete = new ArrayList<>();
+            optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
+            optionHelper.removeOptionsFromTp(tariffPlan, optionToDelete);
+            optionToDelete.forEach(
+                    option -> optionDao.update(option)
+            );
+        }
+        tariffPlan.getOptions().addAll(optionsToAdd);
+        List<Option> withoutDuplicates = new ArrayList<>(
+                new HashSet<>(tariffPlan.getOptions())
+        );
+        tariffPlan.setOptions(withoutDuplicates);
+        tariffDao.update(tariffPlan);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeTariff(Long tariffId) {
+        TariffPlan tariffPlan = tariffDao.find(tariffId);
+        List<Option> optionsToDelete = tariffPlan.getOptions();
+        optionHelper.removeOptionsFromTp(tariffPlan, optionsToDelete);
+        optionsToDelete.forEach(
+                option -> optionDao.update(option)
+        );
+        tariffDao.remove(tariffPlan);
     }
 }

@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.utils;
 
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.ArrayList;
@@ -70,5 +71,19 @@ public class OptionHelper {
     public void removeOptionFromTd(TerminalDevice terminalDevice, Option option){
         terminalDevice.getOptions().removeIf(option1 -> option.equals(option1));
         option.getTerminalDevices().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
+    }
+
+    public void removeOptionFromTp(TariffPlan tariffPlan, Option option){
+        tariffPlan.getOptions().removeIf(option1 -> option.equals(option1));
+        option.getTariffPlans().removeIf(tariffPlan1 -> tariffPlan.equals(tariffPlan1));
+    }
+
+    public void removeOptionsFromTp(TariffPlan tariffPlan, List<Option> options){
+        tariffPlan.getOptions().removeAll(options);
+        options.forEach(
+                option -> option.getTariffPlans().removeIf(
+                        tariffPlan1 -> tariffPlan.equals(tariffPlan1)
+                )
+        );
     }
 }

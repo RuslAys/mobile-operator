@@ -68,6 +68,8 @@ public class SaleServiceImpl implements SaleService {
         PersonalAccount personalAccount = new PersonalAccount();
         contract.getPersonalAccounts().add(personalAccount);
         personalAccount.setContract(contract);
+        customer.getContracts().add(contract);
+        contract.setCustomer(customer);
 
         //Create terminal device and set it to personal account
         TerminalDevice terminalDevice = new TerminalDevice();

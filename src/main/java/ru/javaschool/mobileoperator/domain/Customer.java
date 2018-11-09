@@ -130,4 +130,16 @@ public class Customer extends AbstractPO{
     public int hashCode() {
         return Objects.hash(firstName, lastName, birthDate, email, passport);
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", address=" + address +
+                ", email='" + email + '\'' +
+                ", passport='" + passport + '\'' +
+                '}';
+    }
 }

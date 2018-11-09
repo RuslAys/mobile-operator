@@ -35,4 +35,11 @@ public class Contract extends AbstractPO {
     public void setPersonalAccounts(List<PersonalAccount> personalAccounts) {
         this.personalAccounts = personalAccounts;
     }
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "id=" + id +
+                '}';
+    }
 }
