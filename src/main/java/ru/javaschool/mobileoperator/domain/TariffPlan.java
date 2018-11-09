@@ -30,8 +30,11 @@ public class TariffPlan extends AbstractPO {
     @Column(name = "price")
     private Integer price;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "archival")
+    private boolean archival;
 
     public List<Option> getOptions() {
         return options;
@@ -63,6 +66,14 @@ public class TariffPlan extends AbstractPO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isArchival() {
+        return archival;
+    }
+
+    public void setArchival(boolean archival) {
+        this.archival = archival;
     }
 
     @Override

@@ -117,11 +117,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeTariff(Long tariffId) {
         TariffPlan tariffPlan = tariffDao.find(tariffId);
-        List<Option> optionsToDelete = tariffPlan.getOptions();
-        optionHelper.removeOptionsFromTp(tariffPlan, optionsToDelete);
-        optionsToDelete.forEach(
-                option -> optionDao.update(option)
-        );
+        tariffPlan.setArchival(true);
         tariffDao.remove(tariffPlan);
     }
 }

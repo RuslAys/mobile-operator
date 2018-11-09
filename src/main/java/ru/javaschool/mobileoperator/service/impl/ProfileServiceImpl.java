@@ -19,6 +19,7 @@ import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceLockDao;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
+import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
 import ru.javaschool.mobileoperator.utils.LockHelper;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
@@ -100,6 +101,9 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void addLock(UserDetails user, Long terminalDeviceId, Long lockId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
+            throw new TerminalDeviceException("Terminal device is locked");
+        }
         Lock lock = lockDao.find(lockId);
         TerminalDeviceLock terminalDeviceLock = new TerminalDeviceLock();
         if(roleHelper.isOnlyUser(user)){
@@ -120,6 +124,9 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeLock(UserDetails user, Long id, Long lockId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(id);
+        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
+            throw new TerminalDeviceException("Terminal device is locked");
+        }
         Lock lock = lockDao.find(lockId);
         boolean isUser = roleHelper.isOnlyUser(user);
         TerminalDeviceLock tdl = lockHelper.getTerminalDeviceLock(terminalDevice, lock);

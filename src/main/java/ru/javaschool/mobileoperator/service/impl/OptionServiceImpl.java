@@ -13,6 +13,7 @@ import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
+import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 import java.util.ArrayList;
@@ -105,6 +106,9 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new IllegalArgumentException("Terminal device is locked");
         }
+        if(terminalDevice.getTariffPlan().isArchival()){
+            throw new TariffPlanException("Current tariff plan is archival. Can not add options");
+        }
         Option newOption = optionDao.find(optionId);
         List<Option> tdOptions = terminalDevice.getOptions();
         List<Option> optionsToAdd = new ArrayList<>();
@@ -143,7 +147,9 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new IllegalArgumentException("Terminal device is locked");
         }
-
+        if(terminalDevice.getTariffPlan().isArchival()){
+            throw new TariffPlanException("Current tariff plan is archival. Can not add options");
+        }
         Option optionToDelete = optionDao.find(optionId);
 
         if(optionHelper.existInclusiveConflicts(terminalDevice.getOptions(), optionToDelete)){

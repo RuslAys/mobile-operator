@@ -47,21 +47,21 @@ public class LoggingAspect {
 //        }
 //    }
 
-    @Around("execution(* ru.javaschool.mobileoperator.controller.*.*(..))")
-    public Object logAroundController(ProceedingJoinPoint joinPoint) throws Throwable{
-        long start = System.currentTimeMillis();
-        try {
-            String className = joinPoint.getSignature().getDeclaringTypeName();
-            String methodName = joinPoint.getSignature().getName();
-            Object result = joinPoint.proceed();
-            long elapsedTime = System.currentTimeMillis() - start;
-            log.debug("Method " + className + "." + methodName + "()" + " execution time: "
-                     + elapsedTime + " ms");
-            return result;
-        }catch (IllegalArgumentException e){
-            log.error("Illegal argument " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                     joinPoint.getSignature().getName() + "()");
-            throw e;
-        }
-    }
+//    @Around("execution (ru.javaschool.mobileoperator.controller.*.*)")
+//    public Object logAroundController(ProceedingJoinPoint joinPoint) throws Throwable{
+//        long start = System.currentTimeMillis();
+//        try {
+//            String className = joinPoint.getSignature().getDeclaringTypeName();
+//            String methodName = joinPoint.getSignature().getName();
+//            Object result = joinPoint.proceed();
+//            long elapsedTime = System.currentTimeMillis() - start;
+//            log.debug("Method " + className + "." + methodName + "()" + " execution time: "
+//                     + elapsedTime + " ms");
+//            return result;
+//        }catch (IllegalArgumentException e){
+//            log.error("Illegal argument " + Arrays.toString(joinPoint.getArgs()) + " in " +
+//                     joinPoint.getSignature().getName() + "()");
+//            throw e;
+//        }
+//    }
 }
