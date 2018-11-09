@@ -17,7 +17,7 @@ public interface ProfileService {
      * @param number phone number
      * @return terminal device
      */
-    TerminalDevice getFullCustomerInfoByNumber(String number);
+    TerminalDevice getTerminalDeviceWithOptions(String number);
 
     /**
      * Method to return tariff plan on terminal device by phone number
@@ -46,22 +46,6 @@ public interface ProfileService {
      * @return list with locks
      */
     List<Lock> getLocksNotOnTerminalDevice(TerminalDevice terminalDevice);
-
-    /**
-     * Method to add locks on terminal device
-     * @param user principal
-     * @param terminalDeviceId terminal device id to add locks
-     * @param lockId lock id to add
-     */
-    void addLock(UserDetails user, Long terminalDeviceId, Long lockId);
-
-    /**
-     * Method to remove lock from terminal device
-     * @param user user details to check possibility to delete
-     * @param terminalDeviceId terminal device id
-     * @param lockId lock id to remove
-     */
-    void removeLock(UserDetails user, Long terminalDeviceId, Long lockId);
 
     /**
      * Method to get tariffs except specified

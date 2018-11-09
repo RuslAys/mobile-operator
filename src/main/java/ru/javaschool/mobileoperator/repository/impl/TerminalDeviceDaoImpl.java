@@ -8,9 +8,9 @@ import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 public class TerminalDeviceDaoImpl extends GenericDaoImpl<TerminalDevice, Long> implements TerminalDeviceDao {
 
     @Override
-    public TerminalDevice getFullTerminalDeviceByNumber(Long number) {
-        String query = "SELECT td FROM TerminalDevice td LEFT JOIN FETCH td.personalAccount LEFT JOIN FETCH td.terminalDeviceLocks " +
-                "LEFT JOIN FETCH td.tariffPlan LEFT JOIN FETCH td.options " +
+    public TerminalDevice getTerminalDeviceWithOptionsByNumber(Long number) {
+        String query = "SELECT DISTINCT td FROM TerminalDevice td " +
+                "LEFT JOIN FETCH td.options " +
                 "WHERE td.phoneNumber.number = :number";
         return (TerminalDevice) currentSession()
                 .createQuery(query)

@@ -118,6 +118,6 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     public void removeTariff(Long tariffId) {
         TariffPlan tariffPlan = tariffDao.find(tariffId);
         tariffPlan.setArchival(true);
-        tariffDao.remove(tariffPlan);
+        tariffDao.update(tariffPlan);
     }
 }

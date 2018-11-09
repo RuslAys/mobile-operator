@@ -77,7 +77,8 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profilePage(Model model, @PathVariable("username") String username){
         model.addAttribute("user", userService.getUser(username));
-        model.addAttribute("terminalDevice", profileService.getFullCustomerInfoByNumber(username));
+        model.addAttribute("terminalDevice", profileService.getTerminalDeviceWithOptions(username));
+        model.addAttribute("terminalDeviceLocks", profileService.getTerminalDeviceWithLocksByNumber(username));
         return "profile";
     }
 
@@ -90,7 +91,7 @@ public class ProfileController {
     @GetMapping("/{username}/tariff")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileTariffPage(Model model, @PathVariable("username") String username){
-        TerminalDevice terminalDevice = profileService.getFullCustomerInfoByNumber(username);
+        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithOptions(username);
         TariffPlan tariffPlan = terminalDevice.getTariffPlan();
         model.addAttribute("terminalDevice", terminalDevice);
         model.addAttribute("tariffPlan", tariffPlan);
@@ -211,7 +212,7 @@ public class ProfileController {
     @GetMapping("/{username}/option")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileOptionsPage(Model model, @PathVariable("username") String username){
-        TerminalDevice terminalDevice = profileService.getFullCustomerInfoByNumber(username);
+        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithOptions(username);
         model.addAttribute("terminalDevice", terminalDevice);
         model.addAttribute("options", terminalDevice.getOptions());
         model.addAttribute("freeOptions", optionService.getOptionsNotIn(terminalDevice.getOptions()));

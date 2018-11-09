@@ -1,7 +1,6 @@
 package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,8 +9,6 @@ import ru.javaschool.mobileoperator.domain.Lock;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
-import ru.javaschool.mobileoperator.domain.TerminalDeviceLock;
-import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.LockDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
@@ -19,13 +16,11 @@ import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceLockDao;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
-import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
 import ru.javaschool.mobileoperator.utils.LockHelper;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Service("profileService")
@@ -59,11 +54,11 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public TerminalDevice getFullCustomerInfoByNumber(String number) {
+    public TerminalDevice getTerminalDeviceWithOptions(String number) {
         if(StringUtils.isEmpty(number)){
             throw new IllegalArgumentException("Number cannot be empty");
         }
-        return terminalDeviceDao.getFullTerminalDeviceByNumber(Long.parseLong(number));
+        return terminalDeviceDao.getTerminalDeviceWithOptionsByNumber(Long.parseLong(number));
     }
 
     @Override
@@ -95,51 +90,6 @@ public class ProfileServiceImpl implements ProfileService {
             return lockDao.findAll();
         }
         return lockDao.getLockNotIn(ids);
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void addLock(UserDetails user, Long terminalDeviceId, Long lockId) {
-        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
-            throw new TerminalDeviceException("Terminal device is locked");
-        }
-        Lock lock = lockDao.find(lockId);
-        TerminalDeviceLock terminalDeviceLock = new TerminalDeviceLock();
-        if(roleHelper.isOnlyUser(user)){
-            terminalDeviceLock.setCanBeDeletedByUser(true);
-        }else{
-            terminalDeviceLock.setCanBeDeletedByUser(false);
-        }
-        terminalDevice.getTerminalDeviceLocks().add(terminalDeviceLock);
-        lock.getTerminalDeviceLocks().add(terminalDeviceLock);
-        terminalDeviceLock.setTerminalDevice(terminalDevice);
-        terminalDeviceLock.setLock(lock);
-        lockDao.update(lock);
-        terminalDeviceDao.update(terminalDevice);
-        terminalDeviceLockDao.add(terminalDeviceLock);
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void removeLock(UserDetails user, Long id, Long lockId) {
-        TerminalDevice terminalDevice = terminalDeviceDao.find(id);
-        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
-            throw new TerminalDeviceException("Terminal device is locked");
-        }
-        Lock lock = lockDao.find(lockId);
-        boolean isUser = roleHelper.isOnlyUser(user);
-        TerminalDeviceLock tdl = lockHelper.getTerminalDeviceLock(terminalDevice, lock);
-        if(isUser && lockHelper.canBeDeleted(terminalDevice, lock)){
-            removeLock(terminalDevice, lock);
-        }else if(isUser && !lock.getCanBeDeletedByUser()){
-            throw new IllegalArgumentException("Lock can`t be deleted by user");
-        }else {
-            removeLock(terminalDevice, lock);
-        }
-        terminalDeviceDao.update(terminalDevice);
-        lockDao.update(lock);
-        terminalDeviceLockDao.remove(tdl);
     }
 
     @Override
@@ -180,11 +130,6 @@ public class ProfileServiceImpl implements ProfileService {
         terminalDeviceDao.update(terminalDevice);
         tariffDao.update(tariffPlan);
         personalAccountDao.update(terminalDevice.getPersonalAccount());
-    }
-
-    private void removeLock(TerminalDevice terminalDevice, Lock lock){
-        terminalDevice.getTerminalDeviceLocks().removeIf(lock1 -> lock.equals(lock1));
-        lock.getTerminalDeviceLocks().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
     }
 
     private void removeTdFromOptions(TerminalDevice terminalDevice){

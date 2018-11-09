@@ -43,7 +43,7 @@
 
     <div>
         <h3>Locks:</h3>
-        <c:forEach items="${terminalDevice.terminalDeviceLocks}" var="tdl" varStatus="loop">
+        <c:forEach items="${terminalDeviceLocks.terminalDeviceLocks}" var="tdl" varStatus="loop">
                     <h5>${tdl.lock.name}</h5>
         </c:forEach>
     </div>

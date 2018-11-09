@@ -37,7 +37,7 @@ public class TerminalDevice extends AbstractPO {
             inverseJoinColumns = @JoinColumn(name = "phone_number_id"))
     private PhoneNumber phoneNumber;
 
-    @OneToMany(mappedBy = "terminalDevice")
+    @OneToMany(mappedBy = "primaryKey.terminalDevice", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TerminalDeviceLock> terminalDeviceLocks = new ArrayList<>();
 
     public PersonalAccount getPersonalAccount() {

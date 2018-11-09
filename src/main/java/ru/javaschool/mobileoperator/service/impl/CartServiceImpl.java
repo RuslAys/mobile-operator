@@ -6,6 +6,8 @@ import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
+import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
+import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import java.util.Iterator;
@@ -43,8 +45,16 @@ public class CartServiceImpl implements CartService {
     public void confirm(Cart cart) {
         Iterator<CartItem> itemIterator = cart.getCartItems().iterator();
         while (itemIterator.hasNext()){
-            cartItemService.proceed(itemIterator.next());
-            itemIterator.remove();
+            try {
+                cartItemService.proceed(itemIterator.next());
+                itemIterator.remove();
+            }catch (TerminalDeviceException e){
+                itemIterator.remove();
+                e.printStackTrace();
+            }catch (TariffPlanException e){
+                itemIterator.remove();
+                e.printStackTrace();
+            }
         }
     }
 }

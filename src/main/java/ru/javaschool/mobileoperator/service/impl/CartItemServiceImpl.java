@@ -57,10 +57,10 @@ public class CartItemServiceImpl implements CartItemService {
                 optionService.removeOption(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
                 break;
             case ADD_LOCK:
-                profileService.addLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
+                lockService.addLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
                 break;
             case REMOVE_LOCK:
-                profileService.removeLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
+                lockService.removeLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
                 break;
             case CHANGE_TARIFF:
                 profileService.changeTariff(cartItem.getTerminalDeviceId(), cartItem.getTariffPlanId());

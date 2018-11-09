@@ -43,12 +43,21 @@
         </div>
 
         <c:forEach items="${tariffPlans}" var="tariffPlan">
-            <form name="remove-option" action="tariff/remove" method="post">
-               <label for="tariffs">Tariff</label>
-               <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
-               <a href="tariff/${tariffPlan.id}"><c:out value="${tariffPlan}" /> </a>
-               <button type="submit" class="btn btn-primary">Remove</button>
-            </form>
+            <c:if test="${tariffPlan.archival == false}">
+                <form name="remove-tariff" action="tariff/remove" method="post">
+                   <label for="tariffs">Tariff</label>
+                   <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
+                   <a href="tariff/${tariffPlan.id}"><c:out value="${tariffPlan}" /> </a>
+                   <button type="submit" class="btn btn-primary">Remove</button>
+                </form>
+            </c:if>
+        </c:forEach>
+
+        <h1> Archival tariff plans </h1>
+        <c:forEach items="${tariffPlans}" var="tariffPlan">
+            <c:if test="${tariffPlan.archival == true}">
+                ${tariffPlan}
+            </c:if>
         </c:forEach>
     </div>
 </body>

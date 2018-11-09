@@ -1,5 +1,6 @@
 package ru.javaschool.mobileoperator.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -17,7 +18,7 @@ public class Lock extends AbstractPO {
     @Column(name = "delete_by_user")
     private Boolean canBeDeletedByUser;
 
-    @OneToMany(mappedBy = "lock")
+    @OneToMany(mappedBy = "primaryKey.lock", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TerminalDeviceLock> terminalDeviceLocks = new ArrayList<>();
 
     public String getName() {

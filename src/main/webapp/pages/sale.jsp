@@ -52,7 +52,9 @@
                     <select class="form-control" id="tariffField"
                         name="tariff">
                         <c:forEach items="${tariffs}" var="tariff">
-                            <option value="${tariff.id}"> <c:out value="${tariff}"/> </option>
+                            <c:if test="${tariff.archival == false}" >
+                                <option value="${tariff.id}"> <c:out value="${tariff}"/> </option>
+                            </c:if>
                         </c:forEach>
                     </select>
                 </div>

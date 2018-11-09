@@ -20,6 +20,7 @@ import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.UserDao;
 import ru.javaschool.mobileoperator.service.api.SaleService;
+import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 
 import java.util.Date;
 import java.util.List;
@@ -51,8 +52,10 @@ public class SaleServiceImpl implements SaleService {
         if(phoneNumber.getTerminalDevice() != null){
             throw new IllegalArgumentException("Number already in use");
         }
-
         TariffPlan tariffPlan = tariffDao.find(tariffPlanId);
+        if(tariffPlan.isArchival()){
+            throw new TariffPlanException("Tariff plan is archival");
+        }
 
         String password = "p";
 
