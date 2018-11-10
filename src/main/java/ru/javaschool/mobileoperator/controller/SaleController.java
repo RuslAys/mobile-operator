@@ -26,7 +26,7 @@ import java.util.Date;
 @RequestMapping("/sale")
 public class SaleController {
 
-    private static final Logger logger = LogManager.getLogger(SaleController.class);
+    private final Logger logger = LogManager.getLogger(SaleController.class);
 
     @Autowired
     private TariffService tariffService;

@@ -1,6 +1,5 @@
 package ru.javaschool.mobileoperator.config;
 
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;

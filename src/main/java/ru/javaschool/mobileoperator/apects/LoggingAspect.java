@@ -11,7 +11,7 @@ import java.util.Arrays;
 @Aspect
 public class LoggingAspect {
 
-    Logger log = LogManager.getLogger(this.getClass().getName());
+    Logger log = LogManager.getLogger(LoggingAspect.class);
 
 //    @Pointcut("within(org.springframework.stereotype.Controller *)")
 //    public void controller(){
@@ -25,8 +25,7 @@ public class LoggingAspect {
 //    public void allPublicMethods(){
 //    }
 
-//    @Before("controller() && allMethods() && args(..,request)")
-//    @Before("execution(* ru.javaschool.mobileoperator.controller.*.*(..))")
+//    @Before("execution (* ru.javaschool.mobileoperator.controller..*.*(..))")
 //    public void logBefore(JoinPoint joinPoint, HttpServletRequest request){
 //        System.out.println("Aspect is working");
 //        log.debug("Entering im method: " + joinPoint.getSignature().getDeclaringTypeName());
@@ -47,21 +46,21 @@ public class LoggingAspect {
 //        }
 //    }
 
-//    @Around("execution (ru.javaschool.mobileoperator.controller.*.*)")
-//    public Object logAroundController(ProceedingJoinPoint joinPoint) throws Throwable{
-//        long start = System.currentTimeMillis();
-//        try {
-//            String className = joinPoint.getSignature().getDeclaringTypeName();
-//            String methodName = joinPoint.getSignature().getName();
-//            Object result = joinPoint.proceed();
-//            long elapsedTime = System.currentTimeMillis() - start;
-//            log.debug("Method " + className + "." + methodName + "()" + " execution time: "
-//                     + elapsedTime + " ms");
-//            return result;
-//        }catch (IllegalArgumentException e){
-//            log.error("Illegal argument " + Arrays.toString(joinPoint.getArgs()) + " in " +
-//                     joinPoint.getSignature().getName() + "()");
-//            throw e;
-//        }
-//    }
+    @Around("execution (* ru.javaschool.mobileoperator.controller..*.*(..))")
+    public Object logAroundController(ProceedingJoinPoint joinPoint) throws Throwable{
+        long start = System.currentTimeMillis();
+        try {
+            String className = joinPoint.getSignature().getDeclaringTypeName();
+            String methodName = joinPoint.getSignature().getName();
+            Object result = joinPoint.proceed();
+            long elapsedTime = System.currentTimeMillis() - start;
+            log.debug("Method " + className + "." + methodName + "()" + " execution time: "
+                     + elapsedTime + " ms");
+            return result;
+        }catch (RuntimeException e){
+            log.error("Illegal argument " + Arrays.toString(joinPoint.getArgs()) + " in " +
+                     joinPoint.getSignature().getName() + "()");
+            throw e;
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
+
+    private final Logger logger = LogManager.getLogger(CartController.class);
 
     @Autowired
     private CartService cartService;

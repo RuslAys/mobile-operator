@@ -18,7 +18,7 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    private static final Logger logger = LogManager.getLogger(IndexController.class.getName());
+    private final Logger logger = LogManager.getLogger(IndexController.class);
 
     @Autowired
     private RoleHelper roleHelper;
@@ -34,6 +34,7 @@ public class IndexController {
      */
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal UserDetails user){
+        logger.warn("into index controller");
         if(roleHelper.isOnlyUser(user)){
             return "redirect:/profile/" + user.getUsername();
         }
