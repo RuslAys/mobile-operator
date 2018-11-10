@@ -22,12 +22,12 @@ public interface OptionService extends GenericService<Option, Long> {
      * @param terminalDeviceId terminal device id
      * @param optionId option id to add
      */
-    void addOption(Long terminalDeviceId, Long optionId);
+    void addOptionToTerminalDevice(Long terminalDeviceId, Long optionId);
 
     /**
      * Method to remove option from terminal device
      * @param terminalDeviceId terminal device
      * @param optionId option to remove
      */
-    void removeOption(Long terminalDeviceId, Long optionId);
+    void removeOptionFromTerminalDevice(Long terminalDeviceId, Long optionId);
 }

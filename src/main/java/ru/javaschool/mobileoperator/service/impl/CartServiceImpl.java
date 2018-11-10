@@ -48,10 +48,7 @@ public class CartServiceImpl implements CartService {
             try {
                 cartItemService.proceed(itemIterator.next());
                 itemIterator.remove();
-            }catch (TerminalDeviceException e){
-                itemIterator.remove();
-                e.printStackTrace();
-            }catch (TariffPlanException e){
+            }catch (RuntimeException e){
                 itemIterator.remove();
                 e.printStackTrace();
             }

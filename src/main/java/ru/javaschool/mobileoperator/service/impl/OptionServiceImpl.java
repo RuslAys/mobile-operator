@@ -13,6 +13,7 @@ import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
 import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
+import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service("optionService")
 public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
@@ -53,7 +55,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
                           List<Long> exclusiveOptions) {
 
         if(StringUtils.isEmpty(name)){
-            throw new IllegalArgumentException("Option name can`t be empty");
+            throw new OptionException("Option name can`t be empty");
         }
         Option option = new Option();
         option.setName(name);
@@ -63,12 +65,16 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         List<Option> inOptions = optionDao.getOptions(inclusiveOptions);
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);
 
-        if(!Collections.disjoint(inOptions, exOptions)){
-            throw new IllegalArgumentException("There are common elements");
+        Set<Option> uniqueInOptions = new HashSet<>();
+        uniqueInOptions = getAllDependentOptions(inOptions, uniqueInOptions);
+        List<Option> uniqueInOptionList = new ArrayList<>(uniqueInOptions);
+
+        if(!Collections.disjoint(uniqueInOptionList, exOptions)){
+            throw new OptionException("There are common elements in inclusive and exclusive options");
         }
-        if(!inOptions.isEmpty()){
-            inOptions.forEach(option1 -> option1.getParentInclusive().add(option));
-            option.setInclusiveOptions(inOptions);
+        if(!uniqueInOptionList.isEmpty()){
+            uniqueInOptionList.forEach(option1 -> option1.getParentInclusive().add(option));
+            option.setInclusiveOptions(uniqueInOptionList);
         }
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
@@ -102,7 +108,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void addOption(Long terminalDeviceId, Long optionId) {
+    public void addOptionToTerminalDevice(Long terminalDeviceId, Long optionId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
         if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new TerminalDeviceException("Terminal device is locked");
@@ -143,7 +149,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeOption(Long terminalDeviceId, Long optionId) {
+    public void removeOptionFromTerminalDevice(Long terminalDeviceId, Long optionId) {
         TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
         if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
             throw new TerminalDeviceException("Terminal device is locked");
@@ -159,5 +165,15 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         optionHelper.removeOptionFromTd(terminalDevice, optionToDelete);
         terminalDeviceDao.update(terminalDevice);
         optionDao.update(optionToDelete);
+    }
+
+    private Set<Option> getAllDependentOptions(List<Option> options, Set<Option> uniqueOptions){
+        for(Option option: options){
+            for(Option inOption: option.getInclusiveOptions()){
+                uniqueOptions.add(inOption);
+                return getAllDependentOptions(inOption.getInclusiveOptions(), uniqueOptions);
+            }
+        }
+        return uniqueOptions;
     }
 }
