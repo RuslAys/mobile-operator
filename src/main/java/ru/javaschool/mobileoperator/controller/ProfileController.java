@@ -27,6 +27,7 @@ import ru.javaschool.mobileoperator.service.api.TariffService;
 import ru.javaschool.mobileoperator.service.api.TerminalDeviceService;
 import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
+import ru.javaschool.mobileoperator.utils.RoleHelper;
 
 import javax.servlet.http.HttpSession;
 
@@ -72,6 +73,9 @@ public class ProfileController {
     @Autowired
     private CartHelper cartHelper;
 
+    @Autowired
+    private RoleHelper roleHelper;
+
 
     /**
      * Get method for profile page
@@ -81,13 +85,15 @@ public class ProfileController {
      */
     @GetMapping("/{username}")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String profilePage(Model model, @PathVariable("username") String username){
+    public String profilePage(Model model, @PathVariable("username") String username, @AuthenticationPrincipal UserDetails user){
         TerminalDevice terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(username);
         model.addAttribute("user", userService.getUser(username));
         model.addAttribute("terminalDevice", profileService.getTerminalDeviceWithOptions(username));
         model.addAttribute("terminalDeviceLocks", profileService.getTerminalDeviceWithLocksByNumber(username));
-        model.addAttribute("anotherTerminalDevices", personalAccountService.
-                getPersonalAccountWithTerminalDevices(terminalDevice.getPersonalAccount().getId()).getTerminalDevices());
+        if(!roleHelper.isOnlyUser(user)){
+            model.addAttribute("anotherTerminalDevices", personalAccountService.
+                    getPersonalAccountWithTerminalDevices(terminalDevice.getPersonalAccount().getId()).getTerminalDevices());
+        }
         return "profile";
     }
 
