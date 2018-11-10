@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import java.util.*;
 @Service("tariffService")
 public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         implements TariffService {
+
+    private final Logger logger = LogManager.getLogger(TariffServiceImpl.class);
 
     @Autowired
     private TariffDao tariffDao;

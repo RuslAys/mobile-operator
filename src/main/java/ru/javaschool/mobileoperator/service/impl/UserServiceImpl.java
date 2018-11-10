@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
 @Service("userService")
 public class UserServiceImpl extends GenericServiceImpl<User, String>
         implements UserService {
+
+    private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserDao userDao;

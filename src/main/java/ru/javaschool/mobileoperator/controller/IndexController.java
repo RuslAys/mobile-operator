@@ -34,7 +34,6 @@ public class IndexController {
      */
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal UserDetails user){
-        logger.warn("into index controller");
         if(roleHelper.isOnlyUser(user)){
             return "redirect:/profile/" + user.getUsername();
         }

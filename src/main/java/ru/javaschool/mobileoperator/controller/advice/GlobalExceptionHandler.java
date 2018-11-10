@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public String handleIOException(){
+    public String handleNotFoundException(){
         return "errors/not_found";
     }
 }

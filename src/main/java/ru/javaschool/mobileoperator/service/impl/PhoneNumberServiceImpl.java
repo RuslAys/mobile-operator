@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.List;
 @Service("phoneNumberService")
 public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long>
         implements PhoneNumberService {
+
+    private final Logger logger = LogManager.getLogger(PhoneNumberServiceImpl.class);
 
     @Autowired
     private PhoneNumberDao phoneNumberDao;

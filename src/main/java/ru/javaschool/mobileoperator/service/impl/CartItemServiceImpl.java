@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.CartItem;
@@ -12,6 +14,8 @@ import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 @Service("cartItemService")
 public class CartItemServiceImpl implements CartItemService {
+
+    private final Logger logger = LogManager.getLogger(CartItemServiceImpl.class);
 
     @Autowired
     private ProfileService profileService;

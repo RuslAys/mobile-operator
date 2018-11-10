@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,9 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
 @Service("lockService")
 public class LockServiceImpl extends GenericServiceImpl<Lock, Long>
         implements LockService {
+
+    private final Logger logger = LogManager.getLogger(LockServiceImpl.class);
+
     @Autowired
     private LockDao lockDao;
 

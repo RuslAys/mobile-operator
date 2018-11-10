@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Service
 public class GenericServiceImpl<E, K> implements GenericService<E, K> {
+
+    private final Logger logger = LogManager.getLogger(GenericServiceImpl.class);
 
     private GenericDao<E, K> genericDao;
 

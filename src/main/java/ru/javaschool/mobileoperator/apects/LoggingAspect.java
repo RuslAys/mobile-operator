@@ -13,54 +13,75 @@ public class LoggingAspect {
 
     Logger log = LogManager.getLogger(LoggingAspect.class);
 
-//    @Pointcut("within(org.springframework.stereotype.Controller *)")
-//    public void controller(){
-//    }
-//
-//    @Pointcut("execution(* *.*(..))")
-//    public void allMethods(){
-//    }
-//
-//    @Pointcut("execution(public * *.*(..))")
-//    public void allPublicMethods(){
-//    }
-
-//    @Before("execution (* ru.javaschool.mobileoperator.controller..*.*(..))")
-//    public void logBefore(JoinPoint joinPoint, HttpServletRequest request){
-//        System.out.println("Aspect is working");
-//        log.debug("Entering im method: " + joinPoint.getSignature().getDeclaringTypeName());
-//        log.debug("Class name: " + joinPoint.getSignature().getName());
-//        log.debug("Arguments: " + Arrays.toString(joinPoint.getArgs()));
-//        log.debug("Target class: " + joinPoint.getTarget().getClass().getName());
-//        if(null != request){
-//            log.debug("Start Header Section of request");
-//            log.debug("Method type" + request.getMethod());
-//            Enumeration headerNames = request.getHeaderNames();
-//            while (headerNames.hasMoreElements()){
-//                String headerName = (String) headerNames.nextElement();
-//                String headerValue = request.getHeader(headerName);
-//                log.debug("Header Name: " + headerName + " Header Value: " + headerValue);
-//            }
-//            log.debug("Request Path info: " + request.getServletPath());
-//            log.debug("End Header Section request");
-//        }
-//    }
-
     @Around("execution (* ru.javaschool.mobileoperator.controller..*.*(..))")
     public Object logAroundController(ProceedingJoinPoint joinPoint) throws Throwable{
-        long start = System.currentTimeMillis();
         try {
             String className = joinPoint.getSignature().getDeclaringTypeName();
             String methodName = joinPoint.getSignature().getName();
+            String args = Arrays.toString(joinPoint.getArgs());
+            log.debug("Method " + className + "." + methodName + "(" + args + ")");
             Object result = joinPoint.proceed();
-            long elapsedTime = System.currentTimeMillis() - start;
-            log.debug("Method " + className + "." + methodName + "()" + " execution time: "
-                     + elapsedTime + " ms");
+            log.debug("Method " + className + "." + methodName + "(" + args + ")"+
+                    " returns " + result.toString() + " page");
             return result;
         }catch (RuntimeException e){
-            log.error("Illegal argument " + Arrays.toString(joinPoint.getArgs()) + " in " +
+            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
                      joinPoint.getSignature().getName() + "()");
             throw e;
         }
     }
+
+    @Around("execution (* ru.javaschool.mobileoperator.service.impl..*.*(..))")
+    public Object logAroundService(ProceedingJoinPoint joinPoint) throws Throwable{
+        try {
+            String className = joinPoint.getSignature().getDeclaringTypeName();
+            String methodName = joinPoint.getSignature().getName();
+            String args = Arrays.toString(joinPoint.getArgs());
+            log.debug("Method " + className + "." + methodName + "(" + args + ")");
+            Object result = joinPoint.proceed();
+            log.debug("Method " + className + "." + methodName + "(" + args + ")"+
+                    " returns " + result.toString());
+            return result;
+        }catch (RuntimeException e){
+            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
+                    joinPoint.getSignature().getName() + "()");
+            throw e;
+        }
+    }
+
+    @Around("execution (* ru.javaschool.mobileoperator.repository..*.*(..))")
+    public Object logAroundDao(ProceedingJoinPoint joinPoint) throws Throwable{
+        try {
+            String className = joinPoint.getSignature().getDeclaringTypeName();
+            String methodName = joinPoint.getSignature().getName();
+            String args = Arrays.toString(joinPoint.getArgs());
+            log.debug("Method " + className + "." + methodName + "(" + args + ")");
+            Object result = joinPoint.proceed();
+            log.debug("Return " + result.toString());
+            return result;
+        }catch (RuntimeException e){
+            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
+                    joinPoint.getSignature().getName() + "()");
+            throw e;
+        }
+    }
+
+    @Around("execution (* ru.javaschool.mobileoperator.utils..*.*(..))")
+    public Object logAroundUtils(ProceedingJoinPoint joinPoint) throws Throwable{
+        try {
+            String className = joinPoint.getSignature().getDeclaringTypeName();
+            String methodName = joinPoint.getSignature().getName();
+            String args = Arrays.toString(joinPoint.getArgs());
+            log.debug("Method " + className + "." + methodName + "(" + args + ")");
+            Object result = joinPoint.proceed();
+            log.debug("Method " + className + "." + methodName + "(" + args + ")"+
+                    " returns " + result.toString());
+            return result;
+        }catch (RuntimeException e){
+            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
+                    joinPoint.getSignature().getName() + "()");
+            throw e;
+        }
+    }
+
 }

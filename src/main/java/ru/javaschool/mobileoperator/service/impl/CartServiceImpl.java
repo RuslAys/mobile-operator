@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.Cart;
@@ -14,6 +16,8 @@ import java.util.Iterator;
 
 @Service("cartService")
 public class CartServiceImpl implements CartService {
+
+    private final Logger logger = LogManager.getLogger(CartServiceImpl.class);
 
     @Autowired
     private CartHelper cartHelper;
