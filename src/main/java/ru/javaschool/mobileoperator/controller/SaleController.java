@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.service.api.CartSaleService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
 
@@ -40,12 +42,15 @@ public class SaleController {
     @Autowired
     private CartSaleService cartSaleService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        sdf.setLenient(true);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
-    }
+    @Autowired
+    private ProfileService profileService;
+
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder){
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//        sdf.setLenient(true);
+//        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+//    }
 
     /**
      * Get method for sale page
@@ -107,5 +112,42 @@ public class SaleController {
                 lastName, birthDate, city, street, house,
                 email, passport, tariffId, numberId, session);
         return "redirect:/sale";
+    }
+
+    @PostMapping(value = "/confirmPersonalAccount", params = "confirm")
+    public String confirmSaleToExistPersonalAccountToCart(@RequestParam("personalAccountId") Long personalAccountId,
+                                                          @RequestParam("tariff") Long tariffId,
+                                                          @RequestParam("number") Long numberId,
+                                                          HttpSession session){
+        cartSaleService.saleToPersonalAccount(personalAccountId, tariffId, numberId, session);
+        return "redirect:/cart";
+    }
+
+    @PostMapping(value = "/confirmPersonalAccount", params = "add_to_cart")
+    public String confirmSaleToExistPersonalAccount(@RequestParam("personalAccountId") Long personalAccountId,
+                                                    @RequestParam("tariff") Long tariffId,
+                                                    @RequestParam("number") Long numberId,
+                                                    HttpSession session){
+        cartSaleService.saleToPersonalAccount(personalAccountId, tariffId, numberId, session);
+        return "redirect:/sale";
+    }
+
+    @PostMapping("/search")
+    public String searchCustomer(Model model,
+                                 @RequestParam("number") String number){
+        TerminalDevice terminalDevice;
+        try {
+            terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(number);
+        }catch (Exception e){
+            terminalDevice = null;
+        }
+        if(terminalDevice == null){
+            model.addAttribute("message", "Not found");
+        }else {
+            model.addAttribute("terminalDevice", terminalDevice);
+            model.addAttribute("tariffs", tariffService.findAll());
+            model.addAttribute("numbers", phoneNumberService.getAllEmptyNumbers());
+        }
+        return "sale";
     }
 }

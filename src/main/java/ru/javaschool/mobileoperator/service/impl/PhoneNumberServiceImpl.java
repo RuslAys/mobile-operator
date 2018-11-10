@@ -12,6 +12,7 @@ import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.exceptions.PhoneNumberException;
 
 import java.util.List;
 
@@ -49,11 +50,10 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
     @Transactional(propagation = Propagation.REQUIRED)
     public void addNumber(String number) {
         if(StringUtils.isEmpty(number)){
-            throw new IllegalArgumentException("Number cannot be empty");
+            throw new PhoneNumberException("Number cannot be empty");
         }
         long parseLong = Long.parseLong(number);
-        PhoneNumber phoneNumber = new PhoneNumber();
-        phoneNumber.setNumber(parseLong);
+        PhoneNumber phoneNumber = new PhoneNumber(parseLong);
         phoneNumberDao.add(phoneNumber);
     }
 }

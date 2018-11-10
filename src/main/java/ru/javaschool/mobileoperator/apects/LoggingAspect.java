@@ -26,7 +26,7 @@ public class LoggingAspect {
             return result;
         }catch (RuntimeException e){
             log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                     joinPoint.getSignature().getName() + "()");
+                     joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
             throw e;
         }
     }
@@ -39,14 +39,18 @@ public class LoggingAspect {
             String args = Arrays.toString(joinPoint.getArgs());
             log.debug("Method " + className + "." + methodName + "(" + args + ")");
             Object result = joinPoint.proceed();
-            log.debug("Method " + className + "." + methodName + "(" + args + ")"+
-                    " returns " + result.toString());
-            return result;
+            if(result != null){
+                log.debug("Method " + className + "." + methodName + "(" + args + ")"+
+                        " returns " + result.toString());
+                return result;
+            }
+
         }catch (RuntimeException e){
             log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                    joinPoint.getSignature().getName() + "()");
+                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
             throw e;
         }
+        return new Object();
     }
 
     @Around("execution (* ru.javaschool.mobileoperator.repository..*.*(..))")
@@ -57,13 +61,16 @@ public class LoggingAspect {
             String args = Arrays.toString(joinPoint.getArgs());
             log.debug("Method " + className + "." + methodName + "(" + args + ")");
             Object result = joinPoint.proceed();
-            log.debug("Return " + result.toString());
-            return result;
+            if(result != null){
+                log.debug("Return " + result.toString());
+                return result;
+            }
         }catch (RuntimeException e){
             log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                    joinPoint.getSignature().getName() + "()");
+                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
             throw e;
         }
+        return new Object();
     }
 
     @Around("execution (* ru.javaschool.mobileoperator.utils..*.*(..))")
@@ -74,14 +81,17 @@ public class LoggingAspect {
             String args = Arrays.toString(joinPoint.getArgs());
             log.debug("Method " + className + "." + methodName + "(" + args + ")");
             Object result = joinPoint.proceed();
-            log.debug("Method " + className + "." + methodName + "(" + args + ")"+
-                    " returns " + result.toString());
-            return result;
+            if(result != null){
+                log.debug("Method " + className + "." + methodName + "(" + args + ")"+
+                        " returns " + result.toString());
+                return result;
+            }
         }catch (RuntimeException e){
             log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                    joinPoint.getSignature().getName() + "()");
+                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
             throw e;
         }
+        return new Object();
     }
 
 }

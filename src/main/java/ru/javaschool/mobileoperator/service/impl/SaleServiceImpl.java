@@ -18,6 +18,7 @@ import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
+import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
 import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.UserDao;
@@ -46,6 +47,9 @@ public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private CustomerDao customerDao;
+
+    @Autowired
+    private PersonalAccountDao personalAccountDao;
 
     /**
      * Method to create new customer
@@ -97,6 +101,48 @@ public class SaleServiceImpl implements SaleService {
         customer.getContracts().add(contract);
 
         customerDao.add(customer);
+        userDao.add(user);
+        phoneNumberDao.update(phoneNumber);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void saleToExistPersonalAccount(long personalAccountId, long tariffPlanId, long phoneNumberId) {
+        PhoneNumber phoneNumber = phoneNumberDao.find(phoneNumberId);
+        if(phoneNumber.getTerminalDevice() != null){
+            throw new IllegalArgumentException("Number already in use");
+        }
+        TariffPlan tariffPlan = tariffDao.find(tariffPlanId);
+        if(tariffPlan.isArchival()){
+            throw new TariffPlanException("Tariff plan is archival");
+        }
+
+        PersonalAccount personalAccount = personalAccountDao.find(personalAccountId);
+
+        String password = "p";
+
+        // Create user account
+        User user = new User(phoneNumber.getNumber().toString(),
+                passwordEncoder.encode(password),
+                true);
+        user.getAuthorities().add(new Authority(user, UserRoleEnum.USER.name()));
+        user.setCustomer(personalAccount.getContract().getCustomer());
+
+        //Create terminal device and set it to personal account
+        TerminalDevice terminalDevice = new TerminalDevice();
+        personalAccount.getTerminalDevices().add(terminalDevice);
+        terminalDevice.setPersonalAccount(personalAccount);
+
+        //Fill terminal device by options and tariff
+        terminalDevice.setTariffPlan(tariffPlan);
+        List<Option> options = tariffPlan.getOptions();
+        terminalDevice.getOptions().addAll(options);
+
+        //Create references to number and terminal device
+        terminalDevice.setPhoneNumber(phoneNumber);
+        phoneNumber.setTerminalDevice(terminalDevice);
+
+        personalAccountDao.update(personalAccount);
         userDao.add(user);
         phoneNumberDao.update(phoneNumber);
     }

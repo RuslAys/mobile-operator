@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler
+    @ExceptionHandler(Throwable.class)
     public String handleInternalServerError(HttpServletRequest request, Exception e){
         return "errors/internal_error";
     }

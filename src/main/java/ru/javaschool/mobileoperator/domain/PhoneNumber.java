@@ -9,11 +9,18 @@ import java.util.Objects;
 @Entity
 @Table(name = "phone_numbers")
 public class PhoneNumber extends AbstractPO {
-    @Column(name = "number",unique = true, nullable = false)
+    @Column(name = "number")
     private Long number;
 
     @OneToOne(mappedBy = "phoneNumber")
     private TerminalDevice terminalDevice;
+
+    public PhoneNumber() {
+    }
+
+    public PhoneNumber(Long number) {
+        this.number = number;
+    }
 
     public Long getNumber() {
         return number;
@@ -32,11 +39,6 @@ public class PhoneNumber extends AbstractPO {
     }
 
     @Override
-    public String toString() {
-        return Long.toString(number);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -47,5 +49,13 @@ public class PhoneNumber extends AbstractPO {
     @Override
     public int hashCode() {
         return Objects.hash(number);
+    }
+
+    @Override
+    public String toString() {
+        return "PhoneNumber{" +
+                "number=" + number +
+                ", id=" + id +
+                '}';
     }
 }

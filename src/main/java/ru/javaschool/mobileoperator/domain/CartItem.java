@@ -17,6 +17,7 @@ public class CartItem {
     private long phoneNumberId;
     private boolean completed;
     private UserDetails user;
+    private long personalAccountId;
 
     public CartItem(CartItemBuilder builder){
         this.id = builder.getId();
@@ -29,6 +30,7 @@ public class CartItem {
         this.phoneNumberId = builder.getPhoneNumberId();
         this.completed = builder.isCompleted();
         this.user = builder.getUserDetails();
+        this.personalAccountId = builder.getPersonalAccountId();
     }
 
     public int getId() {
@@ -109,6 +111,14 @@ public class CartItem {
 
     public void setUser(UserDetails user) {
         this.user = user;
+    }
+
+    public long getPersonalAccountId() {
+        return personalAccountId;
+    }
+
+    public void setPersonalAccountId(long personalAccountId) {
+        this.personalAccountId = personalAccountId;
     }
 
     @Override

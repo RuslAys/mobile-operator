@@ -20,6 +20,7 @@ public class CartItemBuilder {
     private long terminalDeviceId;
     private long phoneNumberId;
     private boolean completed;
+    private long personalAccountId;
 
     private CartItemBuilder(Builder builder){
         this.id = builder.id;
@@ -32,6 +33,7 @@ public class CartItemBuilder {
         this.terminalDeviceId = builder.terminalDeviceId;
         this.phoneNumberId = builder.phoneNumberId;
         this.completed = builder.completed;
+        this.personalAccountId = builder.personalAccountId;
     }
 
     public static class Builder{
@@ -45,6 +47,7 @@ public class CartItemBuilder {
         private long terminalDeviceId;
         private long phoneNumberId;
         private boolean completed;
+        private long personalAccountId;
 
         public Builder(int id, OperationType operationType){
             this.id = id;
@@ -101,6 +104,11 @@ public class CartItemBuilder {
             return this;
         }
 
+        public Builder setPersonalAccountId(long personalAccountId){
+            this.personalAccountId = personalAccountId;
+            return this;
+        }
+
         public CartItemBuilder build(){
             return new CartItemBuilder(this);
         }
@@ -144,5 +152,9 @@ public class CartItemBuilder {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public long getPersonalAccountId() {
+        return personalAccountId;
     }
 }

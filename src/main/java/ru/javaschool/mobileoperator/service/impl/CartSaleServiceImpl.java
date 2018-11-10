@@ -69,4 +69,24 @@ public class CartSaleServiceImpl implements CartSaleService {
         cartService.addItem(cart, item);
         session.setAttribute("cart", cart);
     }
+
+    @Override
+    public void saleToPersonalAccount(Long personalAccountId, Long tariffId, Long numberId, HttpSession session) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        if(cart == null){
+            cart = new Cart();
+        }
+        int id = 0;
+        if(!cart.getCartItems().isEmpty()){
+            id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
+        }
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.SALE_TO_EXIST_PERSONAL_ACCOUNT)
+                .setPersonalAccountId(personalAccountId)
+                .setTariffPlanId(tariffId)
+                .setPhoneNumberId(numberId)
+                .build();
+        CartItem item = cartItemService.createItem(builder);
+        cartService.addItem(cart, item);
+        session.setAttribute("cart", cart);
+    }
 }
