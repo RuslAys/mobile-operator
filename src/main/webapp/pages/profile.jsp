@@ -2,10 +2,22 @@
 <jsp:include page="parts/header.jsp" />
 <body>
     <div>
-        <h3>Customer:</h3>
-        <h5> Name: ${terminalDevice.personalAccount.contract.customer.firstName} </h5>
-        <h5> Last Name: ${terminalDevice.personalAccount.contract.customer.lastName} </h5>
-        <h5> Birth date: ${terminalDevice.personalAccount.contract.customer.birthDate} </h5>
+        <div>
+            <h3>Customer:</h3>
+            <h5> Name: ${terminalDevice.personalAccount.contract.customer.firstName} </h5>
+            <h5> Last Name: ${terminalDevice.personalAccount.contract.customer.lastName} </h5>
+            <h5> Birth date: ${terminalDevice.personalAccount.contract.customer.birthDate} </h5>
+        </div>
+
+        <div>
+            <security:authorize access="hasRole('ROLE_OPERATOR')">
+                    <c:forEach items="${anotherTerminalDevices}" var="td" varStatus="loop">
+                        <h5>
+                            <a class="nav-link" href="/profile/${td.phoneNumber.number}">${td.phoneNumber.number}</a>
+                        </h5>
+                    </c:forEach>
+            </security:authorize>
+        </div>
     </div>
     <ul>
         <li>
