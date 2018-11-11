@@ -10,7 +10,7 @@
                         <div class="col-md-5 mx-auto">
                             <div>
                                 <div>
-                                    <form name="add-new-option" action="option/add" method="post">
+                                    <form name="add-new-option" action="/admin/option/add" method="post">
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="name"
                                                 id="optionNameField" placeholder="Option`s name">

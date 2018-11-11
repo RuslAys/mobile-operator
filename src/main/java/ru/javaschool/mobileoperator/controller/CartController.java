@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.Cart;
+import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
@@ -46,6 +49,20 @@ public class CartController {
     @PostMapping("/confirm")
     public String confirmItems(HttpSession session){
         cartService.confirm(cartHelper.getCart(session));
+        return "redirect:/cart";
+    }
+
+    /**
+     * Post method for confirm items
+     * @param session http session
+     * @return redirect to cart page {@link #cartPage(Model, HttpSession)}
+     */
+    @PostMapping("/remove")
+    public String removeItem(@RequestParam("itemId") Integer id,
+                             HttpSession session){
+        Cart cart = cartHelper.getCart(session);
+        CartItem cartItem = cart.getCartItems().get(id);
+        cartService.removeItem(cartHelper.getCart(session), cartItem);
         return "redirect:/cart";
     }
 }

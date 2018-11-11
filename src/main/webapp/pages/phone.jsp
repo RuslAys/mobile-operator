@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-5 mx-auto">
                         <div>
-                            <form name="add-new-phone" action="phone/add" method="post">
+                            <form name="add-new-phone" action="/admin/phone/add" method="post">
                                 <div class="form-group">
                                     <label for="numberField">Phone</label>
                                     <input type="text" class="form-control" name="number"
@@ -32,9 +32,7 @@
             <tbody>
             <c:forEach var="phoneNumber" items="${pageListHolder.pageList}">
                 <tr>
-                    <td><a href="/phone/${phoneNumber.number}">
-                        <c:out value="${phoneNumber.number}" /> </a>
-                    </td>
+                    <td>${phoneNumber.number}</td>
                 </tr>
             </c:forEach>
             </tbody>

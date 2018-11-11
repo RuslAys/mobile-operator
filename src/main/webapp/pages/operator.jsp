@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <c:set var="pageListHolder" value="${operators}" scope="session" />
-<spring:url value="/admin/operator" var="pageurl" />
+<spring:url value="/admin/operator/l" var="pageurl" />
 <body>
     <div class="container py-4">
         <div class="row">
@@ -10,7 +10,7 @@
                     <div class="col-md-5 mx-auto">
                         <div>
                             <div>
-                                <form name="add-new-operator" action="operator/add" method="post">
+                                <form name="add-new-operator" action="/admin/operator/add" method="post">
                                     <div class="form-group">
                                         <label for="usernameField">Username</label>
                                         <input type="text" class="form-control" name="username"
@@ -43,11 +43,11 @@
                    </tr>
                  </thead>
                 <tbody>
-                <c:forEach var="ph" items="${pageListHolder.pageList}">
+                <c:forEach var="operator" items="${pageListHolder.pageList}">
                     <tr>
-                    <td>${ph.username}</td>
-                    <td>${ph.enabled}</td>
-                    <c:forEach items="${ph.authorities}" var="auth">
+                    <td> <a href="/admin/operator/${operator.username}" >${operator.username} </a></td>
+                    <td>${operator.enabled}</td>
+                    <c:forEach items="${operator.authorities}" var="auth">
                        <td> <c:out value="${auth.authority}" /></td>
                     </c:forEach>
                     </tr>

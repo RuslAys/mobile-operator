@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({RuntimeException.class})
     public String handleBadRequest(Model model, HttpServletRequest request, Exception e){
         logger.error(e.getMessage());
+        model.addAttribute("info", e.getMessage());
         return "errors/bad_request";
     }
 

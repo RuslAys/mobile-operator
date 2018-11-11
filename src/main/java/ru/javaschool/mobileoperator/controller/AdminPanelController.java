@@ -72,7 +72,7 @@ public class AdminPanelController {
      * @param model ui model
      * @return operator page
      */
-    @GetMapping(value = {"/operator/{type}","/operator"})
+    @GetMapping(value = {"/operator/l/{type}", "/operator"})
     public String operatorPage(Model model,
                                @PathVariable Map<String, String> pathVariablesMap,
                                HttpServletRequest request){
@@ -219,8 +219,10 @@ public class AdminPanelController {
      * @param model ui model
      * @return tariff page
      */
-    @GetMapping(value = {"/tariff/{type}", "/tariff"})
-    public String tariffPage(Model model, @PathVariable Map<String, String> pathVariablesMap, HttpServletRequest request){
+    @GetMapping(value = {"/tariff/l/{type}", "/tariff"})
+    public String tariffPage(Model model,
+                             @PathVariable Map<String, String> pathVariablesMap,
+                             HttpServletRequest request){
         PagedListHolder<TariffPlan> tariffPagedListHolder = null;
         String type = pathVariablesMap.get("type");
         if(null == type) {
