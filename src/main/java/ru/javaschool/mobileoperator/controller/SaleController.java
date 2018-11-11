@@ -45,12 +45,12 @@ public class SaleController {
     @Autowired
     private ProfileService profileService;
 
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder){
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//        sdf.setLenient(true);
-//        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
-//    }
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+    }
 
     /**
      * Get method for sale page

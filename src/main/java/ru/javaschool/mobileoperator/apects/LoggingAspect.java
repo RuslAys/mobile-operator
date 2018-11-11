@@ -21,6 +21,9 @@ public class LoggingAspect {
             String args = Arrays.toString(joinPoint.getArgs());
             log.debug("Method " + className + "." + methodName + "(" + args + ")");
             Object result = joinPoint.proceed();
+            if(result == null){
+                return new Object();
+            }
             log.debug("Method " + className + "." + methodName + "(" + args + ")"+
                     " returns " + result.toString() + " page");
             return result;

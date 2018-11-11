@@ -154,12 +154,14 @@ public class ProfileController {
     }
 
     /**
-     * Post method for add lock to terminal device
+     * Post method for add lock to terminal device. Adding item to cart
      * @param model ui model
      * @param username profile username
      * @param terminalDeviceId terminal device id
-     * @param lockId list of lock ids
-     * @return redirect to profile lock page {@link #profileLockPage(Model, String)}
+     * @param lockId lock id
+     * @param session http session
+     * @param user auth principal
+     * @return redirect to cart page
      */
     @PostMapping(value = "/{username}/lock/add", params = "confirm")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
@@ -173,6 +175,16 @@ public class ProfileController {
         return "redirect:/cart";
     }
 
+    /**
+     * Post method for add lock to terminal device. Adding item to cart
+     * @param model ui model
+     * @param username profile username
+     * @param terminalDeviceId terminal device id
+     * @param lockId lock id
+     * @param session http session
+     * @param user auth principal
+     * @return redirect to profile lock management
+     */
     @PostMapping(value = "/{username}/lock/add", params = "add_to_cart")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String addLockToTerminalDeviceToCart(Model model,
@@ -186,13 +198,14 @@ public class ProfileController {
     }
 
     /**
-     * Post method for remove lock from terminal device
+     * Post method for remove lock from terminal device. Adding item to cart
      * @param model ui model
      * @param username profile username
      * @param terminalDeviceId terminal device id
      * @param lockId lock id
      * @param user auth principal
-     * @return redirect to profile lock page {@link #profileLockPage(Model, String)}
+     * @param session http session
+     * @return redirect to cart page
      */
     @PostMapping(value = "/{username}/lock/remove", params = "confirm")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
@@ -206,6 +219,16 @@ public class ProfileController {
         return "redirect:/cart";
     }
 
+    /**
+     * Post method for remove lock from terminal device. Adding item to cart
+     * @param model ui model
+     * @param username profile username
+     * @param terminalDeviceId terminal device id
+     * @param lockId lock id
+     * @param user auth principal
+     * @param session http session
+     * @return redirect to profile lock management
+     */
     @PostMapping(value = "/{username}/lock/remove", params = "add_to_cart")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String removeLockFromTerminalDeviceToCart(Model model,
@@ -273,11 +296,13 @@ public class ProfileController {
     }
 
     /**
-     * Method to remove option from terminal device
+     * Post method for remove option from terminal device. Adding item to cart
+     * @param model ui model
      * @param username profile username
      * @param terminalDeviceId terminal device id
      * @param optionId option id
-     * @return redirect to profile option page {@link #profileOptionsPage(Model, String)}
+     * @param session http session
+     * @return redirect to profile option management
      */
     @PostMapping(value = "/{username}/option/remove", params = "add_to_cart")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
@@ -290,6 +315,15 @@ public class ProfileController {
         return "redirect:/profile/" + username + "/option";
     }
 
+    /**
+     * Post method for remove option from terminal device. Adding item to cart
+     * @param model ui model
+     * @param username profile username
+     * @param terminalDeviceId terminal device id
+     * @param optionId option id
+     * @param session http session
+     * @return redirect to cart page
+     */
     @PostMapping(value = "/{username}/option/remove", params = "confirm")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String removeOptionToCart(Model model,

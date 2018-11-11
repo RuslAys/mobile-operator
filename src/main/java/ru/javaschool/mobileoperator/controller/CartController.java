@@ -25,6 +25,12 @@ public class CartController {
     @Autowired
     private CartHelper cartHelper;
 
+    /**
+     * Get method for cart page
+     * @param model ui model
+     * @param session http session
+     * @return cart page
+     */
     @GetMapping
     public String cartPage(Model model,
                            HttpSession session){
@@ -32,6 +38,11 @@ public class CartController {
         return "cart";
     }
 
+    /**
+     * Post method for confirm items
+     * @param session http session
+     * @return redirect to cart page {@link #cartPage(Model, HttpSession)}
+     */
     @PostMapping("/confirm")
     public String confirmItems(HttpSession session){
         cartService.confirm(cartHelper.getCart(session));
