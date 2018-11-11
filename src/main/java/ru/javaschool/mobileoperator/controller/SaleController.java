@@ -76,7 +76,7 @@ public class SaleController {
      * @param passport user passport
      * @param tariffId choosen tariff id
      * @param numberId choosen number id
-     * @return redirect to sale page {@link #salePage(Model)}
+     * @return redirect to cart page
      */
     @PostMapping(value = "/confirm", params = "confirm")
     public String confirmSaleToCart(@RequestParam("firstName") String firstName,
@@ -96,6 +96,20 @@ public class SaleController {
         return "redirect:/cart";
     }
 
+    /**
+     * Post method to sale contract
+     * @param firstName user first name
+     * @param lastName user last name
+     * @param birthDate user birth date
+     * @param city user city
+     * @param street user street
+     * @param house user house
+     * @param email user email
+     * @param passport user passport
+     * @param tariffId choosen tariff id
+     * @param numberId choosen number id
+     * @return redirect to sale page {@link #salePage(Model)}
+     */
     @PostMapping(value = "/confirm", params = "add_to_cart")
     public String confirmSale(@RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName,
@@ -114,6 +128,14 @@ public class SaleController {
         return "redirect:/sale";
     }
 
+    /**
+     * Post method to sale terminal device to existing personal account
+     * @param personalAccountId personal account id
+     * @param tariffId tariff id
+     * @param numberId phone number id
+     * @param session http session
+     * @return redirect to cart page
+     */
     @PostMapping(value = "/confirmPersonalAccount", params = "confirm")
     public String confirmSaleToExistPersonalAccountToCart(@RequestParam("personalAccountId") Long personalAccountId,
                                                           @RequestParam("tariff") Long tariffId,
@@ -123,6 +145,14 @@ public class SaleController {
         return "redirect:/cart";
     }
 
+    /**
+     * Post method to sale terminal device to existing personal account
+     * @param personalAccountId personal account id
+     * @param tariffId tariff id
+     * @param numberId phone number id
+     * @param session http session
+     * @return redirect to sale page {@link #salePage(Model)}
+     */
     @PostMapping(value = "/confirmPersonalAccount", params = "add_to_cart")
     public String confirmSaleToExistPersonalAccount(@RequestParam("personalAccountId") Long personalAccountId,
                                                     @RequestParam("tariff") Long tariffId,
@@ -132,6 +162,12 @@ public class SaleController {
         return "redirect:/sale";
     }
 
+    /**
+     * Search customer by number
+     * @param model ui model
+     * @param number phone number
+     * @return sale page with filled fields by customer info
+     */
     @PostMapping("/search")
     public String searchCustomer(Model model,
                                  @RequestParam("number") String number){

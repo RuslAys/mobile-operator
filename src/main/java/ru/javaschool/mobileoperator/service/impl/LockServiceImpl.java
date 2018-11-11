@@ -53,13 +53,12 @@ public class LockServiceImpl extends GenericServiceImpl<Lock, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void addLock(String name, Boolean deletedByUser) {
+    public void addLock(String name) {
         if(StringUtils.isEmpty(name)){
             throw new IllegalArgumentException("Name cannot be empty");
         }
         Lock lock = new Lock();
         lock.setName(name);
-        lock.setCanBeDeletedByUser(deletedByUser);
         add(lock);
     }
 
@@ -95,7 +94,7 @@ public class LockServiceImpl extends GenericServiceImpl<Lock, Long>
         TerminalDeviceLock tdl = lockHelper.getTerminalDeviceLock(terminalDevice, lock);
         if(isUser && lockHelper.canBeDeleted(terminalDevice, lock)){
             removeLockFromTd(terminalDevice, lock);
-        }else if(isUser && !lock.getCanBeDeletedByUser()){
+        }else if(isUser && !tdl.isCanBeDeletedByUser()){
             throw new IllegalArgumentException("Lock can`t be deleted by user");
         }else {
             removeLockFromTd(terminalDevice, lock);

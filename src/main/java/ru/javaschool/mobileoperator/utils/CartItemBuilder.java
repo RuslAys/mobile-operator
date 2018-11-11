@@ -9,6 +9,9 @@ import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
 
+/**
+ * Cart item builder to create cart item with different parameters
+ */
 public class CartItemBuilder {
     private int id;
     private UserDetails userDetails;

@@ -4,7 +4,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.javaschool.mobileoperator.domain.Lock;
 
 public interface LockService extends GenericService<Lock, Long> {
-    void addLock(String name, Boolean deletedByUser);
+    /**
+     * Method for add new lock to data base
+     * @param name lock name
+     */
+    void addLock(String name);
     /**
      * Method to add locks on terminal device
      * @param user principal

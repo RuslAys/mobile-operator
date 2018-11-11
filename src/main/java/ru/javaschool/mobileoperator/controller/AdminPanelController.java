@@ -260,15 +260,11 @@ public class AdminPanelController {
     /**
      * Post method to add lock
      * @param name lock name
-     * @param deletedByUser can be deleted by user
      * @return redirect to locks page {@link #lockPage(Model)}
      */
     @PostMapping("/lock/add")
-    public String addLock(@RequestParam("name") String name,
-                          @RequestParam(value = "deletedByUser",
-                                  defaultValue = "false",
-                                  required = false) Boolean deletedByUser){
-        lockService.addLock(name, deletedByUser);
+    public String addLock(@RequestParam("name") String name){
+        lockService.addLock(name);
         return "redirect:/admin/lock";
     }
 

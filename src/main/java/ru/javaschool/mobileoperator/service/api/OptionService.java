@@ -6,15 +6,39 @@ import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import java.util.List;
 
 public interface OptionService extends GenericService<Option, Long> {
+    /**
+     * Method for add new option to data base
+     * @param name option name
+     * @param price option price
+     * @param connectionCost option connection cost
+     * @param inclusiveOptions inclusive options ids
+     * @param exclusiveOptions exclusive options ids
+     */
     void addOption(String name,
                    String price,
                    String connectionCost,
                    List<Long> inclusiveOptions,
                    List<Long> exclusiveOptions);
+
+    /**
+     * Method for find options by ids
+     * @param ids options ids
+     * @return list with options
+     */
     List<Option> getOptionsByIds(List<Long> ids);
 
+    /**
+     * Method for find options not like specified options
+     * @param options specified options
+     * @return list with options
+     */
     List<Option> getOptionsNotIn(List<Option> options);
 
+    /**
+     * Method for find option with all relations
+     * @param id options id
+     * @return option
+     */
     Option getFullOptionById(Long id);
 
     /**
