@@ -19,7 +19,6 @@ import ru.javaschool.mobileoperator.config.SpringSecurityInitializer;
 import ru.javaschool.mobileoperator.config.WebAppConfig;
 import ru.javaschool.mobileoperator.config.WebSecurityConfig;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,8 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, HibernateConfig.class, AspectConfig.class})
 @ComponentScan("ru.javaschool.mobileoperator")
-public class LoginTest {
-
+public class CartControllerTest {
     @Autowired
     private WebApplicationContext wac;
 
@@ -44,40 +42,23 @@ public class LoginTest {
     }
 
     @Test
-    public void searchWithOutLoginTest() throws Exception{
-        this.mockMvc.perform(post("/search").param("username", "a"))
+    public void cartPageTest() throws Exception{
+        this.mockMvc.perform(get("/cart"))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void correctAdminLoginTest() throws Exception{
-        this.mockMvc.perform(formLogin().user("a").password("p"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-    }
-
-    @Test
-    public void correctUserLoginTest() throws Exception{
-        this.mockMvc.perform(formLogin().user("79817549091").password("p"))
+    public void cartConfirmRedirectionTest() throws Exception{
+        this.mockMvc.perform(post("/cart/confirm"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/profile/79817549091"));
+                .andExpect(redirectedUrl("/cart"));
     }
 
     @Test
-    public void badCredentials() throws Exception{
-        this.mockMvc.perform(post("/login")
-                .param("username", "a")
-                .param("password", "b"))
-                .andDo(print())
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    public void testBadRequest() throws Exception{
-        this.mockMvc.perform(get("/profile/79817549091"))
+    public void cartRemoveItemTest() throws Exception{
+        this.mockMvc.perform(post("/cart/remove").param("itemId", "0"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

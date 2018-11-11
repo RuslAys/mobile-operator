@@ -3,6 +3,7 @@ package ru.javaschool.mobileoperator.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,7 @@ public class IndexController {
      * @param username username to search
      * @return redirect to index {@link #index(Model, UserDetails, HttpSession)}
      */
+    @PreAuthorize("hasRole('ROLE_OPERATOR')")
     @PostMapping("/search")
     public String search(Model model, @RequestParam("username") String username){
         User user = userService.getUser(username);
