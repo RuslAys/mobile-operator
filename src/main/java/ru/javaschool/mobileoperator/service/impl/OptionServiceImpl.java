@@ -121,6 +121,9 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             throw new TariffPlanException("Current tariff plan is archival. Can not add options");
         }
         Option newOption = optionDao.find(optionId);
+        if(terminalDevice.getOptions().contains(newOption)){
+            throw new OptionException("Option " + newOption.getName() + " already added");
+        }
         List<Option> tdOptions = terminalDevice.getOptions();
         List<Option> optionsToAdd = new ArrayList<>();
 

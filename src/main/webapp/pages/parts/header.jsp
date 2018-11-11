@@ -1,4 +1,5 @@
 <%@include file ="common.jsp"%>
+<c:set var="cart" value="${cart}" scope="session" />
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -21,6 +22,11 @@
               <a class="nav-link" href="/sale">Sale contract</a>
         </security:authorize>
       </li>
+      <security:authorize access="isAuthenticated()">
+          <li class="nav-item active">
+                <a class="nav-link" href="/cart">Cart quantity: ${cart.quantity}</a>
+          </li>
+      </security:authorize>
     </ul>
     <security:authorize access="isAuthenticated()">
         Logged as

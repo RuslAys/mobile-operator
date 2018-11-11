@@ -52,9 +52,12 @@ public class CartServiceImpl implements CartService {
             try {
                 cartItemService.proceed(itemIterator.next());
                 itemIterator.remove();
+                cart.setQuantity(cart.getQuantity() - 1);
             }catch (RuntimeException e){
                 itemIterator.remove();
-                e.printStackTrace();
+                cart.setQuantity(cart.getQuantity() - 1);
+                logger.error(e.getMessage());
+                throw e;
             }
         }
     }

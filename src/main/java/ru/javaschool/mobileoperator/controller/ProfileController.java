@@ -85,8 +85,12 @@ public class ProfileController {
      */
     @GetMapping("/{username}")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String profilePage(Model model, @PathVariable("username") String username, @AuthenticationPrincipal UserDetails user){
+    public String profilePage(Model model,
+                              @PathVariable("username") String username,
+                              @AuthenticationPrincipal UserDetails user,
+                              HttpSession session){
         TerminalDevice terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(username);
+        model.addAttribute("cart", cartHelper.getCart(session));
         model.addAttribute("user", userService.getUser(username));
         model.addAttribute("terminalDevice", profileService.getTerminalDeviceWithOptions(username));
         model.addAttribute("terminalDeviceLocks", profileService.getTerminalDeviceWithLocksByNumber(username));

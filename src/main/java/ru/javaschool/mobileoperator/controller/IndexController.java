@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.service.api.UserService;
+import ru.javaschool.mobileoperator.utils.CartHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
@@ -26,6 +29,9 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CartHelper cartHelper;
+
     /**
      * Get method to index page
      * @param model ui model
@@ -33,10 +39,11 @@ public class IndexController {
      * @return if user redirect to profile, else show the search page
      */
     @GetMapping
-    public String index(Model model, @AuthenticationPrincipal UserDetails user){
+    public String index(Model model, @AuthenticationPrincipal UserDetails user, HttpSession session){
         if(roleHelper.isOnlyUser(user)){
             return "redirect:/profile/" + user.getUsername();
         }
+        model.addAttribute("cart", cartHelper.getCart(session));
         return "index";
     }
 
@@ -44,7 +51,7 @@ public class IndexController {
      * Post method to search by users by username
      * @param model ui model
      * @param username username to search
-     * @return redirect to index {@link #index(Model, UserDetails)}
+     * @return redirect to index {@link #index(Model, UserDetails, HttpSession)}
      */
     @PostMapping("/search")
     public String search(Model model, @RequestParam("username") String username){

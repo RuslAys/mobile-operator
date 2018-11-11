@@ -13,12 +13,14 @@ public class Cart {
 
     public void addItem(CartItem item){
         cartItems.add(item);
+        quantity = cartItems.size();
     }
 
     public void removeItem(CartItem item){
         if(!cartItems.isEmpty()){
             cartItems.removeIf(item1 -> item.equals(item1));
         }
+        quantity = cartItems.size();
     }
 
     public void updateItem(CartItem item){
@@ -70,6 +72,7 @@ public class Cart {
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+        quantity = cartItems.size();
     }
 
     @Override

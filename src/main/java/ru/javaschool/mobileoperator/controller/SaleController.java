@@ -19,6 +19,7 @@ import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
+import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -45,6 +46,9 @@ public class SaleController {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private CartHelper cartHelper;
+
     @InitBinder
     public void initBinder(WebDataBinder binder){
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -58,7 +62,8 @@ public class SaleController {
      * @return sale page
      */
     @GetMapping
-    public String salePage(Model model){
+    public String salePage(Model model, HttpSession session){
+        model.addAttribute("cart", cartHelper.getCart(session));
         model.addAttribute("tariffs", tariffService.findAll());
         model.addAttribute("numbers", phoneNumberService.getAllEmptyNumbers());
         return "sale";
@@ -108,7 +113,7 @@ public class SaleController {
      * @param passport user passport
      * @param tariffId choosen tariff id
      * @param numberId choosen number id
-     * @return redirect to sale page {@link #salePage(Model)}
+     * @return redirect to sale page {@link #salePage(Model, HttpSession)} (Model)}
      */
     @PostMapping(value = "/confirm", params = "add_to_cart")
     public String confirmSale(@RequestParam("firstName") String firstName,

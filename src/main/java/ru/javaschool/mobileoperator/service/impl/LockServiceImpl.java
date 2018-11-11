@@ -59,7 +59,7 @@ public class LockServiceImpl extends GenericServiceImpl<Lock, Long>
         }
         Lock lock = new Lock();
         lock.setName(name);
-        add(lock);
+        lockDao.add(lock);
     }
 
     @Override
