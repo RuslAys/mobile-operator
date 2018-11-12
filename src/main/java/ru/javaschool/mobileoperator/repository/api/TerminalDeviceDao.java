@@ -23,4 +23,11 @@ public interface TerminalDeviceDao extends GenericDao<TerminalDevice, Long> {
      * @return terminal device
      */
     TerminalDevice getFullTerminalDeviceById(Long id);
+
+    /**
+     * Method to find terminal device with relation options by id
+     * @param id terminal device id
+     * @return Terminal device
+     */
+    TerminalDevice getTerminalDeviceWithOptionsById(Long id);
 }

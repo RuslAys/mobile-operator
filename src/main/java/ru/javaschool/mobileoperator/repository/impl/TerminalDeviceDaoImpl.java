@@ -37,4 +37,14 @@ public class TerminalDeviceDaoImpl extends GenericDaoImpl<TerminalDevice, Long> 
                 .setParameter("id", id)
                 .getSingleResult();
     }
+
+    @Override
+    public TerminalDevice getTerminalDeviceWithOptionsById(Long id) {
+        String query = "SELECT td FROM TerminalDevice td LEFT JOIN FETCH td.options " +
+                "WHERE td.id = :id";
+        return (TerminalDevice) currentSession()
+                .createQuery(query)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }

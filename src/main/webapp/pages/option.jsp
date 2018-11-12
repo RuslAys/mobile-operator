@@ -27,7 +27,7 @@
                                             <label for="inclusiveOptionsField">Inclusive options</label>
                                             <select multiple class="form-control" id="inclusiveOptionsField"
                                                 name="inclusiveOptions">
-                                                <c:forEach items="${pageListHolder.pageList}" var="option">
+                                                <c:forEach items="${pageListHolder.source}" var="option">
                                                     <option value="${option.id}"> <c:out value="${option}"/> </option>
                                                 </c:forEach>
                                             </select>
@@ -36,7 +36,7 @@
                                             <label for="exclusiveOptionsField">Exclusive options</label>
                                             <select multiple class="form-control" id="exclusiveOptionsField"
                                                   name="exclusiveOptions">
-                                                <c:forEach items="${pageListHolder.pageList}" var="option">
+                                                <c:forEach items="${pageListHolder.source}" var="option">
                                                     <option value="${option.id}"> <c:out value="${option}"/> </option>
                                                 </c:forEach>
                                             </select>

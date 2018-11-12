@@ -69,16 +69,17 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         List<Option> inOptions = optionDao.getOptions(inclusiveOptions);
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);
 
-        Set<Option> uniqueInOptions = new HashSet<>();
-        uniqueInOptions = getAllDependentOptions(inOptions, uniqueInOptions);
-        List<Option> uniqueInOptionList = new ArrayList<>(uniqueInOptions);
+        //TODO Разобраться с этими опциями
+//        Set<Option> uniqueInOptions = new HashSet<>();
+//        uniqueInOptions = getAllDependentOptions(inOptions, uniqueInOptions);
+//        List<Option> uniqueInOptionList = new ArrayList<>(uniqueInOptions);
 
-        if(!Collections.disjoint(uniqueInOptionList, exOptions)){
+        if(!Collections.disjoint(inOptions, exOptions)){
             throw new OptionException("There are common elements in inclusive and exclusive options");
         }
-        if(!uniqueInOptionList.isEmpty()){
-            uniqueInOptionList.forEach(option1 -> option1.getParentInclusive().add(option));
-            option.setInclusiveOptions(uniqueInOptionList);
+        if(!inOptions.isEmpty()){
+            inOptions.forEach(option1 -> option1.getParentInclusive().add(option));
+            option.setInclusiveOptions(inOptions);
         }
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
@@ -86,7 +87,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             option.setParentExclusive(exOptions);
             option.setExclusiveOptions(exOptions);
         }
-        add(option);
+        optionDao.add(option);
     }
 
     @Override
@@ -133,10 +134,19 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         // Find options to delete
         List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
         if(!exclusiveOptions.isEmpty()){
-            List<Option> optionToDelete = new ArrayList<>();
-            optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
-            optionHelper.removeOptionsFromTd(terminalDevice, optionToDelete);
-            optionToDelete.forEach(
+            List<Option> optionsToDelete = new ArrayList<>();
+            optionsToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionsToDelete);
+            // Find required options for current terminal device option which not will be deleted
+            // in options to delete
+            for (Option option: optionsToDelete){
+                for(Option tdOption: terminalDevice.getOptions()){
+                    if(!optionsToDelete.contains(tdOption) && option.getParentInclusive().contains(tdOption)){
+                        throw new OptionException("Can not remove option " + option + " it`s required for " + tdOption);
+                    }
+                }
+            }
+            optionHelper.removeOptionsFromTd(terminalDevice, optionsToDelete);
+            optionsToDelete.forEach(
                     option -> optionDao.update(option)
             );
         }
