@@ -21,17 +21,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class, AspectConfig.class})
 @ComponentScan("ru.javaschool.mobileoperator")
-public class SaleControllerTest extends BaseTest {
+public class AdminPanelControllerTest extends BaseTest {
     @Test
-    public void salePageCorrectGetTest() throws Exception {
-        mockMvc.perform(get("/sale").with(user("a").password("p").roles("OPERATOR")))
+    public void adminPageCorrectGetTest() throws Exception {
+        mockMvc.perform(get("/admin").with(user("a").password("p").roles("ADMIN")))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void salePageNotOperatorTest() throws Exception {
-        mockMvc.perform(get("/sale").with(user("b").password("p")))
+    public void adminPageNotAdminTest() throws Exception {
+        mockMvc.perform(get("/admin").with(user("b").password("p")))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

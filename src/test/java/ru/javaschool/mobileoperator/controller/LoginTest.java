@@ -1,27 +1,18 @@
 package ru.javaschool.mobileoperator.controller;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import ru.javaschool.mobileoperator.BaseTest;
 import ru.javaschool.mobileoperator.config.AspectConfig;
-import ru.javaschool.mobileoperator.config.HibernateConfig;
-import ru.javaschool.mobileoperator.config.SpringMvcInitializer;
-import ru.javaschool.mobileoperator.config.SpringSecurityInitializer;
+import ru.javaschool.mobileoperator.config.H2Config;
 import ru.javaschool.mobileoperator.config.WebAppConfig;
 import ru.javaschool.mobileoperator.config.WebSecurityConfig;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, HibernateConfig.class, AspectConfig.class})
+@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class, AspectConfig.class})
 @ComponentScan("ru.javaschool.mobileoperator")
 public class LoginTest extends BaseTest {
     @Test
