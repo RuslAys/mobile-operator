@@ -16,9 +16,11 @@ public class RoleHelper {
      * @return true if role is only user, opposite false
      */
     public boolean isOnlyUser(UserDetails userDetails){
-        for (GrantedAuthority authority: userDetails.getAuthorities()){
-            if(authority.getAuthority().equals("ROLE_USER")){
-                return true;
+        if(userDetails.getAuthorities().size() == 1){
+            for (GrantedAuthority authority: userDetails.getAuthorities()){
+                if(authority.getAuthority().equals("ROLE_USER")){
+                    return true;
+                }
             }
         }
         return false;
@@ -30,9 +32,11 @@ public class RoleHelper {
      * @return true if role is only user, opposite false
      */
     public boolean isOnlyUser(User user){
-        for (Authority authority: user.getAuthorities()){
-            if(UserRoleEnum.USER.name().equals(authority.getAuthority())){
-                return true;
+        if(user.getAuthorities().size() == 1){
+            for (Authority authority: user.getAuthorities()){
+                if(UserRoleEnum.USER.name().equals(authority.getAuthority())){
+                    return true;
+                }
             }
         }
         return false;

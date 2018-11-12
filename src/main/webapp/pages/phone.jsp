@@ -24,7 +24,7 @@
         </div>
         <div>
         <table class="table">
-             <thead>
+             <thead class = "thead-light">
                <tr>
                  <th scope="col">Phones</th>
                </tr>

@@ -12,7 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "locks")
 public class Lock extends AbstractPO {
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "primaryKey.lock", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

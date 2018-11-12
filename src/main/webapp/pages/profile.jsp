@@ -4,7 +4,7 @@
     <div>
         <div class="container py-4">
             <h3>Number: ${terminalDevice.phoneNumber.number}</h3>
-            <h3>Money: ${terminalDevice.personalAccount.money}</h3>
+            <h3>Balance: ${terminalDevice.personalAccount.money}</h3>
             <div class="row">
                 <div class="col">
                     <ul class="list-group">

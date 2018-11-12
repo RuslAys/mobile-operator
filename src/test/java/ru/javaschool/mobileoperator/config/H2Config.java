@@ -14,24 +14,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
-import static org.hibernate.cfg.AvailableSettings.C3P0_ACQUIRE_INCREMENT;
-import static org.hibernate.cfg.AvailableSettings.C3P0_MAX_SIZE;
-import static org.hibernate.cfg.AvailableSettings.C3P0_MAX_STATEMENTS;
-import static org.hibernate.cfg.AvailableSettings.C3P0_MIN_SIZE;
-import static org.hibernate.cfg.AvailableSettings.C3P0_TIMEOUT;
 import static org.hibernate.cfg.AvailableSettings.DIALECT;
 import static org.hibernate.cfg.AvailableSettings.DRIVER;
 import static org.hibernate.cfg.AvailableSettings.HBM2DDL_AUTO;
-import static org.hibernate.cfg.AvailableSettings.PASS;
 import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 import static org.hibernate.cfg.AvailableSettings.URL;
-import static org.hibernate.cfg.AvailableSettings.USER;
 
 @Configuration
-@PropertySource("classpath:db-mysql.properties")
+@PropertySource("classpath:db-h2.properties")
 @EnableTransactionManagement
 @ComponentScans(value = {@ComponentScan("ru.javaschool.mobileoperator.repository")})
-public class HibernateConfig {
+public class H2Config {
     @Autowired
     private Environment environment;
 
@@ -41,24 +34,13 @@ public class HibernateConfig {
         Properties properties = new Properties();
 
         // Setting JDBC properties
-        properties.put(DRIVER, environment.getProperty("mysql.driver"));
-        properties.put(URL, environment.getProperty("mysql.jdbcUrl"));
-        properties.put(USER, environment.getProperty("mysql.username"));
-        properties.put(PASS, environment.getProperty("mysql.password"));
+        properties.put(DRIVER, environment.getProperty("driver"));
+        properties.put(URL, environment.getProperty("jdbcUrl"));
 
         // Setting hibernate properties
         properties.put(SHOW_SQL, environment.getProperty("hibernate.show_sql"));
         properties.put(HBM2DDL_AUTO, environment.getProperty("hibernate.hbm2ddl.auto"));
         properties.put(DIALECT, environment.getProperty("hibernate.dialect"));
-
-        // Setting C3P0 properties
-        properties.put(C3P0_MIN_SIZE, environment.getProperty("hibernate.c3p0.min_size"));
-        properties.put(C3P0_MAX_SIZE, environment.getProperty("hibernate.c3p0.max_size"));
-        properties.put(C3P0_ACQUIRE_INCREMENT,
-                environment.getProperty("hibernate.c3p0.acquire_increment"));
-        properties.put(C3P0_TIMEOUT, environment.getProperty("hibernate.c3p0.timeout"));
-        properties.put(C3P0_MAX_STATEMENTS,
-                environment.getProperty("hibernate.c3p0.max_statements"));
 
         factoryBean.setHibernateProperties(properties);
         factoryBean.setPackagesToScan("ru.javaschool.mobileoperator.domain");

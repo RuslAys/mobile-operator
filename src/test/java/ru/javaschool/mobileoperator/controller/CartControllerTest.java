@@ -1,4 +1,4 @@
-package ru.javaschool.mobileoperator;
+package ru.javaschool.mobileoperator.controller;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,14 +12,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.javaschool.mobileoperator.BaseTest;
 import ru.javaschool.mobileoperator.config.AspectConfig;
 import ru.javaschool.mobileoperator.config.HibernateConfig;
-import ru.javaschool.mobileoperator.config.SpringMvcInitializer;
-import ru.javaschool.mobileoperator.config.SpringSecurityInitializer;
 import ru.javaschool.mobileoperator.config.WebAppConfig;
 import ru.javaschool.mobileoperator.config.WebSecurityConfig;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,54 +30,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, HibernateConfig.class, AspectConfig.class})
 @ComponentScan("ru.javaschool.mobileoperator")
-public class LoginTest {
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    private MockMvc mockMvc;
-
-    @Before
-    public void setup(){
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+public class CartControllerTest extends BaseTest {
 
     @Test
-    public void searchWithOutLoginTest() throws Exception{
-        this.mockMvc.perform(post("/search").param("username", "a"))
+    public void cartPageTest() throws Exception{
+        this.mockMvc.perform(get("/cart").with(user("a").password("p")))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void correctAdminLoginTest() throws Exception{
-        this.mockMvc.perform(formLogin().user("a").password("p"))
+    public void cartConfirmRedirectionTest() throws Exception{
+        this.mockMvc.perform(post("/cart/confirm").with(user("a").password("p")))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/cart"));
     }
 
     @Test
-    public void correctUserLoginTest() throws Exception{
-        this.mockMvc.perform(formLogin().user("79817549091").password("p"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/profile/79817549091"));
-    }
-
-    @Test
-    public void badCredentials() throws Exception{
-        this.mockMvc.perform(post("/login")
-                .param("username", "a")
-                .param("password", "b"))
-                .andDo(print())
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    public void testBadRequest() throws Exception{
-        this.mockMvc.perform(get("/profile/79817549091"))
+    public void cartRemoveItemTest() throws Exception{
+        this.mockMvc.perform(post("/cart/remove")
+                    .param("itemId", "0")
+                    .with(user("a")
+                            .password("p")))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

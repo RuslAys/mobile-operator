@@ -1,4 +1,4 @@
-package ru.javaschool.mobileoperator;
+package ru.javaschool.mobileoperator.service;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,9 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import ru.javaschool.mobileoperator.config.AspectConfig;
-import ru.javaschool.mobileoperator.config.HibernateConfig;
-import ru.javaschool.mobileoperator.config.SpringMvcInitializer;
-import ru.javaschool.mobileoperator.config.SpringSecurityInitializer;
+import ru.javaschool.mobileoperator.config.H2Config;
 import ru.javaschool.mobileoperator.config.WebAppConfig;
 import ru.javaschool.mobileoperator.config.WebSecurityConfig;
 import ru.javaschool.mobileoperator.domain.Lock;
@@ -22,8 +20,7 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SpringMvcInitializer.class, SpringSecurityInitializer.class,
-        WebAppConfig.class, WebSecurityConfig.class, HibernateConfig.class, AspectConfig.class, BaseTest.class})
+@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class, AspectConfig.class})
 
 public class LockServiceTest {
     @Autowired

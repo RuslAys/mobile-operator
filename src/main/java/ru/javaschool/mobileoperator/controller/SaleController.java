@@ -156,7 +156,7 @@ public class SaleController {
      * @param tariffId tariff id
      * @param numberId phone number id
      * @param session http session
-     * @return redirect to sale page {@link #salePage(Model)}
+     * @return redirect to sale page {@link #salePage(Model, HttpSession)}
      */
     @PostMapping(value = "/confirmPersonalAccount", params = "add_to_cart")
     public String confirmSaleToExistPersonalAccount(@RequestParam("personalAccountId") Long personalAccountId,
