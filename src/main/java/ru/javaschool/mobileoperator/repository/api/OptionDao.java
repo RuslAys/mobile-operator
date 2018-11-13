@@ -2,7 +2,6 @@ package ru.javaschool.mobileoperator.repository.api;
 
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.List;
 
@@ -25,14 +24,14 @@ public interface OptionDao extends GenericDao<Option, Long>{
      * @param number phone number
      * @return list with options
      */
-    List<Option> getOptionsByNumber(Long number);
+    List<Option> getOptionsOnContractByNumber(Long number);
 
     /**
      * Method to find options on tariff plan
      * @param tariffPlan tariff plan
      * @return list with options
      */
-    List<Option> getOptions(TariffPlan tariffPlan);
+    List<Option> getOptionsOnTariffPlan(TariffPlan tariffPlan);
 
     /**
      * Method to find options except specified options

@@ -8,19 +8,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.javaschool.mobileoperator.domain.Lock;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
-import ru.javaschool.mobileoperator.service.api.LockService;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
@@ -50,8 +47,6 @@ public class AdminPanelController {
     @Autowired
     private PhoneNumberService phoneNumberService;
 
-    @Autowired
-    private LockService lockService;
 
     @Autowired
     private CartHelper cartHelper;
@@ -210,7 +205,7 @@ public class AdminPanelController {
                                     List<Long> inclusiveOptions,
                             @RequestParam(required = false, value = "exclusiveOptions")
                                     List<Long> exclusiveOptions){
-        optionService.addOption(name, price, connectionCost,inclusiveOptions, exclusiveOptions);
+        optionService.createOption(name, price, connectionCost,inclusiveOptions, exclusiveOptions);
         return "redirect:/admin/option";
     }
 
@@ -363,53 +358,4 @@ public class AdminPanelController {
         phoneNumberService.addNumber(number);
         return "redirect:/admin/phone";
     }
-
-    /**
-     * Get method to locks page
-     * @param model ui model
-     * @return locks page
-     */
-    @GetMapping(value = {"/lock/{type}", "/lock"})
-    public String lockPage(Model model,
-                           @PathVariable Map<String, String> pathVariablesMap,
-                           HttpServletRequest request){
-        PagedListHolder<Lock> lockPagedListHolder = null;
-        String type = pathVariablesMap.get("type");
-        if(null == type) {
-            List<Lock> numbers = (lockService.findAll());
-            lockPagedListHolder = new PagedListHolder<Lock>();
-            lockPagedListHolder.setSource(numbers);
-            lockPagedListHolder.setPageSize(3);
-            request.getSession().setAttribute("locks",  lockPagedListHolder);
-        }else if("next".equals(type)) {
-            // Return next set of list
-            lockPagedListHolder = (PagedListHolder<Lock>) request.getSession()
-                    .getAttribute("locks");
-            lockPagedListHolder.nextPage();
-        }else if("prev".equals(type)) {
-            // Return previous set of list
-            lockPagedListHolder = (PagedListHolder<Lock>) request.getSession()
-                    .getAttribute("locks");
-            lockPagedListHolder.previousPage();
-        }else  {
-            // Return specific index set of list
-            lockPagedListHolder = (PagedListHolder<Lock>) request.getSession()
-                    .getAttribute("locks");
-            int pageNum = Integer.parseInt(type);
-            lockPagedListHolder.setPage(pageNum);
-        }
-        return "lock";
-    }
-
-    /**
-     * Post method to add lock
-     * @param name lock name
-     * @return redirect to locks page {@link #lockPage(Model, Map, HttpServletRequest)}
-     */
-    @PostMapping("/lock/add")
-    public String addLock(@RequestParam("name") String name){
-        lockService.addLock(name);
-        return "redirect:/admin/lock";
-    }
-
 }

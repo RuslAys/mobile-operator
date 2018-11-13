@@ -13,8 +13,8 @@ import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
-import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
+import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 import java.util.*;
@@ -81,9 +81,9 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         TariffPlan tariffPlan = tariffDao.find(tariffId);
         Option optionToDelete = optionDao.find(optionId);
         if(optionHelper.existInclusiveConflicts(tariffPlan.getOptions(), optionToDelete)){
-            throw new IllegalArgumentException("Cannot delete option. It is required option");
+            throw new OptionException("Cannot delete option. It is required option");
         }
-        optionHelper.removeOptionFromTp(tariffPlan, optionToDelete);
+        optionHelper.removeOptionFromTariff(tariffPlan, optionToDelete);
         tariffDao.update(tariffPlan);
         optionDao.update(optionToDelete);
     }
@@ -104,7 +104,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         if(!exclusiveOptions.isEmpty()){
             List<Option> optionToDelete = new ArrayList<>();
             optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
-            optionHelper.removeOptionsFromTp(tariffPlan, optionToDelete);
+            optionHelper.removeOptionsFromTariff(tariffPlan, optionToDelete);
             optionToDelete.forEach(
                     option -> optionDao.update(option)
             );
@@ -123,5 +123,17 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         TariffPlan tariffPlan = tariffDao.find(tariffId);
         tariffPlan.setArchival(true);
         tariffDao.update(tariffPlan);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TariffPlan getTariffPlanOnContractByNumber(String number) {
+        return tariffDao.getTariffOnContractByNumber(Long.parseLong(number));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan) {
+        return tariffDao.getTariffNotIn(tariffPlan);
     }
 }

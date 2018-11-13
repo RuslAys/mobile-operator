@@ -13,7 +13,7 @@ public class PhoneNumber extends AbstractPO {
     private Long number;
 
     @OneToOne(mappedBy = "phoneNumber")
-    private TerminalDevice terminalDevice;
+    private Contract contract;
 
     public PhoneNumber() {
     }
@@ -30,12 +30,12 @@ public class PhoneNumber extends AbstractPO {
         this.number = number;
     }
 
-    public TerminalDevice getTerminalDevice() {
-        return terminalDevice;
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setTerminalDevice(TerminalDevice terminalDevice) {
-        this.terminalDevice = terminalDevice;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
     @Override

@@ -11,8 +11,6 @@ import ru.javaschool.mobileoperator.domain.enums.OperationType;
 import ru.javaschool.mobileoperator.service.api.CartLockService;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
-import ru.javaschool.mobileoperator.service.api.LockService;
-import ru.javaschool.mobileoperator.service.api.TerminalDeviceService;
 import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import javax.servlet.http.HttpSession;
@@ -21,12 +19,6 @@ import javax.servlet.http.HttpSession;
 public class CartLockServiceImpl implements CartLockService {
 
     private final Logger logger = LogManager.getLogger(CartLockServiceImpl.class);
-
-    @Autowired
-    private TerminalDeviceService terminalDeviceService;
-
-    @Autowired
-    private LockService lockService;
 
     @Autowired
     private CartService cartService;

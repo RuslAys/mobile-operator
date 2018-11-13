@@ -1,10 +1,8 @@
 package ru.javaschool.mobileoperator.service.api;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import ru.javaschool.mobileoperator.domain.Lock;
+import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.List;
 
@@ -13,51 +11,9 @@ import java.util.List;
  */
 public interface ProfileService {
     /**
-     * Method to return all customer information by number
-     * @param number phone number
-     * @return terminal device
-     */
-    TerminalDevice getTerminalDeviceWithOptions(String number);
-
-    /**
-     * Method to return tariff plan on terminal device by phone number
-     * @param number phone number
-     * @return tariff plan
-     */
-    TariffPlan getTariffPlanOnTerminalDeviceByNumber(String number);
-
-    /**
-     * Method to return options on terminal device by phone number
-     * @param number phone number
-     * @return list with options
-     */
-    List<Option> getOptionsOnTerminalDeviceByNumber(String number);
-
-    /**
-     * Method to return terminal device with only locks by phone number
-     * @param number phone number
-     * @return terminal device
-     */
-    TerminalDevice getTerminalDeviceWithLocksByNumber(String number);
-
-    /**
-     * Method to return locks on terminal device by phone number
-     * @param terminalDevice terminal device to find
-     * @return list with locks
-     */
-    List<Lock> getLocksNotOnTerminalDevice(TerminalDevice terminalDevice);
-
-    /**
-     * Method to get tariffs except specified
-     * @param tariffPlan specified tariff plan
-     * @return List of tariff plans
-     */
-    List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan);
-
-    /**
      * Method to change tariff plan on terminal device
-     * @param terminalDeviceId terminal device id
+     * @param contractId terminal device id
      * @param newTariffId new tariff plan id
      */
-    void changeTariff(Long terminalDeviceId, Long newTariffId);
+    void changeTariff(Long contractId, Long newTariffId);
 }

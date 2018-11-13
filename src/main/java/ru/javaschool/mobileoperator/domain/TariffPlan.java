@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +14,11 @@ import java.util.List;
 @Table(name = "tariff_plans")
 public class TariffPlan extends AbstractPO {
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tariff_plans_options",
                 joinColumns = { @JoinColumn(name = "tariff_id") },
                 inverseJoinColumns = { @JoinColumn(name = "option_id") })
     private List<Option> options = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tariffPlan")
-    private List<TerminalDevice> terminalDevices = new ArrayList<>();
 
     @Column(name = "price")
     private Integer price;
@@ -42,14 +35,6 @@ public class TariffPlan extends AbstractPO {
 
     public void setOptions(List<Option> options) {
         this.options = options;
-    }
-
-    public List<TerminalDevice> getTerminalDevices() {
-        return terminalDevices;
-    }
-
-    public void setTerminalDevices(List<TerminalDevice> terminalDevices) {
-        this.terminalDevices = terminalDevices;
     }
 
     public Integer getPrice() {

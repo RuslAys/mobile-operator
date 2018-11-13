@@ -8,16 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
+import ru.javaschool.mobileoperator.repository.api.ContractDao;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
-import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
-import ru.javaschool.mobileoperator.repository.api.TerminalDeviceDao;
 import ru.javaschool.mobileoperator.service.api.OptionService;
+import ru.javaschool.mobileoperator.service.exceptions.ContractException;
 import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
-import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 import java.util.ArrayList;
@@ -36,10 +35,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     private OptionDao optionDao;
 
     @Autowired
-    private TerminalDeviceDao terminalDeviceDao;
-
-    @Autowired
-    private PersonalAccountDao personalAccountDao;
+    private ContractDao contractDao;
 
     @Autowired
     private OptionHelper optionHelper;
@@ -50,13 +46,16 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         this.optionDao = (OptionDao) genericDao;
     }
 
+    public OptionServiceImpl() {
+    }
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void addOption(String name,
-                          String price,
-                          String connectionCost,
-                          List<Long> inclusiveOptions,
-                          List<Long> exclusiveOptions) {
+    public void createOption(String name,
+                             String price,
+                             String connectionCost,
+                             List<Long> inclusiveOptions,
+                             List<Long> exclusiveOptions) {
 
         if(StringUtils.isEmpty(name)){
             throw new OptionException("Option name can`t be empty");
@@ -113,19 +112,19 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void addOptionToTerminalDevice(Long terminalDeviceId, Long optionId) {
-        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
-            throw new TerminalDeviceException("Terminal device is locked");
+    public void addOptionToContract(Long contractId, Long optionId) {
+        Contract contract = contractDao.find(contractId);
+        if(contract.isLocked()){
+            throw new ContractException("Contract is locked");
         }
-        if(terminalDevice.getTariffPlan().isArchival()){
+        if(contract.getTariffPlan().isArchival()){
             throw new TariffPlanException("Current tariff plan is archival. Can not add options");
         }
         Option newOption = optionDao.find(optionId);
-        if(terminalDevice.getOptions().contains(newOption)){
+        if(contract.getOptions().contains(newOption)){
             throw new OptionException("Option " + newOption.getName() + " already added");
         }
-        List<Option> tdOptions = terminalDevice.getOptions();
+        List<Option> tdOptions = contract.getOptions();
         List<Option> optionsToAdd = new ArrayList<>();
 
         // Find options to add
@@ -139,49 +138,53 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             // Find required options for current terminal device option which not will be deleted
             // in options to delete
             for (Option option: optionsToDelete){
-                for(Option tdOption: terminalDevice.getOptions()){
+                for(Option tdOption: contract.getOptions()){
                     if(!optionsToDelete.contains(tdOption) && option.getParentInclusive().contains(tdOption)){
                         throw new OptionException("Can not remove option " + option + " it`s required for " + tdOption);
                     }
                 }
             }
-            optionHelper.removeOptionsFromTd(terminalDevice, optionsToDelete);
+            optionHelper.removeOptionsFromContract(contract, optionsToDelete);
             optionsToDelete.forEach(
                     option -> optionDao.update(option)
             );
         }
-        int money = terminalDevice.getPersonalAccount().getMoney();
+        int balance = contract.getBalance();
         for(Option option: optionsToAdd){
-            money -= option.getConnectionCost();
+            balance -= option.getConnectionCost();
         }
-        terminalDevice.getPersonalAccount().setMoney(money);
-        terminalDevice.getOptions().addAll(optionsToAdd);
+        contract.setBalance(balance);
+        contract.getOptions().addAll(optionsToAdd);
         List<Option> withoutDuplicates = new ArrayList<>(
-                new HashSet<>(terminalDevice.getOptions())
+                new HashSet<>(contract.getOptions())
         );
-        terminalDevice.setOptions(withoutDuplicates);
-        terminalDeviceDao.update(terminalDevice);
-        personalAccountDao.update(terminalDevice.getPersonalAccount());
+        contract.setOptions(withoutDuplicates);
+        contractDao.update(contract);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeOptionFromTerminalDevice(Long terminalDeviceId, Long optionId) {
-        TerminalDevice terminalDevice = terminalDeviceDao.find(terminalDeviceId);
-        if(!terminalDevice.getTerminalDeviceLocks().isEmpty()){
-            throw new TerminalDeviceException("Terminal device is locked");
+    public void removeOptionFromContract(Long contractId, Long optionId) {
+        Contract contract = contractDao.find(contractId);
+        if(!contract.isLocked()){
+            throw new ContractException("Contract is locked");
         }
-        if(terminalDevice.getTariffPlan().isArchival()){
+        if(contract.getTariffPlan().isArchival()){
             throw new TariffPlanException("Current tariff plan is archival. Can not add options");
         }
         Option optionToDelete = optionDao.find(optionId);
 
-        if(optionHelper.existInclusiveConflicts(terminalDevice.getOptions(), optionToDelete)){
+        if(optionHelper.existInclusiveConflicts(contract.getOptions(), optionToDelete)){
             throw new IllegalArgumentException("Cannot delete option. It is required option");
         }
-        optionHelper.removeOptionFromTd(terminalDevice, optionToDelete);
-        terminalDeviceDao.update(terminalDevice);
-        optionDao.update(optionToDelete);
+        optionHelper.removeOptionFromContract(contract, optionToDelete);
+        contractDao.update(contract);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Option> getOptionsOnContractByNumber(String number) {
+        return optionDao.getOptionsOnContractByNumber(Long.parseLong(number));
     }
 
     private Set<Option> getAllDependentOptions(List<Option> options, Set<Option> uniqueOptions){

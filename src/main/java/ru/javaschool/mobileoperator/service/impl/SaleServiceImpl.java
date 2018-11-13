@@ -11,21 +11,18 @@ import ru.javaschool.mobileoperator.domain.Authority;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Customer;
 import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.domain.PersonalAccount;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
-import ru.javaschool.mobileoperator.repository.api.PersonalAccountDao;
 import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.UserDao;
 import ru.javaschool.mobileoperator.service.api.SaleService;
+import ru.javaschool.mobileoperator.service.exceptions.PhoneNumberException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 
-import java.util.Date;
 import java.util.List;
 
 @Service("saleContractService")
@@ -48,9 +45,6 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private CustomerDao customerDao;
 
-    @Autowired
-    private PersonalAccountDao personalAccountDao;
-
     /**
      * Method to create new customer
      */
@@ -58,8 +52,8 @@ public class SaleServiceImpl implements SaleService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void saleContract(Customer customer, Long tariffPlanId, Long phoneNumberId) {
         PhoneNumber phoneNumber = phoneNumberDao.find(phoneNumberId);
-        if(phoneNumber.getTerminalDevice() != null){
-            throw new IllegalArgumentException("Number already in use");
+        if(phoneNumber.getContract() != null){
+            throw new PhoneNumberException("Number already in use");
         }
         TariffPlan tariffPlan = tariffDao.find(tariffPlanId);
         if(tariffPlan.isArchival()){
@@ -77,25 +71,17 @@ public class SaleServiceImpl implements SaleService {
 
         //Create contract and personal account
         Contract contract = new Contract();
-        PersonalAccount personalAccount = new PersonalAccount();
-        contract.getPersonalAccounts().add(personalAccount);
-        personalAccount.setContract(contract);
         customer.getContracts().add(contract);
         contract.setCustomer(customer);
 
-        //Create terminal device and set it to personal account
-        TerminalDevice terminalDevice = new TerminalDevice();
-        personalAccount.getTerminalDevices().add(terminalDevice);
-        terminalDevice.setPersonalAccount(personalAccount);
-
-        //Fill terminal device by options and tariff
-        terminalDevice.setTariffPlan(tariffPlan);
+        //Fill contract by options and tariff
+        contract.setTariffPlan(tariffPlan);
         List<Option> options = tariffPlan.getOptions();
-        terminalDevice.getOptions().addAll(options);
+        contract.getOptions().addAll(options);
 
         //Create references to number and terminal device
-        terminalDevice.setPhoneNumber(phoneNumber);
-        phoneNumber.setTerminalDevice(terminalDevice);
+        contract.setPhoneNumber(phoneNumber);
+        phoneNumber.setContract(contract);
 
         //Add all business data to customer
         customer.getContracts().add(contract);
@@ -107,17 +93,17 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void saleToExistPersonalAccount(long personalAccountId, long tariffPlanId, long phoneNumberId) {
+    public void saleToExistPersonalAccount(long customerId, long tariffPlanId, long phoneNumberId) {
         PhoneNumber phoneNumber = phoneNumberDao.find(phoneNumberId);
-        if(phoneNumber.getTerminalDevice() != null){
-            throw new IllegalArgumentException("Number already in use");
+        if(phoneNumber.getContract() != null){
+            throw new PhoneNumberException("Number already in use");
         }
         TariffPlan tariffPlan = tariffDao.find(tariffPlanId);
         if(tariffPlan.isArchival()){
             throw new TariffPlanException("Tariff plan is archival");
         }
 
-        PersonalAccount personalAccount = personalAccountDao.find(personalAccountId);
+        Customer customer = customerDao.find(customerId);
 
         String password = "p";
 
@@ -126,24 +112,23 @@ public class SaleServiceImpl implements SaleService {
                 passwordEncoder.encode(password),
                 true);
         user.getAuthorities().add(new Authority(user, UserRoleEnum.USER.name()));
-        user.setCustomer(personalAccount.getContract().getCustomer());
+        user.setCustomer(customer);
 
         //Create terminal device and set it to personal account
-        TerminalDevice terminalDevice = new TerminalDevice();
-        personalAccount.getTerminalDevices().add(terminalDevice);
-        terminalDevice.setPersonalAccount(personalAccount);
+        Contract contract = new Contract();
+        customer.getContracts().add(contract);
+        contract.setCustomer(customer);
 
         //Fill terminal device by options and tariff
-        terminalDevice.setTariffPlan(tariffPlan);
+        contract.setTariffPlan(tariffPlan);
         List<Option> options = tariffPlan.getOptions();
-        terminalDevice.getOptions().addAll(options);
+        contract.getOptions().addAll(options);
 
         //Create references to number and terminal device
-        terminalDevice.setPhoneNumber(phoneNumber);
-        phoneNumber.setTerminalDevice(terminalDevice);
+        contract.setPhoneNumber(phoneNumber);
+        phoneNumber.setContract(contract);
 
-        personalAccountDao.update(personalAccount);
+        customerDao.update(customer);
         userDao.add(user);
-        phoneNumberDao.update(phoneNumber);
     }
 }

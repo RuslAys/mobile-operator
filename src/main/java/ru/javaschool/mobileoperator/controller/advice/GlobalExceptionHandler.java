@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.service.exceptions.PhoneNumberException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
-import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
+import ru.javaschool.mobileoperator.service.exceptions.ContractException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,7 +36,7 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({TerminalDeviceException.class, OptionException.class,
+    @ExceptionHandler({ContractException.class, OptionException.class,
             PhoneNumberException.class, TariffPlanException.class, })
     public String handleBadRequestCustomErrors(Model model, HttpServletRequest request, Exception e){
         model.addAttribute("info", e.getMessage());

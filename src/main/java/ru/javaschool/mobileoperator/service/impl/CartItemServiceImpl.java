@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
-import ru.javaschool.mobileoperator.service.api.LockService;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
@@ -25,9 +24,6 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     private OptionService optionService;
-
-    @Autowired
-    private LockService lockService;
 
     @Override
     public CartItem createItem(CartItemBuilder cartItemBuilder) {
@@ -58,16 +54,14 @@ public class CartItemServiceImpl implements CartItemService {
                 saleService.saleToExistPersonalAccount(cartItem.getPersonalAccountId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
                 break;
             case ADD_OPTION:
-                optionService.addOptionToTerminalDevice(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
+                optionService.addOptionToContract(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
                 break;
             case REMOVE_OPTION:
-                optionService.removeOptionFromTerminalDevice(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
+                optionService.removeOptionFromContract(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
                 break;
             case ADD_LOCK:
-                lockService.addLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
                 break;
             case REMOVE_LOCK:
-                lockService.removeLock(cartItem.getUser(), cartItem.getTerminalDeviceId(), cartItem.getLockId());
                 break;
             case CHANGE_TARIFF:
                 profileService.changeTariff(cartItem.getTerminalDeviceId(), cartItem.getTariffPlanId());

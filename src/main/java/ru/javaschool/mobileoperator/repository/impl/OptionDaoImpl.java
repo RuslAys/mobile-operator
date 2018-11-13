@@ -3,7 +3,6 @@ package ru.javaschool.mobileoperator.repository.impl;
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 
 import java.util.ArrayList;
@@ -29,15 +28,15 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
     }
 
     @Override
-    public List<Option> getOptionsByNumber(Long number) {
+    public List<Option> getOptionsOnContractByNumber(Long number) {
         return currentSession()
-                .createQuery("SELECT td.options FROM TerminalDevice td WHERE " +
-                        "td.phoneNumber.number = :number")
+                .createQuery("SELECT c.options FROM Contract c WHERE " +
+                        "c.phoneNumber.number = :number")
                 .setParameter("number", number).getResultList();
     }
 
     @Override
-    public List<Option> getOptions(TariffPlan tariffPlan) {
+    public List<Option> getOptionsOnTariffPlan(TariffPlan tariffPlan) {
         return currentSession()
                 .createQuery("SELECT o FROM Option o LEFT JOIN o.tariffPlans tp WHERE tp = :tp")
                 .setParameter("tp", tariffPlan).getResultList();
@@ -54,7 +53,7 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
     public Option getFullOptionById(Long id) {
         return (Option) currentSession()
                 .createQuery("SELECT o FROM Option o " +
-                        "LEFT JOIN FETCH o.terminalDevices LEFT JOIN FETCH o.tariffPlans " +
+                        "LEFT JOIN FETCH o.contracts LEFT JOIN FETCH o.tariffPlans " +
                         "WHERE o.id = :id")
                 .setParameter("id", id).getSingleResult();
     }

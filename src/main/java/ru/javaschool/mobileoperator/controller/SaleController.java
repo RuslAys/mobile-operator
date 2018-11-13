@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
+import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.service.api.CartSaleService;
+import ru.javaschool.mobileoperator.service.api.ContractService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.SaleService;
@@ -44,10 +45,14 @@ public class SaleController {
     private CartSaleService cartSaleService;
 
     @Autowired
+    private ContractService contractService;
+
+    @Autowired
     private ProfileService profileService;
 
     @Autowired
     private CartHelper cartHelper;
+
 
     @InitBinder
     public void initBinder(WebDataBinder binder){
@@ -176,16 +181,16 @@ public class SaleController {
     @PostMapping("/search")
     public String searchCustomer(Model model,
                                  @RequestParam("number") String number){
-        TerminalDevice terminalDevice;
+        Contract contract;
         try {
-            terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(number);
+            contract = contractService.getContractWithOptions(number);
         }catch (Exception e){
-            terminalDevice = null;
+            contract = null;
         }
-        if(terminalDevice == null){
+        if(contract == null){
             model.addAttribute("message", "Not found");
         }else {
-            model.addAttribute("terminalDevice", terminalDevice);
+            model.addAttribute("contract", contract);
             model.addAttribute("tariffs", tariffService.findAll());
             model.addAttribute("numbers", phoneNumberService.getAllEmptyNumbers());
         }

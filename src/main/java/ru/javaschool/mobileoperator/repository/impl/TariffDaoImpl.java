@@ -2,7 +2,6 @@ package ru.javaschool.mobileoperator.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 
 import java.util.List;
@@ -17,10 +16,10 @@ public class TariffDaoImpl extends
     }
 
     @Override
-    public TariffPlan getTariffByNumber(Long number) {
+    public TariffPlan getTariffOnContractByNumber(Long number) {
         return (TariffPlan) currentSession()
-                .createQuery("SELECT td.tariffPlan FROM TerminalDevice td WHERE " +
-                        "td.phoneNumber.number = :number")
+                .createQuery("SELECT c.tariffPlan FROM Contract c WHERE " +
+                        "c.phoneNumber.number = :number")
                 .setParameter("number", number)
                 .getSingleResult();
     }

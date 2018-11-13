@@ -1,7 +1,6 @@
 package ru.javaschool.mobileoperator.repository.api;
 
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public interface TariffDao extends GenericDao<TariffPlan, Long> {
      * @param number phone number
      * @return tariff on terminal device by number
      */
-    TariffPlan getTariffByNumber(Long number);
+    TariffPlan getTariffOnContractByNumber(Long number);
 
     /**
      * Method to get tariff with options by id

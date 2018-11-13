@@ -17,8 +17,8 @@ public class Option extends AbstractPO {
     @ManyToMany(mappedBy = "options")
     private List<TariffPlan> tariffPlans = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "options")
-    private List<TerminalDevice> terminalDevices = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "options")
+    private List<Contract> contracts = new ArrayList<>();
 
     @Column(name = "name")
     private String name;
@@ -57,12 +57,12 @@ public class Option extends AbstractPO {
         this.tariffPlans = tariffPlans;
     }
 
-    public List<TerminalDevice> getTerminalDevices() {
-        return terminalDevices;
+    public List<Contract> getContracts() {
+        return contracts;
     }
 
-    public void setTerminalDevices(List<TerminalDevice> terminalDevices) {
-        this.terminalDevices = terminalDevices;
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
     }
 
     public void setParentExclusive(List<Option> parentExclusive) {

@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartLockService;
 import ru.javaschool.mobileoperator.service.api.CartOptionService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.service.api.CartTariffService;
+import ru.javaschool.mobileoperator.service.api.ContractService;
+import ru.javaschool.mobileoperator.service.api.CustomerService;
 import ru.javaschool.mobileoperator.service.api.OptionService;
-import ru.javaschool.mobileoperator.service.api.PersonalAccountService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
-import ru.javaschool.mobileoperator.service.api.TerminalDeviceService;
 import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
@@ -50,25 +50,10 @@ public class ProfileController {
     private OptionService optionService;
 
     @Autowired
-    private CartItemService cartItemService;
+    private CustomerService customerService;
 
     @Autowired
-    private CartService cartService;
-
-    @Autowired
-    private TerminalDeviceService terminalDeviceService;
-
-    @Autowired
-    private CartOptionService cartOptionService;
-
-    @Autowired
-    private CartLockService cartLockService;
-
-    @Autowired
-    private CartTariffService cartTariffService;
-
-    @Autowired
-    private PersonalAccountService personalAccountService;
+    private ContractService contractService;
 
     @Autowired
     private CartHelper cartHelper;
@@ -89,14 +74,12 @@ public class ProfileController {
                               @PathVariable("username") String username,
                               @AuthenticationPrincipal UserDetails user,
                               HttpSession session){
-        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(username);
+        Contract contract = contractService.getContractWithOptions(username);
         model.addAttribute("cart", cartHelper.getCart(session));
         model.addAttribute("user", userService.getUser(username));
-        model.addAttribute("terminalDevice", profileService.getTerminalDeviceWithOptions(username));
-        model.addAttribute("terminalDeviceLocks", profileService.getTerminalDeviceWithLocksByNumber(username));
+        model.addAttribute("contract", contract);
         if(!roleHelper.isOnlyUser(user)){
-            model.addAttribute("anotherTerminalDevices", personalAccountService.
-                    getPersonalAccountWithTerminalDevices(terminalDevice.getPersonalAccount().getId()).getTerminalDevices());
+            model.addAttribute("anotherContracts", customerService.getCustomerByContract(contract));
         }
         return "profile";
     }
@@ -110,12 +93,12 @@ public class ProfileController {
     @GetMapping("/{username}/tariff")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileTariffPage(Model model, @PathVariable("username") String username){
-        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithOptions(username);
-        TariffPlan tariffPlan = terminalDevice.getTariffPlan();
-        model.addAttribute("terminalDevice", terminalDevice);
+        Contract contract = contractService.getContractWithOptions(username);
+        TariffPlan tariffPlan = contract.getTariffPlan();
+        model.addAttribute("contract", contract);
         model.addAttribute("tariffPlan", tariffPlan);
-        model.addAttribute("options", terminalDevice.getOptions());
-        model.addAttribute("freeTariffs", profileService.getTariffsExcept(tariffPlan));
+        model.addAttribute("options", contract.getOptions());
+        model.addAttribute("freeTariffs", tariffService.getTariffsExcept(tariffPlan));
         return "profileTariff";
     }
 
@@ -123,10 +106,10 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String changeTariff(Model model,
                                @PathVariable("username") String username,
-                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                               @RequestParam("contractId") Long contractId,
                                @RequestParam("newTariffId") Long newTariffId,
                                HttpSession session){
-        cartTariffService.changeTariffPlan(terminalDeviceId, newTariffId, session);
+        profileService.changeTariff(contractId, newTariffId);
         model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/profile/" + username + "/tariff";
     }
@@ -135,115 +118,14 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String changeTariffToCart(Model model,
                                @PathVariable("username") String username,
-                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                               @RequestParam("contractId") Long contractId,
                                @RequestParam("newTariffId") Long newTariffId,
                                HttpSession session){
-        cartTariffService.changeTariffPlan(terminalDeviceId, newTariffId, session);
+        profileService.changeTariff(contractId, newTariffId);
         model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/cart";
     }
-    /**
-     * Get method for profile lock page
-     * @param model ui model
-     * @param username username to profle
-     * @return profile lock page
-     */
-    @GetMapping("/{username}/lock")
-    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String profileLockPage(Model model, @PathVariable("username") String username){
-        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithLocksByNumber(username);
-        model.addAttribute("terminalDevice", terminalDevice);
-        model.addAttribute("freeLocks", profileService.getLocksNotOnTerminalDevice(terminalDevice));
-        return "profileLock";
-    }
 
-    /**
-     * Post method for add lock to terminal device. Adding item to cart
-     * @param model ui model
-     * @param username profile username
-     * @param terminalDeviceId terminal device id
-     * @param lockId lock id
-     * @param session http session
-     * @param user auth principal
-     * @return redirect to cart page
-     */
-    @PostMapping(value = "/{username}/lock/add", params = "confirm")
-    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String addLockToTerminalDevice(Model model,
-                                          @PathVariable("username") String username,
-                                          @RequestParam("terminalDeviceId") Long terminalDeviceId,
-                                          @RequestParam("lockId") Long lockId,
-                                          HttpSession session,
-                                          @AuthenticationPrincipal UserDetails user){
-        cartLockService.addLock(terminalDeviceId, lockId, session, user);
-        return "redirect:/cart";
-    }
-
-    /**
-     * Post method for add lock to terminal device. Adding item to cart
-     * @param model ui model
-     * @param username profile username
-     * @param terminalDeviceId terminal device id
-     * @param lockId lock id
-     * @param session http session
-     * @param user auth principal
-     * @return redirect to profile lock management
-     */
-    @PostMapping(value = "/{username}/lock/add", params = "add_to_cart")
-    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String addLockToTerminalDeviceToCart(Model model,
-                                                @PathVariable("username") String username,
-                                                @RequestParam("terminalDeviceId") Long terminalDeviceId,
-                                                @RequestParam("lockId") Long lockId,
-                                                HttpSession session,
-                                                @AuthenticationPrincipal UserDetails user){
-        cartLockService.addLock(terminalDeviceId, lockId, session, user);
-        return "redirect:/profile/" + username + "/lock";
-    }
-
-    /**
-     * Post method for remove lock from terminal device. Adding item to cart
-     * @param model ui model
-     * @param username profile username
-     * @param terminalDeviceId terminal device id
-     * @param lockId lock id
-     * @param user auth principal
-     * @param session http session
-     * @return redirect to cart page
-     */
-    @PostMapping(value = "/{username}/lock/remove", params = "confirm")
-    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String removeLockFromTerminalDevice(Model model,
-                                               @PathVariable("username") String username,
-                                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
-                                               @RequestParam("lockId") Long lockId,
-                                               @AuthenticationPrincipal UserDetails user,
-                                               HttpSession session){
-        cartLockService.removeLock(terminalDeviceId, lockId, session, user);
-        return "redirect:/cart";
-    }
-
-    /**
-     * Post method for remove lock from terminal device. Adding item to cart
-     * @param model ui model
-     * @param username profile username
-     * @param terminalDeviceId terminal device id
-     * @param lockId lock id
-     * @param user auth principal
-     * @param session http session
-     * @return redirect to profile lock management
-     */
-    @PostMapping(value = "/{username}/lock/remove", params = "add_to_cart")
-    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String removeLockFromTerminalDeviceToCart(Model model,
-                                                     @PathVariable("username") String username,
-                                                     @RequestParam("terminalDeviceId") Long terminalDeviceId,
-                                                     @RequestParam("lockId") Long lockId,
-                                                     @AuthenticationPrincipal UserDetails user,
-                                                     HttpSession session){
-        cartLockService.removeLock(terminalDeviceId, lockId, session, user);
-        return "redirect:/profile/" + username + "/lock";
-    }
 
     /**
      * Get method for options page
@@ -254,17 +136,17 @@ public class ProfileController {
     @GetMapping("/{username}/option")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileOptionsPage(Model model, @PathVariable("username") String username){
-        TerminalDevice terminalDevice = profileService.getTerminalDeviceWithOptions(username);
-        model.addAttribute("terminalDevice", terminalDevice);
-        model.addAttribute("options", terminalDevice.getOptions());
-        model.addAttribute("freeOptions", optionService.getOptionsNotIn(terminalDevice.getOptions()));
+        Contract contract = contractService.getContractWithOptions(username);
+        model.addAttribute("contract", contract);
+        model.addAttribute("options", contract.getOptions());
+        model.addAttribute("freeOptions", optionService.getOptionsNotIn(contract.getOptions()));
         return "profileOption";
     }
 
     /**
      * Method to add option on terminal device
      * @param username profile username
-     * @param terminalDeviceId terminal device id
+     * @param contractId terminal device id
      * @param optionId option id to add
      * @return redirect to profile option page {@link #profileOptionsPage(Model, String)}
      */
@@ -272,10 +154,10 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String addOption(Model model,
                             @PathVariable("username") String username,
-                            @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                            @RequestParam("contractId") Long contractId,
                             @RequestParam("optionId") Long optionId,
                             HttpSession session){
-        cartOptionService.addOption(terminalDeviceId, optionId, session);
+        optionService.addOptionToContract(contractId, optionId);
         model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/cart";
     }
@@ -283,7 +165,7 @@ public class ProfileController {
     /**
      * Method to add option on terminal device
      * @param username profile username
-     * @param terminalDeviceId terminal device id
+     * @param contractId terminal device id
      * @param optionId option id to add
      * @return redirect to profile option page {@link #profileOptionsPage(Model, String)}
      */
@@ -291,10 +173,10 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String addOptionToCart(Model model,
                                   @PathVariable("username") String username,
-                                  @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                                  @RequestParam("contractId") Long contractId,
                                   @RequestParam("optionId") Long optionId,
                                   HttpSession session){
-        cartOptionService.addOption(terminalDeviceId, optionId, session);
+        optionService.addOptionToContract(contractId, optionId);
         model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/profile/" + username + "/option";
     }
@@ -303,7 +185,7 @@ public class ProfileController {
      * Post method for remove option from terminal device. Adding item to cart
      * @param model ui model
      * @param username profile username
-     * @param terminalDeviceId terminal device id
+     * @param contractId terminal device id
      * @param optionId option id
      * @param session http session
      * @return redirect to profile option management
@@ -312,10 +194,10 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String removeOption(Model model,
                                @PathVariable("username") String username,
-                               @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                               @RequestParam("terminalDeviceId") Long contractId,
                                @RequestParam("optionId") Long optionId,
                                HttpSession session){
-        cartOptionService.removeOption(terminalDeviceId, optionId, session);
+        optionService.removeOptionFromContract(contractId, optionId);
         return "redirect:/profile/" + username + "/option";
     }
 
@@ -323,7 +205,7 @@ public class ProfileController {
      * Post method for remove option from terminal device. Adding item to cart
      * @param model ui model
      * @param username profile username
-     * @param terminalDeviceId terminal device id
+     * @param contractId terminal device id
      * @param optionId option id
      * @param session http session
      * @return redirect to cart page
@@ -332,10 +214,10 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String removeOptionToCart(Model model,
                                      @PathVariable("username") String username,
-                                     @RequestParam("terminalDeviceId") Long terminalDeviceId,
+                                     @RequestParam("contractId") Long contractId,
                                      @RequestParam("optionId") Long optionId,
                                      HttpSession session){
-        cartOptionService.removeOption(terminalDeviceId, optionId, session);
+        optionService.removeOptionFromContract(contractId, optionId);
         return "redirect:/cart";
     }
 }

@@ -8,8 +8,6 @@ import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
-import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
-import ru.javaschool.mobileoperator.service.exceptions.TerminalDeviceException;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import java.util.Iterator;

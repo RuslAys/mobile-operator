@@ -6,14 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
-import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.service.api.CartTariffService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
-import ru.javaschool.mobileoperator.service.api.TerminalDeviceService;
 import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import javax.servlet.http.HttpSession;
@@ -22,9 +19,6 @@ import javax.servlet.http.HttpSession;
 public class CartTariffServiceImpl implements CartTariffService {
 
     private final Logger logger = LogManager.getLogger(CartTariffServiceImpl.class);
-
-    @Autowired
-    private TerminalDeviceService terminalDeviceService;
 
     @Autowired
     private TariffService tariffService;

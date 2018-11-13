@@ -1,7 +1,6 @@
 package ru.javaschool.mobileoperator.service.api;
 
 import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.List;
 
@@ -14,11 +13,11 @@ public interface OptionService extends GenericService<Option, Long> {
      * @param inclusiveOptions inclusive options ids
      * @param exclusiveOptions exclusive options ids
      */
-    void addOption(String name,
-                   String price,
-                   String connectionCost,
-                   List<Long> inclusiveOptions,
-                   List<Long> exclusiveOptions);
+    void createOption(String name,
+                      String price,
+                      String connectionCost,
+                      List<Long> inclusiveOptions,
+                      List<Long> exclusiveOptions);
 
     /**
      * Method for find options by ids
@@ -43,15 +42,22 @@ public interface OptionService extends GenericService<Option, Long> {
 
     /**
      * Method to add option on terminal device
-     * @param terminalDeviceId terminal device id
+     * @param contractId terminal device id
      * @param optionId option id to add
      */
-    void addOptionToTerminalDevice(Long terminalDeviceId, Long optionId);
+    void addOptionToContract(Long contractId, Long optionId);
 
     /**
      * Method to remove option from terminal device
-     * @param terminalDeviceId terminal device
+     * @param contractId terminal device
      * @param optionId option to remove
      */
-    void removeOptionFromTerminalDevice(Long terminalDeviceId, Long optionId);
+    void removeOptionFromContract(Long contractId, Long optionId);
+
+    /**
+     * Method to return options on contract by phone number
+     * @param number phone number
+     * @return list with options
+     */
+    List<Option> getOptionsOnContractByNumber(String number);
 }

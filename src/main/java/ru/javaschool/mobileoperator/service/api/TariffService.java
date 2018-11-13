@@ -39,4 +39,18 @@ public interface TariffService extends GenericService<TariffPlan, Long> {
      * @param tariffId tariff id
      */
     void removeTariff(Long tariffId);
+
+    /**
+     * Method to return tariff plan on terminal device by phone number
+     * @param number phone number
+     * @return tariff plan
+     */
+    TariffPlan getTariffPlanOnContractByNumber(String number);
+
+    /**
+     * Method to get tariffs except specified
+     * @param tariffPlan specified tariff plan
+     * @return List of tariff plans
+     */
+    List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan);
 }

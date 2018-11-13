@@ -2,11 +2,6 @@ package ru.javaschool.mobileoperator.utils;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.javaschool.mobileoperator.domain.Customer;
-import ru.javaschool.mobileoperator.domain.Lock;
-import ru.javaschool.mobileoperator.domain.Option;
-import ru.javaschool.mobileoperator.domain.PhoneNumber;
-import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 import ru.javaschool.mobileoperator.domain.enums.OperationType;
 
 /**

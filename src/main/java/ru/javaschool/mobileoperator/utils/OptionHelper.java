@@ -1,8 +1,8 @@
 package ru.javaschool.mobileoperator.utils;
 
+import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
-import ru.javaschool.mobileoperator.domain.TerminalDevice;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -105,26 +105,26 @@ public class OptionHelper {
 
     /**
      * Method to remove list with options from terminal device
-     * @param terminalDevice terminal device
+     * @param contract terminal device
      * @param options list with options
      */
-    public void removeOptionsFromTd(TerminalDevice terminalDevice, List<Option> options){
-        terminalDevice.getOptions().removeAll(options);
+    public void removeOptionsFromContract(Contract contract, List<Option> options){
+        contract.getOptions().removeAll(options);
         options.forEach(
-                option -> option.getTerminalDevices().removeIf(
-                        terminalDevice1 -> terminalDevice.equals(terminalDevice1)
+                option -> option.getContracts().removeIf(
+                        contract1 -> contract.equals(contract1)
                 )
         );
     }
 
     /**
      * Method to remove option from terminal device
-     * @param terminalDevice terminal device
+     * @param contract terminal device
      * @param option option
      */
-    public void removeOptionFromTd(TerminalDevice terminalDevice, Option option){
-        terminalDevice.getOptions().removeIf(option1 -> option.equals(option1));
-        option.getTerminalDevices().removeIf(terminalDevice1 -> terminalDevice.equals(terminalDevice1));
+    public void removeOptionFromContract(Contract contract, Option option){
+        contract.getOptions().removeIf(option1 -> option.equals(option1));
+        option.getContracts().removeIf(contract1 -> contract.equals(contract1));
     }
 
     /**
@@ -132,7 +132,7 @@ public class OptionHelper {
      * @param tariffPlan tariff plan
      * @param option option
      */
-    public void removeOptionFromTp(TariffPlan tariffPlan, Option option){
+    public void removeOptionFromTariff(TariffPlan tariffPlan, Option option){
         tariffPlan.getOptions().removeIf(option1 -> option.equals(option1));
         option.getTariffPlans().removeIf(tariffPlan1 -> tariffPlan.equals(tariffPlan1));
     }
@@ -142,7 +142,7 @@ public class OptionHelper {
      * @param tariffPlan tariff plan
      * @param options list with options
      */
-    public void removeOptionsFromTp(TariffPlan tariffPlan, List<Option> options){
+    public void removeOptionsFromTariff(TariffPlan tariffPlan, List<Option> options){
         tariffPlan.getOptions().removeAll(options);
         options.forEach(
                 option -> option.getTariffPlans().removeIf(
