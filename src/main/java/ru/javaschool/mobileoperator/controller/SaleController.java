@@ -140,35 +140,35 @@ public class SaleController {
 
     /**
      * Post method to sale terminal device to existing personal account
-     * @param personalAccountId personal account id
+     * @param customerId personal account id
      * @param tariffId tariff id
      * @param numberId phone number id
      * @param session http session
      * @return redirect to cart page
      */
     @PostMapping(value = "/confirmPersonalAccount", params = "confirm")
-    public String confirmSaleToExistPersonalAccountToCart(@RequestParam("personalAccountId") Long personalAccountId,
+    public String confirmSaleToExistPersonalAccountToCart(@RequestParam("customerId") Long customerId,
                                                           @RequestParam("tariff") Long tariffId,
                                                           @RequestParam("number") Long numberId,
                                                           HttpSession session){
-        cartSaleService.saleToPersonalAccount(personalAccountId, tariffId, numberId, session);
+        cartSaleService.saleToPersonalAccount(customerId, tariffId, numberId, session);
         return "redirect:/cart";
     }
 
     /**
      * Post method to sale terminal device to existing personal account
-     * @param personalAccountId personal account id
+     * @param customerId personal account id
      * @param tariffId tariff id
      * @param numberId phone number id
      * @param session http session
      * @return redirect to sale page {@link #salePage(Model, HttpSession)}
      */
     @PostMapping(value = "/confirmPersonalAccount", params = "add_to_cart")
-    public String confirmSaleToExistPersonalAccount(@RequestParam("personalAccountId") Long personalAccountId,
+    public String confirmSaleToExistPersonalAccount(@RequestParam("customerId") Long customerId,
                                                     @RequestParam("tariff") Long tariffId,
                                                     @RequestParam("number") Long numberId,
                                                     HttpSession session){
-        cartSaleService.saleToPersonalAccount(personalAccountId, tariffId, numberId, session);
+        cartSaleService.saleToPersonalAccount(customerId, tariffId, numberId, session);
         return "redirect:/sale";
     }
 

@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TariffPlanDto {
-    private int id;
+    private long id;
     private int price;
     private String name;
     private boolean archival;
     private List<OptionDto> options = new ArrayList<>();
 
-    public TariffPlanDto(int id) {
+    public TariffPlanDto(long id) {
         this.id = id;
     }
 
-    public TariffPlanDto(int id, int price, String name, boolean archival) {
+    public TariffPlanDto(long id, int price, String name, boolean archival) {
         this.id = id;
         this.price = price;
         this.name = name;
         this.archival = archival;
     }
 
-    public TariffPlanDto(int id, int price, String name, boolean archival, List<OptionDto> options) {
+    public TariffPlanDto(long id, int price, String name, boolean archival, List<OptionDto> options) {
         this.id = id;
         this.price = price;
         this.name = name;
@@ -29,11 +29,11 @@ public class TariffPlanDto {
         this.options = options;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

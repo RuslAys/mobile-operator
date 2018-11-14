@@ -6,7 +6,7 @@ import java.util.List;
 public class PhoneNumberDto {
     private long id;
     private long number;
-    private List<ContractDto> contracts = new ArrayList<>();
+    private ContractDto contract;
 
     public PhoneNumberDto(long id) {
         this.id = id;
@@ -17,10 +17,10 @@ public class PhoneNumberDto {
         this.number = number;
     }
 
-    public PhoneNumberDto(long id, long number, List<ContractDto> contracts) {
+    public PhoneNumberDto(long id, long number, ContractDto contract) {
         this.id = id;
         this.number = number;
-        this.contracts = contracts;
+        this.contract = contract;
     }
 
     public long getId() {
@@ -39,11 +39,11 @@ public class PhoneNumberDto {
         this.number = number;
     }
 
-    public List<ContractDto> getContracts() {
-        return contracts;
+    public ContractDto getContract() {
+        return contract;
     }
 
-    public void setContracts(List<ContractDto> contracts) {
-        this.contracts = contracts;
+    public void setContract(ContractDto contract) {
+        this.contract = contract;
     }
 }
