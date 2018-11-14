@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.repository.api.ContractDao;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.service.api.ContractService;
 import ru.javaschool.mobileoperator.service.exceptions.PhoneNumberException;
+import ru.javaschool.mobileoperator.utils.DtoConverter;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 @Service("contractService")
@@ -35,10 +37,11 @@ public class ContractServiceImpl extends GenericServiceImpl<Contract, Long> impl
 
     @Override
     @Transactional(readOnly = true)
-    public Contract getContractWithOptions(String number) {
+    public ContractDto getContractWithOptions(String number) {
         if(StringUtils.isEmpty(number)){
             throw new PhoneNumberException("Number cannot be empty");
         }
-        return contractDao.getContractWithOptionsByPhoneNumber(Long.parseLong(number));
+        return DtoConverter.toContractDtoWithLists(
+                contractDao.getContractWithOptionsByPhoneNumber(Long.parseLong(number)));
     }
 }

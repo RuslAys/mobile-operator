@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.service.api;
 
 import ru.javaschool.mobileoperator.domain.TariffPlan;
+import ru.javaschool.mobileoperator.domain.dto.TariffPlanDto;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface TariffService extends GenericService<TariffPlan, Long> {
      * @param tariffId tariff id
      * @return tariff plan
      */
-    TariffPlan findTariffWithOptions(Long tariffId);
+    TariffPlanDto findTariffWithOptions(Long tariffId);
 
     /**
      * Method to remove option from tariff plan
@@ -45,12 +46,12 @@ public interface TariffService extends GenericService<TariffPlan, Long> {
      * @param number phone number
      * @return tariff plan
      */
-    TariffPlan getTariffPlanOnContractByNumber(String number);
+    TariffPlanDto getTariffPlanOnContractByNumber(String number);
 
     /**
      * Method to get tariffs except specified
      * @param tariffPlan specified tariff plan
      * @return List of tariff plans
      */
-    List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan);
+    List<TariffPlanDto> getTariffsExcept(TariffPlan tariffPlan);
 }

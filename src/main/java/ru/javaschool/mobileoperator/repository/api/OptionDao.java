@@ -35,10 +35,10 @@ public interface OptionDao extends GenericDao<Option, Long>{
 
     /**
      * Method to find options except specified options
-     * @param options specified options
+     * @param optionIds specified options
      * @return list with options
      */
-    List<Option> getOptionsNotIn(List<Option> options);
+    List<Option> getOptionsNotIn(List<Long> optionIds);
 
     /**
      * Method to find option with all dependencies by id

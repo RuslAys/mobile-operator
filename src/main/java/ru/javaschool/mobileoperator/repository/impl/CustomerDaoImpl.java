@@ -10,7 +10,8 @@ public class CustomerDaoImpl extends GenericDaoImpl<Customer, Long>
         implements CustomerDao {
     @Override
     public Customer getCustomerByContract(Contract contract) {
-        String query = "SELECT c.customer FROM Contract c LEFT JOIN FETCH c.customer.contracts WHERE c = :contract";
+        String query = "SELECT c.customer FROM Contract c LEFT JOIN FETCH c.customer.contracts " +
+                "LEFT JOIN FETCH c.customer.users WHERE c = :contract";
         return (Customer) currentSession()
                 .createQuery(query)
                 .setParameter("contract", contract)

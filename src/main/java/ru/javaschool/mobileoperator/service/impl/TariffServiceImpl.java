@@ -10,11 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
+import ru.javaschool.mobileoperator.domain.dto.OptionDto;
+import ru.javaschool.mobileoperator.domain.dto.TariffPlanDto;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.TariffService;
 import ru.javaschool.mobileoperator.service.exceptions.OptionException;
+import ru.javaschool.mobileoperator.utils.DtoConverter;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 import java.util.*;
@@ -71,8 +74,15 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public TariffPlan findTariffWithOptions(Long tariffId) {
-        return tariffDao.getTariffWithOptions(tariffId);
+    public TariffPlanDto findTariffWithOptions(Long tariffId) {
+        TariffPlan tariffPlan = tariffDao.getTariffWithOptions(tariffId);
+        TariffPlanDto dto = new TariffPlanDto(tariffPlan.getId(), tariffPlan.getPrice(),
+                tariffPlan.getName(), tariffPlan.isArchival());
+        List<OptionDto> optionDtos = new ArrayList<>();
+        tariffPlan.getOptions()
+                .forEach(option -> optionDtos.add(DtoConverter.toOptionDtoWithoutLists(option)));
+        dto.setOptions(optionDtos);
+        return dto;
     }
 
     @Override
@@ -127,13 +137,17 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
 
     @Override
     @Transactional(readOnly = true)
-    public TariffPlan getTariffPlanOnContractByNumber(String number) {
-        return tariffDao.getTariffOnContractByNumber(Long.parseLong(number));
+    public TariffPlanDto getTariffPlanOnContractByNumber(String number) {
+        return DtoConverter.toTariffDtoWithoutLists(
+                tariffDao.getTariffOnContractByNumber(Long.parseLong(number)));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TariffPlan> getTariffsExcept(TariffPlan tariffPlan) {
-        return tariffDao.getTariffNotIn(tariffPlan);
+    public List<TariffPlanDto> getTariffsExcept(TariffPlan tariffPlan) {
+        List<TariffPlanDto> dtos = new ArrayList<>();
+        tariffDao.getTariffNotIn(tariffPlan).forEach(
+                tariffPlan1 -> dtos.add(DtoConverter.toTariffDtoWithoutLists(tariffPlan1)));
+        return dtos;
     }
 }

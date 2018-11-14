@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.service.api;
 
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.dto.OptionDto;
 
 import java.util.List;
 
@@ -24,21 +25,21 @@ public interface OptionService extends GenericService<Option, Long> {
      * @param ids options ids
      * @return list with options
      */
-    List<Option> getOptionsByIds(List<Long> ids);
+    List<OptionDto> getOptionsByIds(List<Long> ids);
 
     /**
      * Method for find options not like specified options
      * @param options specified options
      * @return list with options
      */
-    List<Option> getOptionsNotIn(List<Option> options);
+    List<OptionDto> getOptionsNotIn(List<OptionDto> options);
 
     /**
      * Method for find option with all relations
      * @param id options id
      * @return option
      */
-    Option getFullOptionById(Long id);
+    OptionDto getFullOptionById(Long id);
 
     /**
      * Method to add option on terminal device
@@ -59,5 +60,5 @@ public interface OptionService extends GenericService<Option, Long> {
      * @param number phone number
      * @return list with options
      */
-    List<Option> getOptionsOnContractByNumber(String number);
+    List<OptionDto> getOptionsOnContractByNumber(String number);
 }

@@ -43,10 +43,10 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
     }
 
     @Override
-    public List<Option> getOptionsNotIn(List<Option> options) {
+    public List<Option> getOptionsNotIn(List<Long> ids) {
         return currentSession()
-                .createQuery("SELECT o FROM Option o WHERE o NOT IN :options")
-                .setParameter("options", options).getResultList();
+                .createQuery("SELECT o FROM Option o WHERE o.id NOT IN :ids")
+                .setParameter("ids", ids).getResultList();
     }
 
     @Override

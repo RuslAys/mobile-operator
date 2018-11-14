@@ -17,6 +17,8 @@ import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.domain.dto.PhoneNumberDto;
+import ru.javaschool.mobileoperator.domain.dto.TariffPlanDto;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
@@ -277,7 +279,7 @@ public class AdminPanelController {
     @GetMapping("/tariff/{id}")
     public String tariffEditorPage(Model model,
                                     @PathVariable("id") Long tariffId){
-        TariffPlan tariffPlan = tariffService.findTariffWithOptions(tariffId);
+        TariffPlanDto tariffPlan = tariffService.findTariffWithOptions(tariffId);
         model.addAttribute("tariff", tariffPlan);
         model.addAttribute("freeOptions", optionService.getOptionsNotIn(tariffPlan.getOptions()));
         return "tariffEditor";
@@ -320,31 +322,6 @@ public class AdminPanelController {
     public String phoneNumbersPage(Model model,
                                    @PathVariable Map<String, String> pathVariablesMap,
                                    HttpServletRequest request){
-        PagedListHolder<PhoneNumber> phoneNumberPagedListHolder = null;
-        String type = pathVariablesMap.get("type");
-        if(null == type) {
-            List<PhoneNumber> numbers = (phoneNumberService.getAllNumbers());
-            phoneNumberPagedListHolder = new PagedListHolder<PhoneNumber>();
-            phoneNumberPagedListHolder.setSource(numbers);
-            phoneNumberPagedListHolder.setPageSize(3);
-            request.getSession().setAttribute("numbers",  phoneNumberPagedListHolder);
-        }else if("next".equals(type)) {
-            // Return next set of list
-            phoneNumberPagedListHolder = (PagedListHolder<PhoneNumber>) request.getSession()
-                    .getAttribute("numbers");
-            phoneNumberPagedListHolder.nextPage();
-        }else if("prev".equals(type)) {
-            // Return previous set of list
-            phoneNumberPagedListHolder = (PagedListHolder<PhoneNumber>) request.getSession()
-                    .getAttribute("numbers");
-            phoneNumberPagedListHolder.previousPage();
-        }else  {
-            // Return specific index set of list
-            phoneNumberPagedListHolder = (PagedListHolder<PhoneNumber>) request.getSession()
-                    .getAttribute("numbers");
-            int pageNum = Integer.parseInt(type);
-            phoneNumberPagedListHolder.setPage(pageNum);
-        }
         return "phone";
     }
 

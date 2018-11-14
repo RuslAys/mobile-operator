@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
+import ru.javaschool.mobileoperator.domain.dto.OptionDto;
 import ru.javaschool.mobileoperator.repository.api.ContractDao;
 import ru.javaschool.mobileoperator.repository.api.GenericDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
@@ -17,6 +18,7 @@ import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.exceptions.ContractException;
 import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
+import ru.javaschool.mobileoperator.utils.DtoConverter;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
 import java.util.ArrayList;
@@ -91,23 +93,33 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<Option> getOptionsByIds(List<Long> ids) {
-        return optionDao.getOptions(ids);
+    public List<OptionDto> getOptionsByIds(List<Long> ids) {
+        List<OptionDto> optionDtos = new ArrayList<>();
+        optionDao.getOptions(ids).forEach(
+                option -> optionDtos.add(DtoConverter.toOptionDtoWithoutLists(option))
+        );
+        return optionDtos;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<Option> getOptionsNotIn(List<Option> options) {
+    public List<OptionDto> getOptionsNotIn(List<OptionDto> options) {
+        List<Long> ids = new ArrayList<>();
+        options.forEach(option -> ids.add(option.getId()));
         if(options.isEmpty()){
-            return findAll();
+            List<OptionDto> optionDtos = new ArrayList<>();
+            findAll().forEach(option -> optionDtos.add(DtoConverter.toOptionDtoWithoutLists(option)));
+            return optionDtos;
         }
-        return optionDao.getOptionsNotIn(options);
+        List<OptionDto> optionDtos = new ArrayList<>();
+        optionDao.getOptionsNotIn(ids).forEach(option -> optionDtos.add(DtoConverter.toOptionDtoWithoutLists(option)));
+        return optionDtos;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public Option getFullOptionById(Long id) {
-        return optionDao.getFullOptionById(id);
+    public OptionDto getFullOptionById(Long id) {
+        return DtoConverter.toOptionDtoWithLists(optionDao.getFullOptionById(id));
     }
 
     @Override
@@ -183,8 +195,12 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(readOnly = true)
-    public List<Option> getOptionsOnContractByNumber(String number) {
-        return optionDao.getOptionsOnContractByNumber(Long.parseLong(number));
+    public List<OptionDto> getOptionsOnContractByNumber(String number) {
+        List<OptionDto> optionDtos = new ArrayList<>();
+        optionDao.getOptionsOnContractByNumber(Long.parseLong(number)).forEach(
+                option -> optionDtos.add(DtoConverter.toOptionDtoWithoutLists(option))
+        );
+        return optionDtos;
     }
 
     private Set<Option> getAllDependentOptions(List<Option> options, Set<Option> uniqueOptions){
