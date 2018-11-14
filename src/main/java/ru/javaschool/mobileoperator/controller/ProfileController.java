@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
+import ru.javaschool.mobileoperator.domain.dto.ContractDto;
+import ru.javaschool.mobileoperator.domain.dto.TariffPlanDto;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartLockService;
 import ru.javaschool.mobileoperator.service.api.CartOptionService;
@@ -74,7 +76,7 @@ public class ProfileController {
                               @PathVariable("username") String username,
                               @AuthenticationPrincipal UserDetails user,
                               HttpSession session){
-        Contract contract = contractService.getContractWithOptions(username);
+        ContractDto contract = contractService.getContractWithOptions(username);
         model.addAttribute("cart", cartHelper.getCart(session));
         model.addAttribute("user", userService.getUser(username));
         model.addAttribute("contract", contract);
@@ -93,8 +95,8 @@ public class ProfileController {
     @GetMapping("/{username}/tariff")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileTariffPage(Model model, @PathVariable("username") String username){
-        Contract contract = contractService.getContractWithOptions(username);
-        TariffPlan tariffPlan = contract.getTariffPlan();
+        ContractDto contract = contractService.getContractWithOptions(username);
+        TariffPlanDto tariffPlan = contract.getTariffPlan();
         model.addAttribute("contract", contract);
         model.addAttribute("tariffPlan", tariffPlan);
         model.addAttribute("options", contract.getOptions());
@@ -136,7 +138,7 @@ public class ProfileController {
     @GetMapping("/{username}/option")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profileOptionsPage(Model model, @PathVariable("username") String username){
-        Contract contract = contractService.getContractWithOptions(username);
+        ContractDto contract = contractService.getContractWithOptions(username);
         model.addAttribute("contract", contract);
         model.addAttribute("options", contract.getOptions());
         model.addAttribute("freeOptions", optionService.getOptionsNotIn(contract.getOptions()));

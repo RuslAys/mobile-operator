@@ -203,6 +203,21 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         return optionDtos;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OptionDto> getAllOptionsWithoutLists() {
+        List<Option> list = optionDao.findAll();
+        List<OptionDto> dtos = new ArrayList<>();
+        list.forEach(option -> dtos.add(DtoConverter.toOptionDtoWithoutLists(option)));
+        return dtos;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OptionDto getOptionWithoutList(long id) {
+        return DtoConverter.toOptionDtoWithoutLists(find(id));
+    }
+
     private Set<Option> getAllDependentOptions(List<Option> options, Set<Option> uniqueOptions){
         for(Option option: options){
             for(Option inOption: option.getInclusiveOptions()){

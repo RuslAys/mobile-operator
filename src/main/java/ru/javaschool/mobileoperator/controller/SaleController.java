@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.domain.Contract;
+import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.service.api.CartSaleService;
 import ru.javaschool.mobileoperator.service.api.ContractService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
@@ -181,7 +182,7 @@ public class SaleController {
     @PostMapping("/search")
     public String searchCustomer(Model model,
                                  @RequestParam("number") String number){
-        Contract contract;
+        ContractDto contract;
         try {
             contract = contractService.getContractWithOptions(number);
         }catch (Exception e){

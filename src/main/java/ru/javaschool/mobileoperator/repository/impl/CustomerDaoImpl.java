@@ -9,12 +9,12 @@ import ru.javaschool.mobileoperator.repository.api.CustomerDao;
 public class CustomerDaoImpl extends GenericDaoImpl<Customer, Long>
         implements CustomerDao {
     @Override
-    public Customer getCustomerByContract(Contract contract) {
+    public Customer getCustomerByContract(Long contractId) {
         String query = "SELECT c.customer FROM Contract c LEFT JOIN FETCH c.customer.contracts " +
-                "LEFT JOIN FETCH c.customer.users WHERE c = :contract";
+                "LEFT JOIN FETCH c.customer.users WHERE c.id = :contractId";
         return (Customer) currentSession()
                 .createQuery(query)
-                .setParameter("contract", contract)
+                .setParameter("contractId", contractId)
                 .getSingleResult();
     }
 }

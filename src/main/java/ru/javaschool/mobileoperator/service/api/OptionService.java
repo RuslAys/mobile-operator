@@ -61,4 +61,17 @@ public interface OptionService extends GenericService<Option, Long> {
      * @return list with options
      */
     List<OptionDto> getOptionsOnContractByNumber(String number);
+
+    /**
+     * Method to return all options
+     * @return list with options
+     */
+    List<OptionDto> getAllOptionsWithoutLists();
+
+    /**
+     * Method to return option by contract without relations
+     * @param id option id
+     * @return option
+     */
+    OptionDto getOptionWithoutList(long id);
 }

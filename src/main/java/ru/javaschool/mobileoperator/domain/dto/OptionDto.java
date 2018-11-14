@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,9 @@ public class OptionDto {
     private String name;
     private int price;
     private int connectionCost;
+    @JsonIgnore
     private List<ContractDto> contracts = new ArrayList<>();
+    @JsonIgnore
     private List<TariffPlanDto> tariffPlans = new ArrayList<>();
 
     public OptionDto(long id) {

@@ -76,12 +76,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public TariffPlanDto findTariffWithOptions(Long tariffId) {
         TariffPlan tariffPlan = tariffDao.getTariffWithOptions(tariffId);
-        TariffPlanDto dto = new TariffPlanDto(tariffPlan.getId(), tariffPlan.getPrice(),
-                tariffPlan.getName(), tariffPlan.isArchival());
-        List<OptionDto> optionDtos = new ArrayList<>();
-        tariffPlan.getOptions()
-                .forEach(option -> optionDtos.add(DtoConverter.toOptionDtoWithoutLists(option)));
-        dto.setOptions(optionDtos);
+        TariffPlanDto dto = DtoConverter.toTariffDtoWithLists(tariffPlan);
         return dto;
     }
 
@@ -144,10 +139,21 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
 
     @Override
     @Transactional(readOnly = true)
-    public List<TariffPlanDto> getTariffsExcept(TariffPlan tariffPlan) {
+    public List<TariffPlanDto> getTariffsExcept(TariffPlanDto tariffPlan) {
         List<TariffPlanDto> dtos = new ArrayList<>();
-        tariffDao.getTariffNotIn(tariffPlan).forEach(
+        tariffDao.getTariffNotIn(tariffPlan.getId()).forEach(
                 tariffPlan1 -> dtos.add(DtoConverter.toTariffDtoWithoutLists(tariffPlan1)));
+        return dtos;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TariffPlanDto> findTariffsWithOptions() {
+        List<TariffPlan> tariffPlans = tariffDao.getTariffsWithOptions();
+        List<TariffPlanDto> dtos = new ArrayList<>();
+        tariffPlans.forEach(
+                tariffPlan -> dtos.add(DtoConverter.toTariffDtoWithLists(tariffPlan))
+        );
         return dtos;
     }
 }

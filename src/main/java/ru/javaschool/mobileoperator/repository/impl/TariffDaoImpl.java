@@ -33,10 +33,17 @@ public class TariffDaoImpl extends
     }
 
     @Override
-    public List<TariffPlan> getTariffNotIn(TariffPlan tariffPlan) {
+    public List<TariffPlan> getTariffsWithOptions() {
         return currentSession()
-                .createQuery("SELECT tp FROM TariffPlan tp WHERE tp != :tp")
-                .setParameter("tp", tariffPlan)
+                .createQuery("SELECT tp FROM TariffPlan tp LEFT JOIN FETCH tp.options")
+                .getResultList();
+    }
+
+    @Override
+    public List<TariffPlan> getTariffNotIn(Long tariffPlanId) {
+        return currentSession()
+                .createQuery("SELECT tp FROM TariffPlan tp WHERE tp.id != :id")
+                .setParameter("id", tariffPlanId)
                 .getResultList();
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Customer;
+import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
 import ru.javaschool.mobileoperator.service.api.CustomerService;
@@ -18,7 +19,7 @@ public class CustomerServiceImpl extends GenericServiceImpl<Customer, Long> impl
 
     @Override
     @Transactional(readOnly = true)
-    public CustomerDto getCustomerByContract(Contract contract) {
-        return DtoConverter.toCustomerDtoWithLists(customerDao.getCustomerByContract(contract));
+    public CustomerDto getCustomerByContract(ContractDto contract) {
+        return DtoConverter.toCustomerDtoWithLists(customerDao.getCustomerByContract(contract.getId()));
     }
 }
