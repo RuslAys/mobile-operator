@@ -39,11 +39,7 @@ public class Option extends AbstractPO {
             inverseJoinColumns = { @JoinColumn(name = "child_option_id") })
     private List<Option> parentInclusive = new ArrayList<>();
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    },
-            mappedBy = "parentExclusive")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "parentExclusive")
     private List<Option> exclusiveOptions = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "parentInclusive")

@@ -10,7 +10,7 @@ import javax.persistence.Version;
 @MappedSuperclass
 public class AbstractPO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected Long id;
 

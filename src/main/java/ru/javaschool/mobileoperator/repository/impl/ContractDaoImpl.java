@@ -1,5 +1,6 @@
 package ru.javaschool.mobileoperator.repository.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.repository.api.ContractDao;

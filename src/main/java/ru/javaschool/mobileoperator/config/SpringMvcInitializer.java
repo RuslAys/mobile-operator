@@ -17,7 +17,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
     public void onStartup(ServletContext servletContext) throws ServletException {
         //create the root Spring application context
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(HibernateConfig.class, WebSecurityConfig.class, AspectConfig.class);
+        rootContext.register(HibernateConfig.class, WebSecurityConfig.class, AspectConfig.class, ActiveMqConfig.class);
 
         servletContext.addListener(new ContextLoaderListener(rootContext));
 
@@ -43,7 +43,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {HibernateConfig.class, WebSecurityConfig.class, AspectConfig.class};
+        return new Class[] {HibernateConfig.class, WebSecurityConfig.class, AspectConfig.class, ActiveMqConfig.class};
     }
 
     @Override
