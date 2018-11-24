@@ -1,7 +1,5 @@
 package ru.javaschool.mobileoperator.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    private final Logger logger = LogManager.getLogger(IndexController.class);
 
     @Autowired
     private RoleHelper roleHelper;

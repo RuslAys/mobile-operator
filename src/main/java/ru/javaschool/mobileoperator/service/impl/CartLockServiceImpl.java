@@ -1,7 +1,5 @@
 package ru.javaschool.mobileoperator.service.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,8 +15,6 @@ import javax.servlet.http.HttpSession;
 
 @Service("cartLockService")
 public class CartLockServiceImpl implements CartLockService {
-
-    private final Logger logger = LogManager.getLogger(CartLockServiceImpl.class);
 
     @Autowired
     private CartService cartService;

@@ -1,7 +1,5 @@
 package ru.javaschool.mobileoperator.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +34,7 @@ import java.util.Map;
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminPanelController {
-    private final Logger logger = LogManager.getLogger(AdminPanelController.class);
+
     @Autowired
     private UserService userService;
 

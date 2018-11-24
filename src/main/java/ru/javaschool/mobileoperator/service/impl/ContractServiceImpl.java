@@ -1,7 +1,5 @@
 package ru.javaschool.mobileoperator.service.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import ru.javaschool.mobileoperator.utils.OptionHelper;
 @Service("contractService")
 public class ContractServiceImpl extends GenericServiceImpl<Contract, Long> implements ContractService {
 
-    private final Logger logger = LogManager.getLogger(OptionServiceImpl.class);
 
     @Autowired
     private ContractDao contractDao;

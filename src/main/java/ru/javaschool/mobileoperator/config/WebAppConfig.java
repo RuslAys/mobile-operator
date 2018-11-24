@@ -9,11 +9,11 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
 @EnableWebMvc
+@Configuration
+@ComponentScan(basePackages = {"ru.javaschool.mobileoperator"})
 @EnableAspectJAutoProxy
 @EnableGlobalMethodSecurity(prePostEnabled=true)
-@ComponentScan(basePackages = {"ru.javaschool.mobileoperator.controller", "ru.javaschool.mobileoperator.aspects"})
 public class WebAppConfig implements WebMvcConfigurer {
 
     @Override

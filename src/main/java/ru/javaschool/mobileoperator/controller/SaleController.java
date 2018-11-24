@@ -1,8 +1,6 @@
 package ru.javaschool.mobileoperator.controller;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -30,8 +28,6 @@ import java.util.Date;
 @Controller
 @RequestMapping("/sale")
 public class SaleController {
-
-    private final Logger logger = LogManager.getLogger(SaleController.class);
 
     @Autowired
     private TariffService tariffService;

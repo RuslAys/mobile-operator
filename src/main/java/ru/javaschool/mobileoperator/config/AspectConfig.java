@@ -11,7 +11,7 @@ import ru.javaschool.mobileoperator.apects.LoggingAspect;
 @ComponentScan(basePackages = "ru.javaschool.mobileoperator.aspects")
 public class AspectConfig {
     @Bean
-    LoggingAspect loggingAspect() {
+    public LoggingAspect loggingAspect() {
         return new LoggingAspect();
     }
 }
