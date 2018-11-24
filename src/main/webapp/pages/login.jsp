@@ -12,7 +12,7 @@
                                 <h3 class="mb-0">Login</h3>
                             </div>
                             <div class="card-body">
-                                <form class="form" role="form" id="formLogin" action="/login" method="post">
+                                <form class="form" role="form" id="formLogin" action="login" method="post">
                                     <div class="form-group">
                                         <label for="uname1">Username</label>
                                         <input type="text" class="form-control form-control-lg rounded-1" name="username" id="uname1">

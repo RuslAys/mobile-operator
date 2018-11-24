@@ -6,7 +6,7 @@
 <title>MSS</title>
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">MSS</a>
+  <a class="navbar-brand" href="">MSS</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -14,17 +14,17 @@
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
         <security:authorize access="hasRole('ROLE_ADMIN')">
-                <a class="nav-link" href="/admin">Admin panel</a>
+                <a class="nav-link" href="admin">Admin panel</a>
         </security:authorize>
       </li>
       <li class="nav-item active">
         <security:authorize access="hasRole('ROLE_OPERATOR')">
-              <a class="nav-link" href="/sale">Sale contract</a>
+              <a class="nav-link" href="sale">Sale contract</a>
         </security:authorize>
       </li>
       <security:authorize access="isAuthenticated()">
           <li class="nav-item active">
-                <a class="nav-link" href="/cart">Cart quantity: ${cart.quantity}</a>
+                <a class="nav-link" href="cart">Cart quantity: ${cart.quantity}</a>
           </li>
       </security:authorize>
     </ul>
@@ -34,7 +34,7 @@
             href="/profile/<security:authentication property="principal.username"/>">
             <security:authentication property="principal.username"/>
         </a>
-        <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
+        <form class="form-inline my-2 my-lg-0" action="logout" method="post">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
         </form>
     </security:authorize>

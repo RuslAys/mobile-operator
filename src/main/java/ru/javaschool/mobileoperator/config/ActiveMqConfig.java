@@ -1,8 +1,14 @@
 package ru.javaschool.mobileoperator.config;
 
-//@Configuration
-//@ComponentScan("ru.javaschool.mobileoperator.service")
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
 public class ActiveMqConfig {
+    private static final String USERNAME = "t";
+    private static final String PASSWORD = "t";
+    private static final String DEFAULT_DESTINATION = "jms/queue/TariffsMQ";
+    private static final String PROVIDED_URL = "http-remoting://127.0.0.1:8080";
+    private static final String INITIAL_CONTEXT_FACTORY = "org.wildfly.naming.client.WildFlyInitialContextFactory";
 //    @Bean
 //    public ActiveMQConnectionFactory amqConnectionFactory(){
 //        return new ActiveMQConnectionFactory("tcp://localhost:61616");
