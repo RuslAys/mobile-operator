@@ -252,6 +252,13 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-jms-client-bom</artifactId>
+            <version>14.0.1.Final</version>
+            <type>pom</type>
+        </dependency>
+
     </dependencies>
 
     <build>
