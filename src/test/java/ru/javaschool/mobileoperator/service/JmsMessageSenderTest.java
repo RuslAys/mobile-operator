@@ -1,6 +1,5 @@
 package ru.javaschool.mobileoperator.service;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,6 @@ import ru.javaschool.mobileoperator.BaseTest;
 import ru.javaschool.mobileoperator.config.JmsConfig;
 import ru.javaschool.mobileoperator.config.WebAppConfig;
 import ru.javaschool.mobileoperator.service.api.JmsMessageSender;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import java.util.Properties;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

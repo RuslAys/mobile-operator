@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        System.out.println(passwordEncoder().encode("p"));
         http
                 .authorizeRequests()
-                    .antMatchers("/login**").permitAll()
+                    .antMatchers("/login**", "/rest/**").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/sale/**").hasRole("OPERATOR")
                     .anyRequest().authenticated()
