@@ -2,6 +2,7 @@ package ru.javaschool.mobileoperator.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "phone_numbers")
 public class PhoneNumber extends AbstractPO {
-    @Column(name = "number")
+    @Column(name = "number", unique = true, nullable = false)
     private Long number;
 
     @OneToOne(mappedBy = "phoneNumber")

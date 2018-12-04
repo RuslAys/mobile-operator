@@ -47,8 +47,12 @@ public class PhoneNumberServiceImpl extends GenericServiceImpl<PhoneNumber, Long
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<PhoneNumberDto> getAllEmptyNumbers() {
         List<PhoneNumberDto> phoneNumberDtos = new ArrayList<>();
-        phoneNumberDao.getAllEmptyNumbers().forEach(
-                phoneNumber -> phoneNumberDtos.add(DtoConverter.toPhoneNumberDto(phoneNumber)));
+        List<PhoneNumber> emptyNumbers = phoneNumberDao.getAllEmptyNumbers();
+        if(emptyNumbers == null){
+            return phoneNumberDtos;
+        }
+        emptyNumbers.forEach(
+                phoneNumber -> phoneNumberDtos.add(DtoConverter.toPhoneNumberDtoWithIdAndNumber(phoneNumber)));
         return phoneNumberDtos;
     }
 

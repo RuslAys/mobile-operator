@@ -83,6 +83,15 @@ public final class DtoConverter {
     }
 
     /**
+     * Method to convert phone number entity to phone number dto without contract
+     * @param phoneNumber phone number entity
+     * @return phone number dto
+     */
+    public static PhoneNumberDto toPhoneNumberDtoWithIdAndNumber(PhoneNumber phoneNumber){
+        return new PhoneNumberDto(phoneNumber.getId(), phoneNumber.getNumber());
+    }
+
+    /**
      * Method to convert tariff plan entity to tariff plan dto with relation lists
      * @param tariffPlan tariff plan entity
      * @return tariff plan dto

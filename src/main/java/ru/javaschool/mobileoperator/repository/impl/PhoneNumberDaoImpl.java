@@ -13,7 +13,7 @@ public class PhoneNumberDaoImpl extends GenericDaoImpl<PhoneNumber, Long>
     @Override
     public List<PhoneNumber> getAllEmptyNumbers() {
         return currentSession()
-                .createQuery("SELECT pn FROM PhoneNumber pn where pn.contract IS NULL")
+                .createQuery("SELECT pn FROM PhoneNumber pn WHERE pn.contract IS NULL")
                 .getResultList();
     }
 }

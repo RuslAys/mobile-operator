@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <c:set var="pageListHolder" value="${options}" scope="session" />
-<spring:url value="/admin/option" var="pageurl" />
+<spring:url value="${rootUrl}/admin/option" var="pageurl" />
 <body>
     <div class="container py-4">
             <div class="row">
@@ -10,7 +10,7 @@
                         <div class="col-md-5 mx-auto">
                             <div>
                                 <div>
-                                    <form name="add-new-option" action="/admin/option/add" method="post">
+                                    <form name="add-new-option" action="${rootUrl}/admin/option/add" method="post">
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="name"
                                                 id="optionNameField" placeholder="Option`s name">

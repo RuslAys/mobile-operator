@@ -4,16 +4,16 @@
     <h1>Admin panel</h1>
     <ul>
         <li>
-            <a href="/admin/operator">Operator editor</a>
+            <a href="${rootUrl}/admin/operator">Operator editor</a>
         </li>
         <li>
-            <a href="/admin/tariff">Tariff editor</a>
+            <a href="${rootUrl}/admin/tariff">Tariff editor</a>
         </li>
         <li>
-            <a href="/admin/option">Option editor</a>
+            <a href="${rootUrl}/admin/option">Option editor</a>
         </li>
         <li>
-            <a href="/admin/phone">Phone number editor</a>
+            <a href="${rootUrl}/admin/phone">Phone number editor</a>
         </li>
     </ul>
 </body>

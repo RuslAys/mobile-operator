@@ -205,7 +205,7 @@ public class AdminPanelController {
                                     List<Long> inclusiveOptions,
                             @RequestParam(required = false, value = "exclusiveOptions")
                                     List<Long> exclusiveOptions){
-        optionService.createOption(name, price, connectionCost,inclusiveOptions, exclusiveOptions);
+        optionService.createOption(name, price, connectionCost, inclusiveOptions, exclusiveOptions);
         return "redirect:/admin/option";
     }
 
@@ -320,6 +320,7 @@ public class AdminPanelController {
     public String phoneNumbersPage(Model model,
                                    @PathVariable Map<String, String> pathVariablesMap,
                                    HttpServletRequest request){
+        model.addAttribute("phones", phoneNumberService.getAllEmptyNumbers());
         return "phone";
     }
 

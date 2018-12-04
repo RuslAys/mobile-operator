@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <c:set var="pageListHolder" value="${tariffs}" scope="session" />
-<spring:url value="/admin/tariff/l" var="pageurl" />
+<spring:url value="admin/tariff/l" var="pageurl" />
 <body>
     <div class="container py-4">
         <div class="row">
@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-5 mx-auto">
                         <div>
-                            <form name="add-new-tariff" action="/admin/tariff/add" method="post">
+                            <form name="add-new-tariff" action="admin/tariff/add" method="post">
                                 <div class="form-group">
                                     <label for="tariffNameField">Tariff plan name</label>
                                     <input type="text" class="form-control" name="name"
@@ -51,7 +51,7 @@
                                   <form name="remove-tariff" action="tariff/remove" method="post">
                                      <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
                                      <td>
-                                        <a href="/admin/tariff/${tariffPlan.id}"><c:out value="${tariffPlan.name}" /> </a>
+                                        <a href="admin/tariff/${tariffPlan.id}"><c:out value="${tariffPlan.name}" /> </a>
                                      </td>
                                      <td>
                                         ${tariffPlan.price}

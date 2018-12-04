@@ -32,8 +32,9 @@ public class Contract extends AbstractPO {
     private Customer customer;
 
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "phone_number_id")
     @JoinTable(name = "contracts_phone_numbers",
-            joinColumns = @JoinColumn(name = "terminal_id"),
+            joinColumns = @JoinColumn(name = "contract_id"),
             inverseJoinColumns = @JoinColumn(name = "phone_number_id"))
     private PhoneNumber phoneNumber;
 
