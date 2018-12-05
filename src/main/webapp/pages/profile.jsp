@@ -80,14 +80,18 @@
                     </ul>
                 </div>
                 <div class="col">
-                    <ul class="list-group">
-                        <h3>Locks:</h3>
-                        <%--<li class="list-group-item">--%>
-                            <%--<c:forEach items="${terminalDeviceLocks.terminalDeviceLocks}" var="tdl" varStatus="loop">--%>
-                                <%--${tdl.lock.name}--%>
-                            <%--</c:forEach>--%>
-                        <%--</li>--%>
-                    </ul>
+                    <h3>Lock: ${contract.locked}</h3>
+                    <%--<li class="list-group-item">--%>
+                    <%--<c:forEach items="${terminalDeviceLocks.terminalDeviceLocks}" var="tdl" varStatus="loop">--%>
+                    <%--${tdl.lock.name}--%>
+                    <%--</c:forEach>--%>
+                    <%--</li>--%>
+                    <form class="form" role="form" id="formLock" action="${rootUrl}/profile/${contract.phoneNumber.number}/lock" method="post">
+                        <div class="form-group">
+                            <input hidden class="form-control form-control-lg rounded-1" name="contractId" value="${contract.id}">
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Lock / Unlock</button>
+                    </form>
                 </div>
             </div>
         </div>

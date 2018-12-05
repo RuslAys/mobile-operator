@@ -1,6 +1,7 @@
 package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import ru.javaschool.mobileoperator.repository.api.ContractDao;
 import ru.javaschool.mobileoperator.repository.api.OptionDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
+import ru.javaschool.mobileoperator.service.exceptions.BusinessException;
 import ru.javaschool.mobileoperator.service.exceptions.ContractException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
@@ -49,6 +51,25 @@ public class ProfileServiceImpl implements ProfileService {
         contract.getOptions().removeAll(contract.getOptions());
         contract.setTariffPlan(tariffPlan);
         contract.getOptions().addAll(tariffPlan.getOptions());
+        contractDao.update(contract);
+    }
+
+    @Override
+    @Transactional
+    public void lockContract(Long contractId, UserDetails userDetails) {
+        Contract contract = contractDao.find(contractId);
+        if(contract.isLocked()){
+            if(!contract.isLockedByUser() && roleHelper.isOnlyUser(userDetails)){
+                throw new BusinessException("Can not unlock with this role");
+            }
+            contract.setLocked(false);
+            contract.setLockedByUser(false);
+        }else{
+            if(roleHelper.isOnlyUser(userDetails)){
+                contract.setLockedByUser(true);
+            }
+            contract.setLocked(true);
+        }
         contractDao.update(contract);
     }
 

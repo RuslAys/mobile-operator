@@ -211,4 +211,23 @@ public class ProfileController {
         optionService.removeOptionFromContract(contractId, optionId);
         return "redirect:/cart";
     }
+
+    /**
+     * Post method for lock / unlock contract
+     * @param model ui model
+     * @param username profile username
+     * @param contractId terminal device id
+     * @param session http session
+     * @return redirect to cart page
+     */
+    @PostMapping(value = "/{username}/lock")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+    public String lockContract(Model model,
+                               @PathVariable("username") String username,
+                               @RequestParam("contractId") Long contractId,
+                               @AuthenticationPrincipal UserDetails userDetails,
+                               HttpSession session){
+        profileService.lockContract(contractId, userDetails);
+        return  "redirect:/profile/" + username;
+    }
 }
