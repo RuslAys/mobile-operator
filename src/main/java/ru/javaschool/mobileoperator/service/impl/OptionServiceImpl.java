@@ -66,17 +66,16 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         List<Option> inOptions = optionDao.getOptions(inclusiveOptions);
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);
 
-        //TODO Разобраться с этими опциями
-//        Set<Option> uniqueInOptions = new HashSet<>();
-//        uniqueInOptions = getAllDependentOptions(inOptions, uniqueInOptions);
-//        List<Option> uniqueInOptionList = new ArrayList<>(uniqueInOptions);
 
-        if(!Collections.disjoint(inOptions, exOptions)){
-            throw new OptionException("There are common elements in inclusive and exclusive options");
-        }
+        Set<Option> inOptionToAdd = new HashSet<>();
         if(!inOptions.isEmpty()){
-            inOptions.forEach(option1 -> option1.getParentInclusive().add(option));
-            option.setInclusiveOptions(inOptions);
+            inOptions.forEach(option1 -> optionHelper.getInclusiveOptionsToAdd(option1, inOptionToAdd));
+            inOptionToAdd.forEach(option1 -> option1.getParentInclusive().add(option));
+            option.getInclusiveOptions().addAll(inOptionToAdd);
+        }
+
+        if(!Collections.disjoint(inOptionToAdd, exOptions)){
+            throw new OptionException("There are common elements in inclusive and exclusive options");
         }
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
@@ -84,6 +83,8 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             option.setParentExclusive(exOptions);
             option.setExclusiveOptions(exOptions);
         }
+        inOptionToAdd.forEach(option1 -> optionDao.update(option1));
+        exOptions.forEach(option1 -> optionDao.update(option1));
         optionDao.add(option);
     }
 

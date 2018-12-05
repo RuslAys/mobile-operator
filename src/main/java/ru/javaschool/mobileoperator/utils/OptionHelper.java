@@ -7,6 +7,7 @@ import ru.javaschool.mobileoperator.domain.TariffPlan;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Util class with methods for options
@@ -149,5 +150,23 @@ public class OptionHelper {
                         tariffPlan1 -> tariffPlan.equals(tariffPlan1)
                 )
         );
+    }
+
+    /**
+     * Method to get set with all inclusive options
+     * @param option option to bypass
+     * @param options set with result options to bypass
+     * @return set with options
+     */
+    public Set<Option> getInclusiveOptionsToAdd(Option option, Set<Option> options){
+        options.add(option);
+        if(option.getInclusiveOptions() != null && !option.getInclusiveOptions().isEmpty()){
+            for (Option option1: option.getInclusiveOptions()){
+                if(!options.contains(option1)){
+                    return getInclusiveOptionsToAdd(option1, options);
+                }
+            }
+        }
+        return options;
     }
 }
