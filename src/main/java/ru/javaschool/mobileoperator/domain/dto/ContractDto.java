@@ -13,6 +13,9 @@ public class ContractDto {
     private TariffPlanDto tariffPlan;
     private List<OptionDto> options = new ArrayList<>();
 
+    public ContractDto() {
+    }
+
     public ContractDto(long id, int balance, boolean locked, boolean lockedByUser, CustomerDto customer,
                        PhoneNumberDto phoneNumber, TariffPlanDto tariffPlan) {
         this.id = id;

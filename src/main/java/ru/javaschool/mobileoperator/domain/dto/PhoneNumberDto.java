@@ -8,6 +8,9 @@ public class PhoneNumberDto {
     private long number;
     private ContractDto contract;
 
+    public PhoneNumberDto() {
+    }
+
     public PhoneNumberDto(long id) {
         this.id = id;
     }

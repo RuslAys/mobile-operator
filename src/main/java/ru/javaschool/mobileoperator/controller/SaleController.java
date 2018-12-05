@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.dto.ContractDto;
+import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
 import ru.javaschool.mobileoperator.service.api.CartSaleService;
 import ru.javaschool.mobileoperator.service.api.ContractService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
@@ -22,6 +24,7 @@ import ru.javaschool.mobileoperator.service.api.TariffService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -97,41 +100,49 @@ public class SaleController {
                                     @RequestParam("tariff") Long tariffId,
                                     @RequestParam("number") Long numberId,
                                     HttpSession session){
-        cartSaleService.sale(firstName,
-                lastName, birthDate, city, street, house,
-                email, passport, tariffId, numberId, session);
+//        cartSaleService.sale(firstName,
+//                lastName, birthDate, city, street, house,
+//                email, passport, tariffId, numberId, session);
+//        saleService.saleContract();
         return "redirect:/cart";
     }
 
     /**
      * Post method to sale contract
-     * @param firstName user first name
-     * @param lastName user last name
-     * @param birthDate user birth date
-     * @param city user city
-     * @param street user street
-     * @param house user house
-     * @param email user email
-     * @param passport user passport
-     * @param tariffId choosen tariff id
-     * @param numberId choosen number id
+//     * @param firstName user first name
+//     * @param lastName user last name
+//     * @param birthDate user birth date
+//     * @param city user city
+//     * @param street user street
+//     * @param house user house
+//     * @param email user email
+//     * @param passport user passport
+     * @param customerDto customer dto
+     * @param tariffId chosen tariff id
+     * @param numberId chosen number id
      * @return redirect to sale page {@link #salePage(Model, HttpSession)} (Model)}
      */
     @PostMapping(value = "/confirm", params = "add_to_cart")
-    public String confirmSale(@RequestParam("firstName") String firstName,
+    public String confirmSale(/*@RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName,
                               @RequestParam("birthDate") Date birthDate,
                               @RequestParam(value = "city", required = false) String city,
                               @RequestParam(value = "street", required = false) String street,
                               @RequestParam(value = "house",required = false) String house,
                               @RequestParam(value = "email", required = false) String email,
-                              @RequestParam(value = "passport", required = false) String passport,
+                              @RequestParam(value = "passport", required = false) String passport,*/
+            @Valid CustomerDto customerDto,
                               @RequestParam("tariff") Long tariffId,
                               @RequestParam("number") Long numberId,
+                              BindingResult result,
                               HttpSession session){
-        cartSaleService.sale(firstName,
-                lastName, birthDate, city, street, house,
-                email, passport, tariffId, numberId, session);
+//        cartSaleService.sale(firstName,
+//                lastName, birthDate, city, street, house,
+//                email, passport, tariffId, numberId, session);
+        if(result.hasErrors()){
+            return "errors/bad_request";
+        }
+        saleService.saleContract(customerDto, tariffId, numberId);
         return "redirect:/sale";
     }
 
@@ -143,7 +154,7 @@ public class SaleController {
      * @param session http session
      * @return redirect to cart page
      */
-    @PostMapping(value = "/confirmPersonalAccount", params = "confirm")
+    @PostMapping(value = "/confirm/customer", params = "confirm")
     public String confirmSaleToExistPersonalAccountToCart(@RequestParam("customerId") Long customerId,
                                                           @RequestParam("tariff") Long tariffId,
                                                           @RequestParam("number") Long numberId,
@@ -160,7 +171,7 @@ public class SaleController {
      * @param session http session
      * @return redirect to sale page {@link #salePage(Model, HttpSession)}
      */
-    @PostMapping(value = "/confirmPersonalAccount", params = "add_to_cart")
+    @PostMapping(value = "/confirm/customer", params = "add_to_cart")
     public String confirmSaleToExistPersonalAccount(@RequestParam("customerId") Long customerId,
                                                     @RequestParam("tariff") Long tariffId,
                                                     @RequestParam("number") Long numberId,

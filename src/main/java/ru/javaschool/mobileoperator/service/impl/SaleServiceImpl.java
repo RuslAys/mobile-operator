@@ -12,14 +12,17 @@ import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
 import ru.javaschool.mobileoperator.repository.api.PhoneNumberDao;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.repository.api.UserDao;
 import ru.javaschool.mobileoperator.service.api.SaleService;
+import ru.javaschool.mobileoperator.service.exceptions.BusinessException;
 import ru.javaschool.mobileoperator.service.exceptions.PhoneNumberException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
+import ru.javaschool.mobileoperator.utils.DtoConverter;
 
 import java.util.List;
 
@@ -46,7 +49,11 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void saleContract(Customer customer, Long tariffPlanId, Long phoneNumberId) {
+    public void saleContract(CustomerDto customerDto, Long tariffPlanId, Long phoneNumberId) {
+        if(customerDto == null){
+            throw new BusinessException("customer is null");
+        }
+        Customer customer = DtoConverter.dtoToCustomerWithoutUsers(customerDto);
         PhoneNumber phoneNumber = phoneNumberDao.find(phoneNumberId);
         if(phoneNumber.getContract() != null){
             throw new PhoneNumberException("Number already in use");

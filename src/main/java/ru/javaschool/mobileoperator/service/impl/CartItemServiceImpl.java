@@ -44,7 +44,7 @@ public class CartItemServiceImpl implements CartItemService {
     public void proceed(CartItem cartItem) {
         switch (cartItem.getOperationType()){
             case SALE:
-                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
+//                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
                 break;
             case SALE_TO_EXIST_PERSONAL_ACCOUNT:
                 saleService.saleToExistPersonalAccount(cartItem.getPersonalAccountId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());

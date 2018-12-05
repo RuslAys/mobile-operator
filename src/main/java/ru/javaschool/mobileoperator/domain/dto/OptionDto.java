@@ -15,6 +15,9 @@ public class OptionDto {
     @JsonIgnore
     private List<TariffPlanDto> tariffPlans = new ArrayList<>();
 
+    public OptionDto() {
+    }
+
     public OptionDto(long id) {
         this.id = id;
     }

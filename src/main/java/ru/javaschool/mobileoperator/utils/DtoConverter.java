@@ -57,7 +57,7 @@ public final class DtoConverter {
         List<OptionDto> optionDtos = new ArrayList<>();
         contract.getOptions().forEach(option -> optionDtos.add(toOptionDtoWithoutLists(option)));
         return new ContractDto(contract.getId(), contract.getBalance(), contract.isLocked(), contract.isLockedByUser(),
-                toCustomerDtoWithoutLists(contract.getCustomer()), toPhoneNumberDto(contract.getPhoneNumber()),
+                toCustomerDtoWithoutLists(contract.getCustomer()), toPhoneNumberDtoWithIdAndNumber(contract.getPhoneNumber()),
                 toTariffDtoWithoutLists(contract.getTariffPlan()), optionDtos);
     }
 
@@ -68,7 +68,7 @@ public final class DtoConverter {
      */
     public static ContractDto toContractDtoWithoutLists(Contract contract){
         return new ContractDto(contract.getId(), contract.getBalance(), contract.isLocked(), contract.isLockedByUser(),
-                toCustomerDtoWithoutLists(contract.getCustomer()), toPhoneNumberDto(contract.getPhoneNumber()),
+                toCustomerDtoWithoutLists(contract.getCustomer()), toPhoneNumberDtoWithIdAndNumber(contract.getPhoneNumber()),
                 toTariffDtoWithoutLists(contract.getTariffPlan()));
     }
 
@@ -120,7 +120,11 @@ public final class DtoConverter {
     public static CustomerDto toCustomerDtoWithLists(Customer customer){
         List<ContractDto> contractDtos = new ArrayList<>();
         customer.getContracts().forEach(contract -> contractDtos.add(toContractDtoWithoutLists(contract)));
-        return new CustomerDto(customer.getId(), toAddressDto(customer.getAddress()), customer.getFirstName(),
+        AddressDto addressDto = null;
+        if(customer.getAddress() != null){
+            addressDto = toAddressDto(customer.getAddress());
+        }
+        return new CustomerDto(customer.getId(), addressDto, customer.getFirstName(),
                 customer.getLastName(), customer.getBirthDate(), customer.getEmail(), customer.getPassport(),
                 contractDtos, customer.getUsers());
     }
@@ -131,7 +135,11 @@ public final class DtoConverter {
      * @return customer dto
      */
     public static CustomerDto toCustomerDtoWithoutLists(Customer customer){
-        return new CustomerDto(customer.getId(), toAddressDto(customer.getAddress()), customer.getFirstName(),
+        AddressDto addressDto = null;
+        if(customer.getAddress() != null){
+            addressDto = toAddressDto(customer.getAddress());
+        }
+        return new CustomerDto(customer.getId(), addressDto, customer.getFirstName(),
                 customer.getLastName(), customer.getBirthDate(), customer.getEmail(), customer.getPassport());
     }
 
@@ -142,5 +150,36 @@ public final class DtoConverter {
      */
     public static AddressDto toAddressDto(Address address){
         return new AddressDto(address.getCity(), address.getStreet(), address.getHouseNumber());
+    }
+
+    /**
+     * Method to convert customer dto to customer entity without any relation user
+     * @param customerDto customer dto
+     * @return customer entity
+     */
+    public static Customer dtoToCustomerWithoutUsers(CustomerDto customerDto){
+        Customer customer = new Customer();
+        customer.setFirstName(customerDto.getFirstName());
+        customer.setLastName(customerDto.getLastName());
+        customer.setBirthDate(customerDto.getBirthDate());
+        customer.setEmail(customerDto.getEmail());
+        customer.setPassport(customer.getPassport());
+        if(customerDto.getAddress() != null){
+            customer.setAddress(dtoToAddress(customerDto.getAddress()));
+        }
+        return customer;
+    }
+
+    /**
+     * Method to convert address dto to address embeddable entity
+     * @param dto address dto
+     * @return address entity
+     */
+    public static Address dtoToAddress(AddressDto dto){
+        Address address = new Address();
+        address.setCity(dto.getCity());
+        address.setHouseNumber(dto.getHouseNumber());
+        address.setStreet(dto.getStreet());
+        return address;
     }
 }

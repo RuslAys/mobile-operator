@@ -7,6 +7,7 @@ import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Customer;
 import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
+import ru.javaschool.mobileoperator.repository.api.ContractDao;
 import ru.javaschool.mobileoperator.repository.api.CustomerDao;
 import ru.javaschool.mobileoperator.service.api.CustomerService;
 import ru.javaschool.mobileoperator.utils.DtoConverter;
@@ -17,9 +18,13 @@ public class CustomerServiceImpl extends GenericServiceImpl<Customer, Long> impl
     @Autowired
     private CustomerDao customerDao;
 
+    @Autowired
+    private ContractDao contractDao;
+
     @Override
     @Transactional(readOnly = true)
     public CustomerDto getCustomerByContract(ContractDto contract) {
-        return DtoConverter.toCustomerDtoWithLists(customerDao.getCustomerByContract(contract.getId()));
+        Contract contractPO = contractDao.find(contract.getId());
+        return DtoConverter.toCustomerDtoWithLists(customerDao.getCustomerWithContracts(contractPO.getCustomer()));
     }
 }

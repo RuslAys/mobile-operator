@@ -2,6 +2,7 @@ package ru.javaschool.mobileoperator.domain.dto;
 
 import ru.javaschool.mobileoperator.domain.User;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,15 +10,19 @@ import java.util.List;
 public class CustomerDto {
     private long id;
     private AddressDto address;
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
     private Date birthDate;
     private String email;
     private String passport;
     private List<ContractDto> contracts = new ArrayList<>();
     private List<User> users = new ArrayList<>();
 
-
+    public CustomerDto() {
+    }
 
     public CustomerDto(long id, AddressDto address, String firstName, String lastName, Date birthDate,
                        String email, String passport) {

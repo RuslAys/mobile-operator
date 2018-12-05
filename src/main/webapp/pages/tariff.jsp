@@ -9,14 +9,14 @@
                 <div class="row">
                     <div class="col-md-5 mx-auto">
                         <div>
-                            <form name="add-new-tariff" action="admin/tariff/add" method="post">
+                            <form name="add-new-tariff" action="${rootUrl}/admin/tariff/add" method="post">
                                 <div class="form-group">
                                     <label for="tariffNameField">Tariff plan name</label>
                                     <input type="text" class="form-control" name="name"
                                         id="tariffNameField" placeholder="Tariff name">
                                 </div>
                                  <div class="form-group">
-                                    <label for="tariffPriceField">Tariff plan name</label>
+                                    <label for="tariffPriceField">Tariff price</label>
                                     <input type="text" class="form-control" name="price"
                                         id="tariffPriceField" placeholder="Tariff price">
                                 </div>
@@ -48,7 +48,7 @@
                       <c:forEach items="${pageListHolder.pageList}" var="tariffPlan">
                           <c:if test="${tariffPlan.archival == false}">
                               <tr>
-                                  <form name="remove-tariff" action="tariff/remove" method="post">
+                                  <form name="remove-tariff" action="${rootUrl}/tariff/remove" method="post">
                                      <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
                                      <td>
                                         <a href="admin/tariff/${tariffPlan.id}"><c:out value="${tariffPlan.name}" /> </a>

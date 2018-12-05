@@ -10,6 +10,9 @@ public class TariffPlanDto {
     private boolean archival;
     private List<OptionDto> options = new ArrayList<>();
 
+    public TariffPlanDto() {
+    }
+
     public TariffPlanDto(long id) {
         this.id = id;
     }

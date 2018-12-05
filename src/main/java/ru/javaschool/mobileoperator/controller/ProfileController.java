@@ -66,11 +66,11 @@ public class ProfileController {
                               @AuthenticationPrincipal UserDetails user,
                               HttpSession session){
         ContractDto contract = contractService.getContractWithOptions(username);
-        model.addAttribute("cart", cartHelper.getCart(session));
+//        model.addAttribute("cart", cartHelper.getCart(session));
         model.addAttribute("user", userService.getUser(username));
         model.addAttribute("contract", contract);
         if(!roleHelper.isOnlyUser(user)){
-            model.addAttribute("anotherContracts", customerService.getCustomerByContract(contract));
+            model.addAttribute("anotherContracts", customerService.getCustomerByContract(contract).getContracts());
         }
         return "profile";
     }
