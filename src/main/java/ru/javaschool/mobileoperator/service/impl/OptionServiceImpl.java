@@ -58,15 +58,17 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         if(StringUtils.isEmpty(name)){
             throw new OptionException("Option name can`t be empty");
         }
+        // Create option
         Option option = new Option();
         option.setName(name);
         option.setPrice(Integer.parseInt(price));
         option.setConnectionCost(Integer.parseInt(connectionCost));
 
+        //find inclusive and exclusive options
         List<Option> inOptions = optionDao.getOptions(inclusiveOptions);
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);
 
-
+        //Search all inclusive options
         Set<Option> inOptionToAdd = new HashSet<>();
         if(!inOptions.isEmpty()){
             inOptions.forEach(option1 -> optionHelper.getInclusiveOptionsToAdd(option1, inOptionToAdd));
@@ -74,15 +76,20 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             option.getInclusiveOptions().addAll(inOptionToAdd);
         }
 
+        //Search conflicts between exclusive and inclusive options
         if(!Collections.disjoint(inOptionToAdd, exOptions)){
             throw new OptionException("There are common elements in inclusive and exclusive options");
         }
+
+        //Search all exclusive options
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
             exOptions.forEach(option1 -> option1.getExclusiveOptions().add(option));
             option.setParentExclusive(exOptions);
             option.setExclusiveOptions(exOptions);
         }
+
+        //Save and update all
         inOptionToAdd.forEach(option1 -> optionDao.update(option1));
         exOptions.forEach(option1 -> optionDao.update(option1));
         optionDao.add(option);

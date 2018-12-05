@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import ru.javaschool.mobileoperator.utils.CartHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -249,16 +251,20 @@ public class AdminPanelController {
 
     /**
      * Post method to add tariff
-     * @param name tariff name
-     * @param price tariff price
-     * @param options tariff options
+     * @param tariffPlanDto valid tariff plan dto
+     * @param optionIds tariff options
      * @return redirect to tariff page {@link #tariffPage(Model, Map, HttpServletRequest)}}
      */
     @PostMapping("/tariff/add")
-    public String addTariffPlan(@RequestParam String name,
-                                @RequestParam String price,
-                                @RequestParam(value = "options",required = false) List<Long> options){
-        tariffService.addTariff(name, price, options);
+    public String addTariffPlan(/*@RequestParam String name,
+                                @RequestParam String price,*/
+                                @Valid TariffPlanDto tariffPlanDto,
+                                @RequestParam(value = "optionIds",required = false) List<Long> optionIds,
+                                BindingResult result) {
+        if(result.hasErrors()){
+            return "errors/bad_request";
+        }
+        tariffService.addTariff(tariffPlanDto, optionIds);
         return "redirect:/admin/tariff";
     }
 

@@ -45,10 +45,8 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void addTariff(String name, String price, List<Long> optionIds) {
-        if(StringUtils.isEmpty(name)){
-            throw new IllegalArgumentException("Name cannot be empty");
-        }
+    public void addTariff(TariffPlanDto tariffPlanDto, List<Long> optionIds) {
+
         List<Option> tariffOptions = optionDao.getOptions(optionIds);
         Set<Option> uniqueOptionsToAdd = new HashSet<>();
         tariffOptions.forEach(
@@ -61,12 +59,9 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         if(optionHelper.existConflicts(optionsToAdd)){
             throw new IllegalArgumentException("Exist options conflicts");
         }
-        int parsePrice = Integer.parseInt(price);
-        TariffPlan tariffPlan = new TariffPlan();
-        tariffPlan.setName(name);
-        tariffPlan.setPrice(parsePrice);
+        TariffPlan tariffPlan = DtoConverter.dtoToTariffPlanWithoutLists(tariffPlanDto);
         tariffPlan.setOptions(optionsToAdd);
-        add(tariffPlan);
+        tariffDao.add(tariffPlan);
     }
 
     @Override

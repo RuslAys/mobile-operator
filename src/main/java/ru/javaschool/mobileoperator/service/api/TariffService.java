@@ -8,11 +8,10 @@ import java.util.List;
 public interface TariffService extends GenericService<TariffPlan, Long> {
     /**
      * Method to add new tariff plan
-     * @param name tariff name
-     * @param price tariff price
+     * @param tariffPlanDto dto
      * @param optionIds tariff options
      */
-    void addTariff(String name, String price, List<Long> optionIds);
+    void addTariff(TariffPlanDto tariffPlanDto, List<Long> optionIds);
 
     /**
      * Method to find tariff plan with options

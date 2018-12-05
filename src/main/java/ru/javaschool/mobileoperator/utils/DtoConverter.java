@@ -112,6 +112,14 @@ public final class DtoConverter {
         return new TariffPlanDto(tariffPlan.getId(), tariffPlan.getPrice(), tariffPlan.getName(), tariffPlan.isArchival());
     }
 
+    public static TariffPlan dtoToTariffPlanWithoutLists(TariffPlanDto dto){
+        TariffPlan tariffPlan = new TariffPlan();
+        tariffPlan.setName(dto.getName());
+        tariffPlan.setPrice(dto.getPrice());
+        tariffPlan.setArchival(dto.isArchival());
+        return tariffPlan;
+    }
+
     /**
      * Method to convert customer entity to customer dto with relation lists
      * @param customer customer entity

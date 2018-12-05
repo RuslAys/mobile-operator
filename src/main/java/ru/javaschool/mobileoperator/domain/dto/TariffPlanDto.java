@@ -1,11 +1,14 @@
 package ru.javaschool.mobileoperator.domain.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TariffPlanDto {
     private long id;
+    @NotNull
     private int price;
+    @NotNull
     private String name;
     private boolean archival;
     private List<OptionDto> options = new ArrayList<>();

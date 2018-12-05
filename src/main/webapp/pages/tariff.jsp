@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-5 mx-auto">
                         <div>
-                            <form name="add-new-tariff" action="${rootUrl}/admin/tariff/add" method="post">
+                            <form name="add-new-tariff" action="${rootUrl}/admin/tariff/add" method="post" commandName="tariffPlanDto">
                                 <div class="form-group">
                                     <label for="tariffNameField">Tariff plan name</label>
                                     <input type="text" class="form-control" name="name"
@@ -23,7 +23,7 @@
                                 <div class="form-group">
                                     <label for="optionsField">Add options</label>
                                     <select multiple class="form-control" id="optionsField"
-                                        name="options">
+                                        name="optionIds">
                                         <c:forEach items="${options}" var="option">
                                             <option value="${option.id}"> <c:out value="${option}"/> </option>
                                         </c:forEach>
