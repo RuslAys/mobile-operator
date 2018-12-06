@@ -76,10 +76,18 @@ public interface OptionService extends GenericService<Option, Long> {
     OptionDto getOptionWithoutList(long id);
 
     /**
-     * Method to return dependent options on contract to delete
+     * Method to return inclusive options on contract
      * @param contractId contract id
      * @param optionIds option ids
      * @return list with options
      */
-    List<OptionDto> getOptionsOnContractToDelete(long contractId, List<Long> optionIds);
+    List<OptionDto> getInclusiveOptionsOnContract(long contractId, List<Long> optionIds);
+
+    /**
+     * Method to return exclusive options on contract
+     * @param contractId contract id
+     * @param optionIds option ids
+     * @return list with options
+     */
+    List<OptionDto> getExclusiveOptionsOnContract(long contractId, List<Long> optionIds);
 }
