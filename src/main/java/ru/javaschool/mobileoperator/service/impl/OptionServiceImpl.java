@@ -222,6 +222,29 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         return DtoConverter.toOptionDtoWithoutLists(find(id));
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OptionDto> getOptionsOnContractToDelete(long contractId, List<Long> optionIds) {
+        Contract contract = contractDao.find(contractId);
+        List<Option> options = optionDao.getOptions(optionIds);
+        Set<Option> uniqueOptions = new HashSet<>();
+//        uniqueOptions.addAll(options);
+        for (Option o: options){
+            uniqueOptions.addAll(o.getParentInclusive());
+        }
+        if(uniqueOptions.isEmpty()){
+            return new ArrayList<>();
+        }
+        for (Option o: uniqueOptions){
+            if(!contract.getOptions().contains(o)){
+                uniqueOptions.remove(o);
+            }
+        }
+        List<OptionDto> result = new ArrayList<>();
+        uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
+        return result;
+    }
+
     private Set<Option> getAllDependentOptions(List<Option> options, Set<Option> uniqueOptions){
         for(Option option: options){
             for(Option inOption: option.getInclusiveOptions()){

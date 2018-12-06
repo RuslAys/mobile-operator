@@ -176,7 +176,7 @@ public class ProfileController {
      * Post method for remove option from terminal device. Adding item to cart
      * @param model ui model
      * @param username profile username
-     * @param contractId terminal device id
+     * @param contractId contract id
      * @param optionId option id
      * @param session http session
      * @return redirect to profile option management
@@ -185,7 +185,7 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String removeOption(Model model,
                                @PathVariable("username") String username,
-                               @RequestParam("terminalDeviceId") Long contractId,
+                               @RequestParam("contractId") Long contractId,
                                @RequestParam("optionId") Long optionId,
                                HttpSession session){
         optionService.removeOptionFromContract(contractId, optionId);
@@ -196,7 +196,7 @@ public class ProfileController {
      * Post method for remove option from terminal device. Adding item to cart
      * @param model ui model
      * @param username profile username
-     * @param contractId terminal device id
+     * @param contractId contract id
      * @param optionId option id
      * @param session http session
      * @return redirect to cart page
@@ -216,7 +216,7 @@ public class ProfileController {
      * Post method for lock / unlock contract
      * @param model ui model
      * @param username profile username
-     * @param contractId terminal device id
+     * @param contractId contract id
      * @param session http session
      * @return redirect to cart page
      */
