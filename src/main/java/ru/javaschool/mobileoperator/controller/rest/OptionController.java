@@ -30,10 +30,17 @@ public class OptionController {
     }
 
     @PreAuthorize("hasRole('ROLE_OPERATOR')")
-    @GetMapping("/contract/inclusive")
-    public String inclusiveOptionsOnContract(@RequestParam("contractId") long contractId,
+    @GetMapping("/contract/inclusive/add")
+    public String inclusiveOptionsToAddOnContract(@RequestParam("contractId") long contractId,
+                                             @RequestParam("optionIds") List<Long> optionIds){
+        return JsonConverter.toJsonString(optionService.getChildInclusiveOptionsOnContract(contractId, optionIds));
+    }
+
+    @PreAuthorize("hasRole('ROLE_OPERATOR')")
+    @GetMapping("/contract/inclusive/delete")
+    public String inclusiveOptionsToDeleteOnContract(@RequestParam("contractId") long contractId,
                                             @RequestParam("optionIds") List<Long> optionIds){
-        return JsonConverter.toJsonString(optionService.getInclusiveOptionsOnContract(contractId, optionIds));
+        return JsonConverter.toJsonString(optionService.getParentInclusiveOptionsOnContract(contractId, optionIds));
     }
 
     @PreAuthorize("hasRole('ROLE_OPERATOR')")

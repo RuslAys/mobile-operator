@@ -2,6 +2,7 @@ package ru.javaschool.mobileoperator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import ru.javaschool.mobileoperator.utils.OptionHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -224,7 +226,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(readOnly = true)
-    public List<OptionDto> getInclusiveOptionsOnContract(long contractId, List<Long> optionIds) {
+    public List<OptionDto> getParentInclusiveOptionsOnContract(long contractId, List<Long> optionIds) {
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
         Set<Option> uniqueOptions = new HashSet<>();
@@ -234,11 +236,8 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         if(uniqueOptions.isEmpty()){
             return new ArrayList<>();
         }
-        for (Option o: uniqueOptions){
-            if(!contract.getOptions().contains(o)){
-                uniqueOptions.remove(o);
-            }
-        }
+
+        uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
         List<OptionDto> result = new ArrayList<>();
         uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
         return result;
@@ -256,11 +255,25 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         if(uniqueOptions.isEmpty()){
             return new ArrayList<>();
         }
-        for (Option o: uniqueOptions){
-            if(!contract.getOptions().contains(o)){
-                uniqueOptions.remove(o);
-            }
+        uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
+        List<OptionDto> result = new ArrayList<>();
+        uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OptionDto> getChildInclusiveOptionsOnContract(long contractId, List<Long> optionIds) {
+        Contract contract = contractDao.find(contractId);
+        List<Option> options = optionDao.getOptions(optionIds);
+        Set<Option> uniqueOptions = new HashSet<>();
+        for (Option o: options){
+            uniqueOptions.addAll(o.getInclusiveOptions());
         }
+        if(uniqueOptions.isEmpty()){
+            return new ArrayList<>();
+        }
+        uniqueOptions.removeIf(option -> contract.getOptions().contains(option));
         List<OptionDto> result = new ArrayList<>();
         uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
         return result;
