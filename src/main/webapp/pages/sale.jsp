@@ -120,6 +120,13 @@
                                 startDate: '-3d',
                                 uiLibrary: 'bootstrap4'
                             });
+                            $('#birthDateField').dateDropdowns({
+                                format: 'dd-mm-yyyy',
+                                minAge:14,
+                                required:true
+                                startDate: '-3d',
+                                uiLibrary: 'bootstrap4'
+                            });
                         </script>
                     </div>
                     <div class="form-group">

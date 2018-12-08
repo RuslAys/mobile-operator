@@ -1,7 +1,8 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <body>
-	<div class="container py-4">
+<div id="wrapper">
+    <div class="container py-4">
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -34,8 +35,10 @@
             </div>
         </div>
     </div>
+</div>
     <!--/container-->
 
   ${SPRING_SECURITY_LAST_EXCEPTION.message}
+    <jsp:include page="parts/footer.jsp" />
 </body>
 </html>

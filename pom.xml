@@ -289,8 +289,8 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <port>8080</port>
-                    <path>/</path>
+                    <port>8181</port>
+                    <path>/mss</path>
                 </configuration>
             </plugin>
 

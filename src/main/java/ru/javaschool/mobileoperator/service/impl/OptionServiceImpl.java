@@ -230,13 +230,10 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
         Set<Option> uniqueOptions = new HashSet<>();
-        for (Option o: options){
-            uniqueOptions.addAll(o.getParentInclusive());
-        }
+        options.forEach(option -> uniqueOptions.addAll(option.getParentInclusive()));
         if(uniqueOptions.isEmpty()){
             return new ArrayList<>();
         }
-
         uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
         List<OptionDto> result = new ArrayList<>();
         uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
@@ -249,9 +246,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
         Set<Option> uniqueOptions = new HashSet<>();
-        for (Option o: options){
-            uniqueOptions.addAll(o.getParentExclusive());
-        }
+        options.forEach(option -> uniqueOptions.addAll(option.getParentExclusive()));
         if(uniqueOptions.isEmpty()){
             return new ArrayList<>();
         }
@@ -267,9 +262,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
         Set<Option> uniqueOptions = new HashSet<>();
-        for (Option o: options){
-            uniqueOptions.addAll(o.getInclusiveOptions());
-        }
+        options.forEach(option -> uniqueOptions.addAll(option.getInclusiveOptions()));
         if(uniqueOptions.isEmpty()){
             return new ArrayList<>();
         }
