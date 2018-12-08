@@ -93,7 +93,16 @@ public class ProfileController {
         return "profileTariff";
     }
 
-    @PostMapping(value = "/{username}/tariff/change",params = "add_to_cart")
+    /**
+     * Post method to change tariff plan on contract
+     * @param model ui model
+     * @param username customer username
+     * @param contractId contract id
+     * @param newTariffId new tariff plan id
+     * @param session session
+     * @return redirect to {@link #profileTariffPage(Model, String)}
+     */
+    @PostMapping(value = "/{username}/tariff/change" /*,params = "add_to_cart"*/)
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String changeTariff(Model model,
                                @PathVariable("username") String username,
@@ -101,21 +110,21 @@ public class ProfileController {
                                @RequestParam("newTariffId") Long newTariffId,
                                HttpSession session){
         profileService.changeTariff(contractId, newTariffId);
-        model.addAttribute("cart", cartHelper.getCart(session));
+//        model.addAttribute("cart", cartHelper.getCart(session));
         return "redirect:/profile/" + username + "/tariff";
     }
 
-    @PostMapping(value = "/{username}/tariff/change",params = "confirm")
-    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String changeTariffToCart(Model model,
-                               @PathVariable("username") String username,
-                               @RequestParam("contractId") Long contractId,
-                               @RequestParam("newTariffId") Long newTariffId,
-                               HttpSession session){
-        profileService.changeTariff(contractId, newTariffId);
-        model.addAttribute("cart", cartHelper.getCart(session));
-        return "redirect:/cart";
-    }
+//    @PostMapping(value = "/{username}/tariff/change",params = "confirm")
+//    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
+//    public String changeTariffToCart(Model model,
+//                               @PathVariable("username") String username,
+//                               @RequestParam("contractId") Long contractId,
+//                               @RequestParam("newTariffId") Long newTariffId,
+//                               HttpSession session){
+//        profileService.changeTariff(contractId, newTariffId);
+//        model.addAttribute("cart", cartHelper.getCart(session));
+//        return "redirect:/cart";
+//    }
 
 
     /**

@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaschool.mobileoperator.domain.Bill;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.repository.api.ContractDao;
@@ -14,6 +15,7 @@ import ru.javaschool.mobileoperator.service.api.ProfileService;
 import ru.javaschool.mobileoperator.service.exceptions.BusinessException;
 import ru.javaschool.mobileoperator.service.exceptions.ContractException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
+import ru.javaschool.mobileoperator.utils.BillHelper;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
 
@@ -51,6 +53,10 @@ public class ProfileServiceImpl implements ProfileService {
         contract.getOptions().removeAll(contract.getOptions());
         contract.setTariffPlan(tariffPlan);
         contract.getOptions().addAll(tariffPlan.getOptions());
+        contract.setBalance(contract.getBalance() - tariffPlan.getPrice());
+
+        Bill bill = BillHelper.makeBill(contract, contract.getBalance(), -tariffPlan.getPrice());
+        contract.getBills().add(bill);
         contractDao.update(contract);
     }
 

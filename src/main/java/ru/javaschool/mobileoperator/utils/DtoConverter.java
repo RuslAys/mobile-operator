@@ -1,12 +1,14 @@
 package ru.javaschool.mobileoperator.utils;
 
 import ru.javaschool.mobileoperator.domain.Address;
+import ru.javaschool.mobileoperator.domain.Bill;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Customer;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.dto.AddressDto;
+import ru.javaschool.mobileoperator.domain.dto.BillDto;
 import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
 import ru.javaschool.mobileoperator.domain.dto.OptionDto;
@@ -189,5 +191,24 @@ public final class DtoConverter {
         address.setHouseNumber(dto.getHouseNumber());
         address.setStreet(dto.getStreet());
         return address;
+    }
+
+    /**
+     * Method to convert bill entity to bill dto
+     * @param bill bill entity
+     * @return bill dto
+     */
+    public static BillDto billToBillDto(Bill bill){
+        return new BillDto(bill.getId(), toContractDtoWithoutLists(bill.getContract()),
+                bill.getBalance(), bill.getDifference(), bill.getDate());
+    }
+
+    /**
+     * Method to convert bill entity to bill dto without contract
+     * @param bill bill entity
+     * @return bill dto
+     */
+    public static BillDto billToBillDtoWithoutContract(Bill bill){
+        return new BillDto(bill.getId(), bill.getBalance(), bill.getDifference(), bill.getDate());
     }
 }

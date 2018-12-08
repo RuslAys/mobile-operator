@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ public class TariffPlan extends AbstractPO {
                 joinColumns = { @JoinColumn(name = "tariff_id") },
                 inverseJoinColumns = { @JoinColumn(name = "option_id") })
     private List<Option> options = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tariffPlan")
+    private List<Contract> contracts = new ArrayList<>();
 
     @Column(name = "price")
     private Integer price;
@@ -59,6 +63,14 @@ public class TariffPlan extends AbstractPO {
 
     public void setArchival(boolean archival) {
         this.archival = archival;
+    }
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
     }
 
     @Override

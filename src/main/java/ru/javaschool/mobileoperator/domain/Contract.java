@@ -38,6 +38,9 @@ public class Contract extends AbstractPO {
             inverseJoinColumns = @JoinColumn(name = "phone_number_id"))
     private PhoneNumber phoneNumber;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
+    private List<Bill> bills = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "tariff_plan_id")
     private TariffPlan tariffPlan;
@@ -102,6 +105,14 @@ public class Contract extends AbstractPO {
 
     public void setOptions(List<Option> options) {
         this.options = options;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     @Override
