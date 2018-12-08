@@ -1,10 +1,15 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
+<style>
+    #content-wrapper{
+        overflow-y: hidden;
+    }
+</style>
 <body id="page-top">
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="${rootUrl}/profile/${contract.phoneNumber.number}">Profile</a>
+        <a href="${rootUrl}/">Profile</a>
     </li>
     <li class="breadcrumb-item active">${contract.phoneNumber.number}</li>
 </ol>
@@ -106,8 +111,6 @@
                                 <div class="card-body">
                                     <div class="mr-5">Balance: ${contract.balance}</div>
                                 </div>
-                                </span>
-                                </a>
                             </div>
                         </div>
                         <c:if test="${contract.locked==true}">
@@ -227,4 +230,5 @@
 </body>
 
 <script src='<spring:url value="/resources/js/demo/chart-area-demo.js"/>'></script>
+<script src='<spring:url value="/resources/vendor/datatables/dataTables.bootstrap4.min.js"/>'></script>
 </html>
