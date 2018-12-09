@@ -1,9 +1,16 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<body>
-    <nav class="nav">
-      <a class="nav-link active" href="/profile/${terminalDevice.phoneNumber.number}">Back to user ${terminalDevice.phoneNumber.number}</a>
-    </nav>
+<body id="page-top">
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/profile/${contract.phoneNumber.number}">${contract.phoneNumber.number}</a>
+    </li>
+    <li class="breadcrumb-item active">Options management</li>
+</ol>
     <div class="container py-4">
         <div class="row">
             <div class="col-md-12">
@@ -53,4 +60,13 @@
             </div>
         </div>
     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 </body>

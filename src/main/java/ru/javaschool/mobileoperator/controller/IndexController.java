@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.service.api.CustomerService;
 import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
 import ru.javaschool.mobileoperator.utils.RoleHelper;
@@ -30,6 +31,9 @@ public class IndexController {
     @Autowired
     private CartHelper cartHelper;
 
+    @Autowired
+    private CustomerService customerService;
+
     /**
      * Get method to index page
      * @param model ui model
@@ -41,7 +45,8 @@ public class IndexController {
         if(roleHelper.isOnlyUser(user)){
             return "redirect:/profile/" + user.getUsername();
         }
-        model.addAttribute("cart", cartHelper.getCart(session));
+//        model.addAttribute("cart", cartHelper.getCart(session));
+        model.addAttribute("customers", customerService.getAll());
         return "index";
     }
 

@@ -1,20 +1,76 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<body>
-    <div id="wrapper">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-5 mx-auto">
-                            <form id="search-form" action="${rootUrl}/search" method="post">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="username"
-                                        id="usernameField" placeholder="Username">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                            <a href="${rootUrl}/profile/${user.username}">${user.username}</a>
+<body id="page-top">
+    <%--<div id="wrapper">--%>
+        <%--<div class="container py-4">--%>
+            <%--<div class="row">--%>
+                <%--<div class="col-md-12">--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="col-md-5 mx-auto">--%>
+                            <%--<form id="search-form" action="${rootUrl}/search" method="post">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<input type="text" class="form-control" name="username"--%>
+                                        <%--id="usernameField" placeholder="Username">--%>
+                                <%--</div>--%>
+                                <%--<button type="submit" class="btn btn-primary">Search</button>--%>
+                            <%--</form>--%>
+                            <%--<a href="${rootUrl}/profile/${user.username}">${user.username}</a>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Profile</li>
+    </ol>
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <div class="container target">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Customers</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="customerTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Birth Date</th>
+                                    <th>Contract</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Birth Date</th>
+                                    <th>Contract</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <c:forEach items="${customers}" var="customer">
+                                    <%--<option value="${option.id}"> <c:out value="${option.name} Price: ${option.price} Connection cost ${option.connectionCost}"/> </option>--%>
+                                    <tr>
+                                        <td>${customer.firstName}</td>
+                                        <td>${customer.lastName}</td>
+                                        <td><fmt:formatDate value="${customer.birthDate}"
+                                                            pattern="dd.MM.yyyy"/></td>
+                                        <td>
+                                            <ul class="list-group">
+                                                <c:forEach items="${customer.contracts}" var="contract">
+                                                    <li class="list-group-item">
+                                                        <a href="${rootUrl}/profile/${contract.phoneNumber.number}">${contract.phoneNumber.number}</a>
+                                                    <li class="list-group-item">
+                                                </c:forEach>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -29,4 +85,9 @@
     </a>
 
 </body>
+<script>
+    $(document).ready(function() {
+        $('#customerTable').DataTable();
+    });
+</script>
 </html>

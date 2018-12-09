@@ -96,7 +96,7 @@
                                 <div class="card text-white bg-danger o-hidden h-100">
                                     <div class="card-body">
                                         <div class="mr-5">Tariff plan: ${contract.tariffPlan.name}
-                                            <h3>Tariff plan is archival</h3>
+                                            <h5>Tariff plan is archival</h5>
                                         </div>
                                     </div>
                                     <a class="card-footer text-white clearfix small z-1" href="${rootUrl}/profile/${contract.phoneNumber.number}/tariff">

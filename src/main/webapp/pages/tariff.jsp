@@ -48,10 +48,10 @@
                       <c:forEach items="${pageListHolder.pageList}" var="tariffPlan">
                           <c:if test="${tariffPlan.archival == false}">
                               <tr>
-                                  <form name="remove-tariff" action="${rootUrl}/tariff/remove" method="post">
+                                  <form name="remove-tariff" action="${rootUrl}/admin/tariff/remove" method="post">
                                      <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
                                      <td>
-                                        <a href="admin/tariff/${tariffPlan.id}"><c:out value="${tariffPlan.name}" /> </a>
+                                        <a href="${rootUrl}/admin/tariff/${tariffPlan.id}"><c:out value="${tariffPlan.name}" /> </a>
                                      </td>
                                      <td>
                                         ${tariffPlan.price}

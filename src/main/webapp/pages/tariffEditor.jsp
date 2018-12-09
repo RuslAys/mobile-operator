@@ -4,7 +4,7 @@
     <h1>Tariff editor</h1>
     <div>
        <div>
-           <form name="remove-option" action="${tariff.id}/remove" method="post">
+           <form name="remove-option" action="${rootUrl}/admin/tariff/${tariff.id}/remove" method="post">
                <div class="form-group">
                    <label for="tariffOptionsField">Tariff options</label>
                    <select class="form-control" id="tariffOptionsField"
@@ -19,7 +19,7 @@
        </div>
     </div>
     <div>
-       <form name="add-new-option" action="${tariff.id}/add" method="post">
+       <form name="add-new-option" action="${rootUrl}/admin/tariff/${tariff.id}/add" method="post">
            <div class="form-group">
                <label for="freeOptionsField">Add options</label>
                <select class="form-control" id="freeOptionsField"

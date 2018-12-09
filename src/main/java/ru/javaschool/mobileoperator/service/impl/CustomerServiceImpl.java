@@ -12,6 +12,9 @@ import ru.javaschool.mobileoperator.repository.api.CustomerDao;
 import ru.javaschool.mobileoperator.service.api.CustomerService;
 import ru.javaschool.mobileoperator.utils.DtoConverter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service("customerService")
 public class CustomerServiceImpl extends GenericServiceImpl<Customer, Long> implements CustomerService {
 
@@ -26,5 +29,14 @@ public class CustomerServiceImpl extends GenericServiceImpl<Customer, Long> impl
     public CustomerDto getCustomerByContract(ContractDto contract) {
         Contract contractPO = contractDao.find(contract.getId());
         return DtoConverter.toCustomerDtoWithLists(customerDao.getCustomerWithContracts(contractPO.getCustomer()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CustomerDto> getAll() {
+        List<Customer> customers = customerDao.findAll();
+        List<CustomerDto> customerDtos = new ArrayList<>();
+        customers.forEach(customer -> customerDtos.add(DtoConverter.toCustomerDtoWithLists(customer)));
+        return customerDtos;
     }
 }
