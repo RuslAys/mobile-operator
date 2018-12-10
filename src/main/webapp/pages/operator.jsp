@@ -3,6 +3,15 @@
 <c:set var="pageListHolder" value="${operators}" scope="session" />
 <spring:url value="/admin/operator/l" var="pageurl" />
 <body>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/admin">Admin</a>
+    </li>
+    <li class="breadcrumb-item active">Operator editor</li>
+</ol>
     <div class="container py-4">
         <div class="row">
             <div class="col-md-12">
@@ -10,7 +19,7 @@
                     <div class="col-md-5 mx-auto">
                         <div>
                             <div>
-                                <form name="add-new-operator" action="/admin/operator/add" method="post">
+                                <form name="add-new-operator" action="${rootUrl}/admin/operator/add" method="post">
                                     <div class="form-group">
                                         <label for="usernameField">Username</label>
                                         <input type="text" class="form-control" name="username"
@@ -45,7 +54,7 @@
                 <tbody>
                 <c:forEach var="operator" items="${pageListHolder.pageList}">
                     <tr>
-                    <td> <a href="/admin/operator/${operator.username}" >${operator.username} </a></td>
+                    <td> <a href="${rootUrl}/admin/operator/${operator.username}" >${operator.username} </a></td>
                     <td>${operator.enabled}</td>
                     <c:forEach items="${operator.authorities}" var="auth">
                        <td> <c:out value="${auth.authority}" /></td>

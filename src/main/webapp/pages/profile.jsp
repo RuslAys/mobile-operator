@@ -171,9 +171,9 @@
                     Chart of account changes
                 </div>
                 <div class="card-body">
-                    <canvas id="myAreaChart" width="100%" height="30"></canvas>
+                    <canvas id="balanceChart" width="100%" height="30"></canvas>
                 </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                <div id="balanceChartDate" class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
             </div>
 
             <div class="card mb-3">
@@ -185,38 +185,22 @@
                         <table class="table table-bordered" id="billsTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>Date</th>
+                                <th>Difference</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>Date</th>
+                                <th>Difference</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                <div id="billsTableDate" class="card-footer small text-muted"></div>
             </div>
         </div>
         <jsp:include page="parts/footer.jsp" />
@@ -229,6 +213,124 @@
 </a>
 </body>
 
-<script src='<spring:url value="/resources/js/demo/chart-area-demo.js"/>'></script>
-<script src='<spring:url value="/resources/vendor/datatables/dataTables.bootstrap4.min.js"/>'></script>
+<script>
+    $(document).ready(function() {
+        var billsUrl = "${rootUrl}/rest/bills?contractId=${contract.id}";
+        $('#billsTable').DataTable({
+            destroy:true,
+            processing: true,
+            ajax: {
+                url: billsUrl,
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data: "date",
+                    render: function (data) {
+                        var date = new Date(data);
+                        var month = date.getMonth() + 1;
+                        return date.getDate() + "/" + month + "/" + date.getFullYear() + " "
+                            + date.getHours() + ":" + date.getMinutes();
+                    }
+                },
+                {data: "difference"}
+            ]
+        });
+
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        $("#billsTableDate").html("Updated: " + date.getDate() + "/" + month + "/" + date.getFullYear() + " "
+            + date.getHours() + ":" + date.getMinutes());
+
+        $('#optionsTable').DataTable();
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        var billsUrl = "${rootUrl}/rest/bills?contractId=${contract.id}";
+        $.ajax({
+            type: 'GET',
+            url: billsUrl,
+            success: function(data){
+                var bills = JSON.parse(data);
+
+                //TODO need to refactor:
+
+                var pos = [];
+                for(var i = 0; i < bills.length; i++){
+                    var billDate = new Date(bills[i].date);
+                    var month = billDate.getMonth() + 1;
+                    var stringDate = billDate.getDate() + "/" + month + "/" + billDate.getFullYear() + " "
+                    + billDate.getHours() + ":" + billDate.getMinutes();
+                    pos.push({
+                        key: stringDate,
+                        value: bills[i].balance,
+                    });
+                }
+
+                var res = pos.reduce((acc, cur) => ({...acc, [cur.key]: cur.value}), {});
+
+                // Set new default font family and font color to mimic Bootstrap's default styling
+                Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                Chart.defaults.global.defaultFontColor = '#292b2c';
+
+                var ctx = document.getElementById("balanceChart");
+                var myLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels:  Object.keys(res), /*["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"]*/
+                        datasets: [{
+                            label: "Balance",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(2,117,216,0.2)",
+                            borderColor: "rgba(2,117,216,1)",
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(2,117,216,1)",
+                            pointBorderColor: "rgba(255,255,255,0.8)",
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                            pointHitRadius: 50,
+                            pointBorderWidth: 2,
+                            data:  Object.values(res),
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'date'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 7
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: -1000,
+                                    max: 1000,
+                                    maxTicksLimit: 5
+                                },
+                                gridLines: {
+                                    color: "rgba(0, 0, 0, .125)",
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    $("#balanceChartDate").html("Updated: " + date.getDate() + "/" + month + "/" + date.getFullYear() + " "
+        + date.getHours() + ":" + date.getMinutes());
+</script>
 </html>

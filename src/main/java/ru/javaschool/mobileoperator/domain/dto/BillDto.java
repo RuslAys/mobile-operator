@@ -1,9 +1,12 @@
 package ru.javaschool.mobileoperator.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class BillDto {
     private long id;
+    @JsonIgnore
     private ContractDto contractDto;
     private int balance;
     private int difference;

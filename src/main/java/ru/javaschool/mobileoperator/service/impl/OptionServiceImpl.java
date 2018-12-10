@@ -70,7 +70,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         List<Option> inOptions = optionDao.getOptions(inclusiveOptions);
         List<Option> exOptions = optionDao.getOptions(exclusiveOptions);
 
-        //Search all inclusive options
+        //Search all inclusive options and create relations
         Set<Option> inOptionToAdd = new HashSet<>();
         if(!inOptions.isEmpty()){
             inOptions.forEach(option1 -> optionHelper.getInclusiveOptionsToAdd(option1, inOptionToAdd));
@@ -83,7 +83,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             throw new OptionException("There are common elements in inclusive and exclusive options");
         }
 
-        //Search all exclusive options
+        //Create relations between all exclusive options
         if(!exOptions.isEmpty()){
             exOptions.forEach(option1 -> option1.getParentExclusive().add(option));
             exOptions.forEach(option1 -> option1.getExclusiveOptions().add(option));
@@ -220,8 +220,8 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
     @Override
     @Transactional(readOnly = true)
-    public OptionDto getOptionWithoutList(long id) {
-        return DtoConverter.toOptionDtoWithoutLists(find(id));
+    public OptionDto getOptionWithoutLists(long id) {
+        return DtoConverter.toOptionDtoWithoutLists(optionDao.find(id));
     }
 
     @Override
@@ -229,12 +229,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     public List<OptionDto> getParentInclusiveOptionsOnContract(long contractId, List<Long> optionIds) {
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
-        Set<Option> uniqueOptions = new HashSet<>();
-        options.forEach(option -> uniqueOptions.addAll(option.getParentInclusive()));
-        if(uniqueOptions.isEmpty()){
-            return new ArrayList<>();
-        }
-        uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
+        Set<Option> uniqueOptions = optionHelper.getParentInclusiveOptionsOnContract(contract, options);
         List<OptionDto> result = new ArrayList<>();
         uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
         return result;
@@ -245,12 +240,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     public List<OptionDto> getExclusiveOptionsOnContract(long contractId, List<Long> optionIds) {
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
-        Set<Option> uniqueOptions = new HashSet<>();
-        options.forEach(option -> uniqueOptions.addAll(option.getParentExclusive()));
-        if(uniqueOptions.isEmpty()){
-            return new ArrayList<>();
-        }
-        uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
+        Set<Option> uniqueOptions = optionHelper.getExclusiveOptionsOnContract(contract, options);
         List<OptionDto> result = new ArrayList<>();
         uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
         return result;
@@ -261,12 +251,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     public List<OptionDto> getChildInclusiveOptionsOnContract(long contractId, List<Long> optionIds) {
         Contract contract = contractDao.find(contractId);
         List<Option> options = optionDao.getOptions(optionIds);
-        Set<Option> uniqueOptions = new HashSet<>();
-        options.forEach(option -> uniqueOptions.addAll(option.getInclusiveOptions()));
-        if(uniqueOptions.isEmpty()){
-            return new ArrayList<>();
-        }
-        uniqueOptions.removeIf(option -> contract.getOptions().contains(option));
+        Set<Option> uniqueOptions = optionHelper.getChildInclusiveOptionsOnContract(contract, options);
         List<OptionDto> result = new ArrayList<>();
         uniqueOptions.forEach(option -> result.add(DtoConverter.toOptionDtoWithoutLists(option)));
         return result;

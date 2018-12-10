@@ -89,7 +89,7 @@ public class ProfileController {
         model.addAttribute("contract", contract);
         model.addAttribute("tariffPlan", tariffPlan);
         model.addAttribute("options", contract.getOptions());
-        model.addAttribute("freeTariffs", tariffService.getTariffsExcept(tariffPlan));
+        model.addAttribute("freeTariffs", tariffService.getActualTariffsExcept(tariffPlan));
         return "profileTariff";
     }
 

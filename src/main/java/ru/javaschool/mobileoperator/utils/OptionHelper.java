@@ -6,6 +6,7 @@ import ru.javaschool.mobileoperator.domain.TariffPlan;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -168,5 +169,37 @@ public class OptionHelper {
             }
         }
         return options;
+    }
+
+    public Set<Option> getParentInclusiveOptionsOnContract(Contract contract, List<Option> options){
+        Set<Option> uniqueOptions = new HashSet<>();
+        options.forEach(option -> uniqueOptions.addAll(option.getParentInclusive()));
+        if(uniqueOptions.isEmpty()){
+            return new HashSet<>();
+        }
+        uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
+        return uniqueOptions;
+    }
+
+    public Set<Option> getExclusiveOptionsOnContract(Contract contract, List<Option> options){
+        Set<Option> uniqueOptions = new HashSet<>();
+        options.forEach(option -> uniqueOptions.addAll(option.getParentExclusive()));
+        if(uniqueOptions.isEmpty()){
+            return new HashSet<>();
+        }
+        uniqueOptions.removeIf(option -> !contract.getOptions().contains(option));
+        Set<Option> result = getParentInclusiveOptionsOnContract(contract, new ArrayList<>(uniqueOptions));
+        result.addAll(uniqueOptions);
+        return result;
+    }
+
+    public Set<Option> getChildInclusiveOptionsOnContract(Contract contract, List<Option> options){
+        Set<Option> uniqueOptions = new HashSet<>();
+        options.forEach(option -> uniqueOptions.addAll(option.getInclusiveOptions()));
+        if(uniqueOptions.isEmpty()){
+            return new HashSet<>();
+        }
+        uniqueOptions.removeIf(option -> contract.getOptions().contains(option));
+        return uniqueOptions;
     }
 }

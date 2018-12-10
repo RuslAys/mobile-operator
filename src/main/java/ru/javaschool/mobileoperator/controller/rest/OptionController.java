@@ -26,7 +26,7 @@ public class OptionController {
 
     @GetMapping("/{id}")
     public String optionById(@PathVariable("id") long id){
-        return JsonConverter.toJsonString(optionService.getOptionWithoutList(id));
+        return JsonConverter.toJsonString(optionService.getOptionWithoutLists(id));
     }
 
     @PreAuthorize("hasRole('ROLE_OPERATOR')")

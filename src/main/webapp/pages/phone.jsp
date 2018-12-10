@@ -3,6 +3,15 @@
 <c:set var="pageListHolder" value="${numbers}" scope="session" />
 <spring:url value="${rootUrl}/admin/phone" var="pageurl" />
 <body>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/admin">Admin</a>
+    </li>
+    <li class="breadcrumb-item active">Phone number editor</li>
+</ol>
     <div class="container py-4">
         <div class="row">
             <div class="col-md-12">

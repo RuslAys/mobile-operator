@@ -35,7 +35,7 @@ public class TariffDaoImpl extends
     @Override
     public List<TariffPlan> getTariffsWithOptions() {
         return currentSession()
-                .createQuery("SELECT tp FROM TariffPlan tp LEFT JOIN FETCH tp.options")
+                .createQuery("SELECT DISTINCT tp FROM TariffPlan tp LEFT JOIN FETCH tp.options")
                 .getResultList();
     }
 
@@ -43,6 +43,14 @@ public class TariffDaoImpl extends
     public List<TariffPlan> getTariffNotIn(Long tariffPlanId) {
         return currentSession()
                 .createQuery("SELECT tp FROM TariffPlan tp WHERE tp.id != :id")
+                .setParameter("id", tariffPlanId)
+                .getResultList();
+    }
+
+    @Override
+    public List<TariffPlan> getActualTariffNotIn(Long tariffPlanId) {
+        return currentSession()
+                .createQuery("SELECT tp FROM TariffPlan tp WHERE tp.id != :id AND tp.archival is false")
                 .setParameter("id", tariffPlanId)
                 .getResultList();
     }

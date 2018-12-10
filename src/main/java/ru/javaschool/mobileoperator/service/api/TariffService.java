@@ -52,7 +52,7 @@ public interface TariffService extends GenericService<TariffPlan, Long> {
      * @param tariffPlan specified tariff plan
      * @return List of tariff plans
      */
-    List<TariffPlanDto> getTariffsExcept(TariffPlanDto tariffPlan);
+    List<TariffPlanDto> getActualTariffsExcept(TariffPlanDto tariffPlan);
 
     List<TariffPlanDto> findTariffsWithOptions();
 }

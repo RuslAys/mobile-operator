@@ -73,7 +73,7 @@ public interface OptionService extends GenericService<Option, Long> {
      * @param id option id
      * @return option
      */
-    OptionDto getOptionWithoutList(long id);
+    OptionDto getOptionWithoutLists(long id);
 
     /**
      * Method to return parent inclusive options on contract

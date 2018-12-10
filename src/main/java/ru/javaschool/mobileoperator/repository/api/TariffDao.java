@@ -37,4 +37,11 @@ public interface TariffDao extends GenericDao<TariffPlan, Long> {
      * @return list of tariffs
      */
     List<TariffPlan> getTariffNotIn(Long tariffPlanId);
+
+    /**
+     * Method to get actual tariffs except specified
+     * @param tariffPlanId specified tariff plan id
+     * @return list of tariffs
+     */
+    List<TariffPlan> getActualTariffNotIn(Long tariffPlanId);
 }

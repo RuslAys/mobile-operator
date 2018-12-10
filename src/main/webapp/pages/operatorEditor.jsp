@@ -1,7 +1,18 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <body>
-    <h1>User editor</h1>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/admin">Admin</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/admin/operator">Operator editor</a>
+    </li>
+    <li class="breadcrumb-item active">${user.username}</li>
+</ol>
     <div>
        <h5>Username: <c:out value="${user.username}" /></h5>
        <h5>Role:
@@ -23,31 +34,6 @@
              </label>
            </div>
            <button type="submit" class="btn btn-primary">Edit</button>
-        </form>
-
-    </div>
-    <div>
-        <!--
-        <form name="edit-operator" action="admin/operator/editOperator" method="post">
-            //TODO
-            Сделать возможность редактировать пароль пользователю самому
-            ???Нужно ли редактирование имени???
-            <div class="form-group">
-                <label for="usernameField">Username</label>
-                <input type="text" class="form-control" name="username"
-                    id="usernameField" placeholder="${user.username}">
-            </div>
-            <div class="form-group">
-                <label for="passwordField">Password</label>
-                <input type="password" class="form-control" name="password"
-                    id="passwordField" placeholder="Password">
-            </div><div class="form-group">
-                <label for="passwordField">Confirm password</label>
-                <input type="password" class="form-control" name="confirmPassword"
-                    id="passwordField" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Edit</button>
-            -->
         </form>
     </div>
 </body>

@@ -131,9 +131,9 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
 
     @Override
     @Transactional(readOnly = true)
-    public List<TariffPlanDto> getTariffsExcept(TariffPlanDto tariffPlan) {
+    public List<TariffPlanDto> getActualTariffsExcept(TariffPlanDto tariffPlan) {
         List<TariffPlanDto> dtos = new ArrayList<>();
-        tariffDao.getTariffNotIn(tariffPlan.getId()).forEach(
+        tariffDao.getActualTariffNotIn(tariffPlan.getId()).forEach(
                 tariffPlan1 -> dtos.add(DtoConverter.toTariffDtoWithoutLists(tariffPlan1)));
         return dtos;
     }

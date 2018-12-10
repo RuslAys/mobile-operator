@@ -85,4 +85,12 @@ public class OptionDto {
     public void setTariffPlans(List<TariffPlanDto> tariffPlans) {
         this.tariffPlans = tariffPlans;
     }
+
+    @Override
+    public String toString() {
+        return "Option: " +
+                "name: '" + name + '\'' +
+                ", price: " + price +
+                ", connectionCost: " + connectionCost;
+    }
 }

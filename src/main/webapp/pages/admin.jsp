@@ -1,6 +1,12 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <body>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item active">Admin</li>
+</ol>
     <h1>Admin panel</h1>
     <ul>
         <li>

@@ -3,6 +3,15 @@
 <c:set var="pageListHolder" value="${options}" scope="session" />
 <spring:url value="${rootUrl}/admin/option" var="pageurl" />
 <body>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/admin">Admin</a>
+    </li>
+    <li class="breadcrumb-item active">Option editor</li>
+</ol>
     <div class="container py-4">
             <div class="row">
                 <div class="col-md-12">
