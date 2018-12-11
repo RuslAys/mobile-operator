@@ -44,10 +44,25 @@ public final class DtoConverter {
     public static OptionDto toOptionDtoWithLists(Option option){
         List<ContractDto> contractDtos = new ArrayList<>();
         option.getContracts().forEach(contract -> contractDtos.add(toContractDtoWithoutLists(contract)));
+
         List<TariffPlanDto> tariffPlanDtos = new ArrayList<>();
         option.getTariffPlans().forEach(tariffPlan -> tariffPlanDtos.add(toTariffDtoWithoutLists(tariffPlan)));
-        return new OptionDto(option.getId(), option.getName(), option.getPrice(), option.getConnectionCost(),
+
+        List<OptionDto> inclusiveOptions = new ArrayList<>();
+        option.getInclusiveOptions().forEach(option1 -> inclusiveOptions.add(toOptionDtoWithoutLists(option1)));
+
+        List<OptionDto> parentInclusive = new ArrayList<>();
+        option.getParentInclusive().forEach(option1 -> parentInclusive.add(toOptionDtoWithoutLists(option1)));
+
+        List<OptionDto> exclusiveOptions = new ArrayList<>();
+        option.getExclusiveOptions().forEach(option1 -> exclusiveOptions.add(toOptionDtoWithoutLists(option1)));
+
+        OptionDto result = new OptionDto(option.getId(), option.getName(), option.getPrice(), option.getConnectionCost(),
                 contractDtos, tariffPlanDtos);
+        result.setExclusiveOptions(exclusiveOptions);
+        result.setInclusiveOptions(inclusiveOptions);
+        result.setParentInclusive(parentInclusive);
+        return result;
     }
 
     /**

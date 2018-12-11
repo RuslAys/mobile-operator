@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <c:set var="pageListHolder" value="${tariffs}" scope="session" />
-<spring:url value="admin/tariff/l" var="pageurl" />
+<spring:url value="${rootUrl}/admin/tariff/l" var="pageurl" />
 <body>
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -50,12 +50,13 @@
                     <tr>
                       <th scope="col">Name</th>
                       <th scope="col">Price</th>
+                      <th scope="col">Archival</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                       <c:forEach items="${pageListHolder.pageList}" var="tariffPlan">
-                          <c:if test="${tariffPlan.archival == false}">
+                          <%--<c:if test="${tariffPlan.archival == false}">--%>
                               <tr>
                                   <form name="remove-tariff" action="${rootUrl}/admin/tariff/remove" method="post">
                                      <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
@@ -65,12 +66,15 @@
                                      <td>
                                         ${tariffPlan.price}
                                       </td>
+                                      <td>
+                                          ${tariffPlan.archival}
+                                      </td>
                                      <td>
                                         <button type="submit" class="btn btn-primary">Remove</button>
                                      </td>
                                   </form>
                               </tr>
-                          </c:if>
+                          <%--</c:if>--%>
                       </c:forEach>
                   </tbody>
                 </table>

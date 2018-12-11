@@ -46,4 +46,11 @@ public interface OptionDao extends GenericDao<Option, Long>{
      * @return option
      */
     Option getFullOptionById(Long id);
+
+    /**
+     * Method to find option with lists by id
+     * @param optionId option id
+     * @return option
+     */
+    Option findOptionWithListsById(Long optionId);
 }

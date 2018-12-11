@@ -16,6 +16,7 @@ import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
 import ru.javaschool.mobileoperator.domain.User;
+import ru.javaschool.mobileoperator.domain.dto.OptionDto;
 import ru.javaschool.mobileoperator.domain.dto.PhoneNumberDto;
 import ru.javaschool.mobileoperator.domain.dto.TariffPlanDto;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
@@ -164,7 +165,7 @@ public class AdminPanelController {
      * @param model ui model
      * @return options page
      */
-    @GetMapping(value = {"/option/{type}", "/option"})
+    @GetMapping(value = {"/option/l/{type}", "/option"})
     public String optionPage(Model model,
                              @PathVariable Map<String, String> pathVariablesMap,
                              HttpServletRequest request){
@@ -213,6 +214,20 @@ public class AdminPanelController {
                                     List<Long> exclusiveOptions){
         optionService.createOption(name, price, connectionCost, inclusiveOptions, exclusiveOptions);
         return "redirect:/admin/option";
+    }
+
+    /**
+     * Get method to option editor
+     * @return redirect to options page {@link #operatorPage(Model, Map, HttpServletRequest)}
+     */
+    @GetMapping("/option/{optionId}")
+    public String optionsEditor(@PathVariable Long optionId, Model model){
+//        OptionDto option = optionService.findOptionWithListsById(optionId);
+//        if(option == null){
+//            model.addAttribute("error", "not found");
+//        }
+        model.addAttribute("option", optionService.findOptionWithListsById(optionId));
+        return "optionEditor";
     }
 
     /**

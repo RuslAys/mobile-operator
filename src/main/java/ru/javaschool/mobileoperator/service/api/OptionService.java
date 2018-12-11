@@ -98,4 +98,11 @@ public interface OptionService extends GenericService<Option, Long> {
      * @return list with options
      */
     List<OptionDto> getChildInclusiveOptionsOnContract(long contractId, List<Long> optionIds);
+
+    /**
+     * Method to find option with lists by id
+     * @param optionId option id
+     * @return option dto
+     */
+    OptionDto findOptionWithListsById(Long optionId);
 }

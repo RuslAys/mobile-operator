@@ -109,38 +109,20 @@ public class SaleController {
 
     /**
      * Post method to sale contract
-//     * @param firstName user first name
-//     * @param lastName user last name
-//     * @param birthDate user birth date
-//     * @param city user city
-//     * @param street user street
-//     * @param house user house
-//     * @param email user email
-//     * @param passport user passport
-     * @param customerDto customer dto
+     * @param customerDto customer dt
      * @param tariffId chosen tariff id
      * @param numberId chosen number id
      * @return redirect to sale page {@link #salePage(Model, HttpSession)} (Model)}
      */
-    @PostMapping(value = "/confirm", params = "add_to_cart")
-    public String confirmSale(/*@RequestParam("firstName") String firstName,
-                              @RequestParam("lastName") String lastName,
-                              @RequestParam("birthDate") Date birthDate,
-                              @RequestParam(value = "city", required = false) String city,
-                              @RequestParam(value = "street", required = false) String street,
-                              @RequestParam(value = "house",required = false) String house,
-                              @RequestParam(value = "email", required = false) String email,
-                              @RequestParam(value = "passport", required = false) String passport,*/
-            @Valid CustomerDto customerDto,
+    @PostMapping(value = "/confirm")
+    public String confirmSale(@Valid CustomerDto customerDto,
                               @RequestParam("tariff") Long tariffId,
                               @RequestParam("number") Long numberId,
                               BindingResult result,
-                              HttpSession session){
-//        cartSaleService.sale(firstName,
-//                lastName, birthDate, city, street, house,
-//                email, passport, tariffId, numberId, session);
+                              Model model){
         if(result.hasErrors()){
-            return "errors/bad_request";
+            model.addAttribute("error", "validations error");
+            return "sale";
         }
         saleService.saleContract(customerDto, tariffId, numberId);
         return "redirect:/sale";
@@ -154,30 +136,13 @@ public class SaleController {
      * @param session http session
      * @return redirect to cart page
      */
-    @PostMapping(value = "/confirm/customer", params = "confirm")
+    @PostMapping(value = "/confirm/customer")
     public String confirmSaleToExistPersonalAccountToCart(@RequestParam("customerId") Long customerId,
                                                           @RequestParam("tariff") Long tariffId,
                                                           @RequestParam("number") Long numberId,
                                                           HttpSession session){
         cartSaleService.saleToPersonalAccount(customerId, tariffId, numberId, session);
         return "redirect:/cart";
-    }
-
-    /**
-     * Post method to sale terminal device to existing personal account
-     * @param customerId personal account id
-     * @param tariffId tariff id
-     * @param numberId phone number id
-     * @param session http session
-     * @return redirect to sale page {@link #salePage(Model, HttpSession)}
-     */
-    @PostMapping(value = "/confirm/customer", params = "add_to_cart")
-    public String confirmSaleToExistPersonalAccount(@RequestParam("customerId") Long customerId,
-                                                    @RequestParam("tariff") Long tariffId,
-                                                    @RequestParam("number") Long numberId,
-                                                    HttpSession session){
-        cartSaleService.saleToPersonalAccount(customerId, tariffId, numberId, session);
-        return "redirect:/sale";
     }
 
     /**
@@ -189,12 +154,7 @@ public class SaleController {
     @PostMapping("/search")
     public String searchCustomer(Model model,
                                  @RequestParam("number") String number){
-        ContractDto contract;
-        try {
-            contract = contractService.getContractWithOptions(number);
-        }catch (Exception e){
-            contract = null;
-        }
+        ContractDto contract = contractService.getContractWithOptions(number);
         if(contract == null){
             model.addAttribute("message", "Not found");
         }else {

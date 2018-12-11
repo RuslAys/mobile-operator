@@ -14,6 +14,12 @@ public class OptionDto {
     private List<ContractDto> contracts = new ArrayList<>();
     @JsonIgnore
     private List<TariffPlanDto> tariffPlans = new ArrayList<>();
+    @JsonIgnore
+    private List<OptionDto> inclusiveOptions = new ArrayList<>();
+    @JsonIgnore
+    private List<OptionDto> parentInclusive = new ArrayList<>();
+    @JsonIgnore
+    private List<OptionDto> exclusiveOptions = new ArrayList<>();
 
     public OptionDto() {
     }
@@ -84,6 +90,30 @@ public class OptionDto {
 
     public void setTariffPlans(List<TariffPlanDto> tariffPlans) {
         this.tariffPlans = tariffPlans;
+    }
+
+    public List<OptionDto> getInclusiveOptions() {
+        return inclusiveOptions;
+    }
+
+    public void setInclusiveOptions(List<OptionDto> inclusiveOptions) {
+        this.inclusiveOptions = inclusiveOptions;
+    }
+
+    public List<OptionDto> getParentInclusive() {
+        return parentInclusive;
+    }
+
+    public void setParentInclusive(List<OptionDto> parentInclusive) {
+        this.parentInclusive = parentInclusive;
+    }
+
+    public List<OptionDto> getExclusiveOptions() {
+        return exclusiveOptions;
+    }
+
+    public void setExclusiveOptions(List<OptionDto> exclusiveOptions) {
+        this.exclusiveOptions = exclusiveOptions;
     }
 
     @Override

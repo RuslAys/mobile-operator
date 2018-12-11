@@ -251,6 +251,19 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         return result;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public OptionDto findOptionWithListsById(Long optionId) {
+        Option option;
+        try {
+            option = optionDao.findOptionWithListsById(optionId);
+        }catch (Exception e){
+            return null;
+        }
+        OptionDto result = DtoConverter.toOptionDtoWithLists(option);
+        return result;
+    }
+
     private Set<Option> getAllDependentOptions(List<Option> options, Set<Option> uniqueOptions){
         for(Option option: options){
             for(Option inOption: option.getInclusiveOptions()){

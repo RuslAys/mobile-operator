@@ -1,11 +1,16 @@
 package ru.javaschool.mobileoperator.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +45,12 @@ public class Option extends AbstractPO {
     private List<Option> parentInclusive = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "parentExclusive")
+    @OrderColumn(name="orderIndex")
     private List<Option> exclusiveOptions = new ArrayList<>();
 
+    @OrderBy("id")
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "parentInclusive")
+    @OrderColumn(name="orderIndex")
     private List<Option> inclusiveOptions = new ArrayList<>();
 
     public List<TariffPlan> getTariffPlans() {

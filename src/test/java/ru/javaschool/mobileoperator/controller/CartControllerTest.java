@@ -25,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("ru.javaschool.mobileoperator")
 public class CartControllerTest extends BaseTest {
 
+    //TODO Before test
+
     @Test
     public void cartPageTest() throws Exception{
         this.mockMvc.perform(get("/cart").with(user("a").password("p")))

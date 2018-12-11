@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <c:set var="pageListHolder" value="${options}" scope="session" />
-<spring:url value="${rootUrl}/admin/option" var="pageurl" />
+<spring:url value="${rootUrl}/admin/option/l" var="pageurl" />
 <body>
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -71,7 +71,9 @@
             <tbody>
             <c:forEach var="option" items="${pageListHolder.pageList}">
                 <tr>
-                <td>${option.name}</td>
+                <td>
+                    <a href="${rootUrl}/admin/option/${option.id}"><c:out value="${option.name}" /> </a>
+                </td>
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 </tr>

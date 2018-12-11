@@ -15,8 +15,6 @@ public class TariffController {
     @Autowired
     TariffService tariffService;
 
-
-
     @GetMapping
     public String getTariffs(){
         return JsonConverter.toJsonString(tariffService.findAllActualTariffsWithOptions());

@@ -175,8 +175,7 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <button type="submit" name="confirm" class="btn btn-primary btn-md float-right">Confirm</button>
-                    <button type="submit" name="add_to_cart" class="btn btn-primary btn-md float-right">Add to cart</button>
+                    <button type="submit" class="btn btn-primary btn-md float-right">Confirm</button>
                 </form>
             </div>
         <%--</c:if>--%>

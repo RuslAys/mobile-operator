@@ -18,7 +18,7 @@ public abstract class GenericDaoImpl <E, K extends Serializable>
 
     private Class<? extends E> daoType;
 
-    @Autowired(required = true)
+    @Autowired
     protected SessionFactory sessionFactory;
 
     public final void setDaoType(Class<E> daoType){

@@ -38,7 +38,12 @@ public class ContractServiceImpl extends GenericServiceImpl<Contract, Long> impl
         if(StringUtils.isEmpty(number)){
             throw new PhoneNumberException("Number cannot be empty");
         }
-        return DtoConverter.toContractDtoWithLists(
-                contractDao.getContractWithOptionsByPhoneNumber(Long.parseLong(number)));
+        try{
+            return DtoConverter.toContractDtoWithLists(
+                    contractDao.getContractWithOptionsByPhoneNumber(Long.parseLong(number)));
+        }catch (Exception e){
+            return null;
+        }
+
     }
 }
