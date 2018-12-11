@@ -19,7 +19,7 @@ public class TariffController {
 
     @GetMapping
     public String getTariffs(){
-        return JsonConverter.toJsonString(tariffService.findTariffsWithOptions());
+        return JsonConverter.toJsonString(tariffService.findAllActualTariffsWithOptions());
     }
 
     @GetMapping("/{tariffId}")

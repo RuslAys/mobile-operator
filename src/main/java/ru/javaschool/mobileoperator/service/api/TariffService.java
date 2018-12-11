@@ -54,5 +54,15 @@ public interface TariffService extends GenericService<TariffPlan, Long> {
      */
     List<TariffPlanDto> getActualTariffsExcept(TariffPlanDto tariffPlan);
 
+    /**
+     * Method to find all tariff plans with options
+     * @return list of tariff plans
+     */
     List<TariffPlanDto> findTariffsWithOptions();
+
+    /**
+     * Method to find all actual tariff plans with options
+     * @return list of tariff plans
+     */
+    List<TariffPlanDto> findAllActualTariffsWithOptions();
 }

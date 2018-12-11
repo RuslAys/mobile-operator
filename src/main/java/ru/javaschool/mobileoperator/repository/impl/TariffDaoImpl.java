@@ -54,4 +54,12 @@ public class TariffDaoImpl extends
                 .setParameter("id", tariffPlanId)
                 .getResultList();
     }
+
+    @Override
+    public List<TariffPlan> findActualTariffsWithOptions() {
+        return currentSession()
+                .createQuery("SELECT DISTINCT tp FROM TariffPlan tp LEFT JOIN FETCH tp.options" +
+                        " WHERE tp.archival is false")
+                .getResultList();
+    }
 }

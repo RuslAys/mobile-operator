@@ -148,4 +148,15 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         );
         return dtos;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TariffPlanDto> findAllActualTariffsWithOptions() {
+        List<TariffPlan> tariffPlans = tariffDao.findActualTariffsWithOptions();
+        List<TariffPlanDto> dtos = new ArrayList<>();
+        tariffPlans.forEach(
+                tariffPlan -> dtos.add(DtoConverter.toTariffDtoWithLists(tariffPlan))
+        );
+        return dtos;
+    }
 }

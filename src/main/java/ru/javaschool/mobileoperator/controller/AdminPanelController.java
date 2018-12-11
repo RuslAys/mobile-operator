@@ -21,6 +21,7 @@ import ru.javaschool.mobileoperator.domain.dto.TariffPlanDto;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
+import ru.javaschool.mobileoperator.service.api.TariffJmsService;
 import ru.javaschool.mobileoperator.service.api.TariffService;
 import ru.javaschool.mobileoperator.service.api.UserService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
@@ -45,6 +46,9 @@ public class AdminPanelController {
 
     @Autowired
     private TariffService tariffService;
+
+    @Autowired
+    private TariffJmsService tariffJmsService;
 
     @Autowired
     private PhoneNumberService phoneNumberService;
@@ -264,13 +268,13 @@ public class AdminPanelController {
         if(result.hasErrors()){
             return "errors/bad_request";
         }
-        tariffService.addTariff(tariffPlanDto, optionIds);
+        tariffJmsService.addTariff(tariffPlanDto, optionIds);
         return "redirect:/admin/tariff";
     }
 
     @PostMapping("/tariff/remove")
     public String removeTariffPlan(@RequestParam("tariffId") Long tariffId){
-        tariffService.removeTariff(tariffId);
+        tariffJmsService.removeTariff(tariffId);
         return "redirect:/admin/tariff";
     }
 
@@ -299,7 +303,7 @@ public class AdminPanelController {
     public String removeOptionFromTariff(Model model,
                                          @PathVariable("id") Long tariffId,
                                          @RequestParam("optionId") Long optionId){
-        tariffService.removeOptionFromTariff(tariffId, optionId);
+        tariffJmsService.removeOptionFromTariff(tariffId, optionId);
         return "redirect:/admin/tariff/"+tariffId;
     }
 
@@ -313,7 +317,7 @@ public class AdminPanelController {
     public String addOptionToTariff(Model model,
                                     @PathVariable("id") Long tariffId,
                                     @RequestParam("optionId") Long optionId){
-        tariffService.addOptionToTariff(tariffId, optionId);
+        tariffJmsService.addOptionToTariff(tariffId, optionId);
         return "redirect:/admin/tariff/"+tariffId;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import ru.javaschool.mobileoperator.domain.Bill;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.dto.OptionDto;
@@ -17,6 +18,7 @@ import ru.javaschool.mobileoperator.service.api.OptionService;
 import ru.javaschool.mobileoperator.service.exceptions.ContractException;
 import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
+import ru.javaschool.mobileoperator.utils.BillHelper;
 import ru.javaschool.mobileoperator.utils.DtoConverter;
 import ru.javaschool.mobileoperator.utils.OptionHelper;
 
@@ -145,38 +147,30 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         List<Option> tdOptions = contract.getOptions();
         List<Option> optionsToAdd = new ArrayList<>();
 
+        optionsToAdd.add(newOption);
+
         // Find options to add
-        optionsToAdd = optionHelper.getAllOptions(newOption, optionsToAdd);
+        Set<Option> uniqueOptionsToAdd = optionHelper.getChildInclusiveOptionsOnContract(contract, optionsToAdd);
+        uniqueOptionsToAdd.add(newOption);
 
         // Find options to delete
-        List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
-        if(!exclusiveOptions.isEmpty()){
-            List<Option> optionsToDelete = new ArrayList<>();
-            optionsToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionsToDelete);
-            // Find required options for current terminal device option which not will be deleted
-            // in options to delete
-            for (Option option: optionsToDelete){
-                for(Option tdOption: contract.getOptions()){
-                    if(!optionsToDelete.contains(tdOption) && option.getParentInclusive().contains(tdOption)){
-                        throw new OptionException("Can not remove option " + option + " it`s required for " + tdOption);
-                    }
-                }
-            }
+        Set<Option> uniqueOptionsToDelete = optionHelper.getExclusiveOptionsOnContract(contract, optionsToAdd);
+
+        if(!uniqueOptionsToDelete.isEmpty()){
+            List<Option> optionsToDelete = new ArrayList<>(uniqueOptionsToDelete);
             optionHelper.removeOptionsFromContract(contract, optionsToDelete);
-            optionsToDelete.forEach(
-                    option -> optionDao.update(option)
-            );
         }
+
         int balance = contract.getBalance();
-        for(Option option: optionsToAdd){
-            balance -= option.getConnectionCost();
+        int difference = 0;
+        for(Option option: uniqueOptionsToAdd){
+            difference += option.getConnectionCost();
         }
+        balance -= difference;
+        Bill bill = BillHelper.makeBill(contract, balance, -difference, "Add option");
         contract.setBalance(balance);
-        contract.getOptions().addAll(optionsToAdd);
-        List<Option> withoutDuplicates = new ArrayList<>(
-                new HashSet<>(contract.getOptions())
-        );
-        contract.setOptions(withoutDuplicates);
+        contract.getOptions().addAll(uniqueOptionsToAdd);
+        contract.getBills().add(bill);
         contractDao.update(contract);
     }
 
