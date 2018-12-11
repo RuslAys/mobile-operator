@@ -2,7 +2,7 @@ package ru.javaschool.mobileoperator.utils;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.javaschool.mobileoperator.domain.Customer;
-import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.domain.enums.CartItemOperationType;
 
 /**
  * Cart item builder to create cart item with different parameters
@@ -10,46 +10,46 @@ import ru.javaschool.mobileoperator.domain.enums.OperationType;
 public class CartItemBuilder {
     private int id;
     private UserDetails userDetails;
-    private OperationType operationType;
+    private CartItemOperationType cartItemOperationType;
     private long tariffPlanId;
     private long optionId;
     private long lockId;
     private Customer customer;
-    private long terminalDeviceId;
+    private long contractId;
     private long phoneNumberId;
     private boolean completed;
-    private long personalAccountId;
+    private long customerId;
 
     private CartItemBuilder(Builder builder){
         this.id = builder.id;
         this.userDetails = builder.userDetails;
-        this.operationType = builder.operationType;
+        this.cartItemOperationType = builder.cartItemOperationType;
         this.tariffPlanId = builder.tariffPlanId;
         this.optionId = builder.optionId;
         this.lockId = builder.lockId;
         this.customer = builder.customer;
-        this.terminalDeviceId = builder.terminalDeviceId;
+        this.contractId = builder.contractId;
         this.phoneNumberId = builder.phoneNumberId;
         this.completed = builder.completed;
-        this.personalAccountId = builder.personalAccountId;
+        this.customerId = builder.customerId;
     }
 
     public static class Builder{
         private int id;
         private UserDetails userDetails;
-        private OperationType operationType;
+        private CartItemOperationType cartItemOperationType;
         private long tariffPlanId;
         private long optionId;
         private long lockId;
         private Customer customer;
-        private long terminalDeviceId;
+        private long contractId;
         private long phoneNumberId;
         private boolean completed;
-        private long personalAccountId;
+        private long customerId;
 
-        public Builder(int id, OperationType operationType){
+        public Builder(int id, CartItemOperationType cartItemOperationType){
             this.id = id;
-            this.operationType = operationType;
+            this.cartItemOperationType = cartItemOperationType;
         }
 
         public Builder setId(int id) {
@@ -62,8 +62,8 @@ public class CartItemBuilder {
             return this;
         }
 
-        public Builder setOperationType(OperationType operationType) {
-            this.operationType = operationType;
+        public Builder setCartItemOperationType(CartItemOperationType cartItemOperationType) {
+            this.cartItemOperationType = cartItemOperationType;
             return this;
         }
 
@@ -87,8 +87,8 @@ public class CartItemBuilder {
             return this;
         }
 
-        public Builder setTerminalDeviceId(long terminalDeviceId) {
-            this.terminalDeviceId = terminalDeviceId;
+        public Builder setContractId(long contractId) {
+            this.contractId = contractId;
             return this;
         }
 
@@ -102,8 +102,8 @@ public class CartItemBuilder {
             return this;
         }
 
-        public Builder setPersonalAccountId(long personalAccountId){
-            this.personalAccountId = personalAccountId;
+        public Builder setCustomerId(long customerId){
+            this.customerId = customerId;
             return this;
         }
 
@@ -120,8 +120,8 @@ public class CartItemBuilder {
         return userDetails;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public CartItemOperationType getCartItemOperationType() {
+        return cartItemOperationType;
     }
 
     public long getTariffPlanId() {
@@ -140,8 +140,8 @@ public class CartItemBuilder {
         return customer;
     }
 
-    public long getTerminalDeviceId() {
-        return terminalDeviceId;
+    public long getContractId() {
+        return contractId;
     }
 
     public long getPhoneNumberId() {
@@ -152,7 +152,7 @@ public class CartItemBuilder {
         return completed;
     }
 
-    public long getPersonalAccountId() {
-        return personalAccountId;
+    public long getCustomerId() {
+        return customerId;
     }
 }

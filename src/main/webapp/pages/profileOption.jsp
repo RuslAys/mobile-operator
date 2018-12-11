@@ -114,8 +114,8 @@
                     <%--<div class="col-md-5 mx-auto">--%>
                         <%--<form name="add-option" action="option/add" method="post">--%>
                             <%--<div class="form-group">--%>
-                                <%--<input type="hidden" class="form-control" name="terminalDeviceId"--%>
-                                    <%--value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">--%>
+                                <%--<input type="hidden" class="form-control" name="contractId"--%>
+                                    <%--value = "${terminalDevice.id}"id="contractId" placeholder="${terminalDevice.id}">--%>
                                 <%--<input type="hidden" class="form-control" name="username"--%>
                                     <%--value = "${terminalDevice.phoneNumber.number}"id="phoneNumber" placeholder="${terminalDevice.phoneNumber.number}">--%>
                                 <%--<label for="freeOptionsField">Add option</label>--%>
@@ -138,8 +138,8 @@
                     <%--&lt;%&ndash;<div class="col-md-5 mx-auto">&ndash;%&gt;--%>
                         <%--&lt;%&ndash;<form name="remove-option" action="option/remove" method="post">&ndash;%&gt;--%>
                             <%--&lt;%&ndash;<div class="form-group">&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<input type="hidden" class="form-control" name="terminalDeviceId"&ndash;%&gt;--%>
-                                            <%--&lt;%&ndash;value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<input type="hidden" class="form-control" name="contractId"&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;value = "${terminalDevice.id}"id="contractId" placeholder="${terminalDevice.id}">&ndash;%&gt;--%>
                                 <%--&lt;%&ndash;<label for="optionsField">Delete option</label>&ndash;%&gt;--%>
                                 <%--&lt;%&ndash;<select class="form-control" id="optionsField"&ndash;%&gt;--%>
                                     <%--&lt;%&ndash;name="optionId">&ndash;%&gt;--%>

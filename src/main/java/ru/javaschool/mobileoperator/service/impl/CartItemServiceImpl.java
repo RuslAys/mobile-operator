@@ -29,12 +29,12 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItem updateItem(CartItem item, CartItemBuilder cartItemBuilder) {
-        item.setOperationType(cartItemBuilder.getOperationType());
+        item.setCartItemOperationType(cartItemBuilder.getCartItemOperationType());
         item.setTariffPlanId(cartItemBuilder.getTariffPlanId());
         item.setOptionId(cartItemBuilder.getOptionId());
         item.setLockId(cartItemBuilder.getLockId());
         item.setCustomer(cartItemBuilder.getCustomer());
-        item.setTerminalDeviceId(cartItemBuilder.getTerminalDeviceId());
+        item.setContractId(cartItemBuilder.getContractId());
         item.setPhoneNumberId(cartItemBuilder.getPhoneNumberId());
         item.setUser(cartItemBuilder.getUserDetails());
         return item;
@@ -42,25 +42,24 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public void proceed(CartItem cartItem) {
-        switch (cartItem.getOperationType()){
+        switch (cartItem.getCartItemOperationType()){
             case SALE:
 //                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
                 break;
-            case SALE_TO_EXIST_PERSONAL_ACCOUNT:
-                saleService.saleToExistPersonalAccount(cartItem.getPersonalAccountId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
+            case SALE_TO_EXIST_CUSTOMER:
+                saleService.saleToExistPersonalAccount(cartItem.getCustomerId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
                 break;
             case ADD_OPTION:
-                optionService.addOptionToContract(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
+                optionService.addOptionToContract(cartItem.getContractId(), cartItem.getOptionId());
                 break;
             case REMOVE_OPTION:
-                optionService.removeOptionFromContract(cartItem.getTerminalDeviceId(), cartItem.getOptionId());
+                optionService.removeOptionFromContract(cartItem.getContractId(), cartItem.getOptionId());
                 break;
-            case ADD_LOCK:
-                break;
-            case REMOVE_LOCK:
+            case LOCK:
+                profileService.lockContract(cartItem.getContractId(), cartItem.getUser());
                 break;
             case CHANGE_TARIFF:
-                profileService.changeTariff(cartItem.getTerminalDeviceId(), cartItem.getTariffPlanId());
+                profileService.changeTariff(cartItem.getContractId(), cartItem.getTariffPlanId());
                 break;
         }
     }

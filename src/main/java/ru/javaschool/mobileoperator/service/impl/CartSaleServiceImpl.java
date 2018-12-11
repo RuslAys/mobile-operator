@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
 import ru.javaschool.mobileoperator.domain.Customer;
-import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.domain.enums.CartItemOperationType;
 import ru.javaschool.mobileoperator.repository.api.TariffDao;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartSaleService;
@@ -55,7 +55,7 @@ public class CartSaleServiceImpl implements CartSaleService {
         if(!cart.getCartItems().isEmpty()){
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
-        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.SALE)
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, CartItemOperationType.SALE)
                 .setCustomer(customer)
                 .setTariffPlanId(tariffId)
                 .setPhoneNumberId(numberId)
@@ -75,8 +75,8 @@ public class CartSaleServiceImpl implements CartSaleService {
         if(!cart.getCartItems().isEmpty()){
             id = cart.getCartItems().get(cart.getCartItems().size()-1).getId()+1;
         }
-        CartItemBuilder builder = new CartItemBuilder.Builder(id, OperationType.SALE_TO_EXIST_PERSONAL_ACCOUNT)
-                .setPersonalAccountId(personalAccountId)
+        CartItemBuilder builder = new CartItemBuilder.Builder(id, CartItemOperationType.SALE_TO_EXIST_CUSTOMER)
+                .setCustomerId(personalAccountId)
                 .setTariffPlanId(tariffId)
                 .setPhoneNumberId(numberId)
                 .build();

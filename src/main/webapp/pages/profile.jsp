@@ -23,7 +23,8 @@
                 </div>
                 <form class="form" role="form" id="formLock" action="${rootUrl}/profile/${contract.phoneNumber.number}/lock" method="post">
                     <input hidden class="form-control form-control-lg rounded-1" name="contractId" value="${contract.id}">
-                    <button type="submit" class="btn btn-success" id="btnLock">Lock / Unlock</button>
+                    <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm">Confirm Lock / Unlock</button>
+                    <button type="submit" class="btn btn-success" id="btnLockAddToCart" name="add_to_cart">Add to cart Lock / Unlock</button>
                 </form>
             </div>
             <div class="row">

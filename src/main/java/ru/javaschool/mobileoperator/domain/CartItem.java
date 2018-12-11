@@ -1,36 +1,36 @@
 package ru.javaschool.mobileoperator.domain;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.javaschool.mobileoperator.domain.enums.OperationType;
+import ru.javaschool.mobileoperator.domain.enums.CartItemOperationType;
 import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import java.util.Objects;
 
 public class CartItem {
     private int id;
-    private OperationType operationType;
+    private CartItemOperationType cartItemOperationType;
     private long tariffPlanId;
     private long optionId;
     private long lockId;
     private Customer customer;
-    private long terminalDeviceId;
+    private long contractId;
     private long phoneNumberId;
     private boolean completed;
     private UserDetails user;
-    private long personalAccountId;
+    private long customerId;
 
     public CartItem(CartItemBuilder builder){
         this.id = builder.getId();
-        this.operationType = builder.getOperationType();
+        this.cartItemOperationType = builder.getCartItemOperationType();
         this.tariffPlanId = builder.getTariffPlanId();
         this.optionId = builder.getOptionId();
         this.lockId = builder.getLockId();
         this.customer = builder.getCustomer();
-        this.terminalDeviceId = builder.getTerminalDeviceId();
+        this.contractId = builder.getContractId();
         this.phoneNumberId = builder.getPhoneNumberId();
         this.completed = builder.isCompleted();
         this.user = builder.getUserDetails();
-        this.personalAccountId = builder.getPersonalAccountId();
+        this.customerId = builder.getCustomerId();
     }
 
     public int getId() {
@@ -41,12 +41,12 @@ public class CartItem {
         this.id = id;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public CartItemOperationType getCartItemOperationType() {
+        return cartItemOperationType;
     }
 
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
+    public void setCartItemOperationType(CartItemOperationType cartItemOperationType) {
+        this.cartItemOperationType = cartItemOperationType;
     }
 
     public long getTariffPlanId() {
@@ -81,12 +81,12 @@ public class CartItem {
         this.customer = customer;
     }
 
-    public long getTerminalDeviceId() {
-        return terminalDeviceId;
+    public long getContractId() {
+        return contractId;
     }
 
-    public void setTerminalDeviceId(long terminalDeviceId) {
-        this.terminalDeviceId = terminalDeviceId;
+    public void setContractId(long contractId) {
+        this.contractId = contractId;
     }
 
     public long getPhoneNumberId() {
@@ -113,12 +113,12 @@ public class CartItem {
         this.user = user;
     }
 
-    public long getPersonalAccountId() {
-        return personalAccountId;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setPersonalAccountId(long personalAccountId) {
-        this.personalAccountId = personalAccountId;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     @Override
@@ -127,19 +127,19 @@ public class CartItem {
         if (o == null || getClass() != o.getClass()) return false;
         CartItem cartItem = (CartItem) o;
         return id == cartItem.id &&
-                operationType == cartItem.operationType;
+                cartItemOperationType == cartItem.cartItemOperationType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, operationType);
+        return Objects.hash(id, cartItemOperationType);
     }
 
     @Override
     public String toString() {
         return "CartItem{" +
                 "id=" + id +
-                ", operationType=" + operationType +
+                ", cartItemOperationType=" + cartItemOperationType +
                 '}';
     }
 }

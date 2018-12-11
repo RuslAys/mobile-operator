@@ -31,7 +31,9 @@
                                value = "${contract.id}"id="contractId" placeholder="${contract.id}">
                         <input type="hidden" class="form-control" name="newTariffId"
                                value = "${tariffPlan.id}"id="tariffPlanId" placeholder="${tariffPlan.id}">
-                        <button type="submit" class="btn btn-md border-top btn-primary">Change</button>
+                        <%--<button type="submit" class="btn btn-md border-top btn-primary">Change</button>--%>
+                        <button type="submit" name="confirm" class="btn btn-md border-top btn-primary">Confirm changing</button>
+                        <button type="submit" name="add_to_cart" class="btn btn-md border-top btn-primary">Add changing to cart</button>
                     </form>
                 </div>
             </c:forEach>
@@ -67,8 +69,8 @@
                     <%--<div class="col-md-5 mx-auto">--%>
                         <%--<form name="change-tariff" action="tariff/change" method="post">--%>
                             <%--<div class="form-group">--%>
-                                <%--<input type="hidden" class="form-control" name="terminalDeviceId"--%>
-                                            <%--value = "${terminalDevice.id}"id="terminalDeviceId" placeholder="${terminalDevice.id}">--%>
+                                <%--<input type="hidden" class="form-control" name="contractId"--%>
+                                            <%--value = "${terminalDevice.id}"id="contractId" placeholder="${terminalDevice.id}">--%>
                                 <%--<input type="hidden" class="form-control" name="tariffPlanId"--%>
                                             <%--value = "${tariffPlan.id}"id="tariffPlanId" placeholder="${tariffPlan.id}">--%>
                                 <%--<label for="freeLocksField">Change tariff</label>--%>
@@ -95,6 +97,9 @@
 </a>
 </body>
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#optionsTable').DataTable();
+    });
     function chooseTariff(id) {
         var tariffUrl = "${rootUrl}/rest/tariffs/" + id;
         $('#optionsTable').DataTable({

@@ -17,7 +17,7 @@ public class CartHelper {
      * @return true if exist false if not
      */
     public boolean alreadyExist(Cart cart, CartItem cartItem){
-        switch (cartItem.getOperationType()){
+        switch (cartItem.getCartItemOperationType()){
             case SALE:
                 for (CartItem cartItem1: cart.getCartItems()){
                     if (cartItem.getCustomer().equals(cartItem1.getCustomer())
@@ -26,18 +26,21 @@ public class CartHelper {
                     }
                 }
                 break;
-            case SALE_TO_EXIST_PERSONAL_ACCOUNT:
+            case SALE_TO_EXIST_CUSTOMER:
                 for (CartItem cartItem1: cart.getCartItems()){
-                    if (cartItem.getPersonalAccountId() == cartItem1.getPersonalAccountId()
+                    if (cartItem.getCustomerId() == cartItem1.getCustomerId()
                             && cartItem.getPhoneNumberId() == cartItem1.getPhoneNumberId()) {
                         return true;
                     }
                 }
                 break;
-            case ADD_LOCK:
-                return lockConflict(cart, cartItem);
-            case REMOVE_LOCK:
-                return lockConflict(cart, cartItem);
+            case LOCK:
+                for (CartItem cartItem1: cart.getCartItems()){
+                    if (cartItem.getContractId() == cartItem1.getContractId()) {
+                        return true;
+                    }
+                }
+                break;
             case ADD_OPTION:
                 return optionConflict(cart, cartItem);
             case REMOVE_OPTION:
@@ -45,7 +48,7 @@ public class CartHelper {
             case CHANGE_TARIFF:
                 for (CartItem cartItem1: cart.getCartItems()){
                     if (cartItem.getTariffPlanId() == cartItem1.getTariffPlanId()
-                            && cartItem.getTerminalDeviceId() == cartItem1.getTerminalDeviceId()) {
+                            && cartItem.getContractId() == cartItem1.getContractId()) {
                         return true;
                     }
                 }
@@ -76,7 +79,7 @@ public class CartHelper {
     private boolean lockConflict(Cart cart, CartItem cartItem){
         for (CartItem cartItem1: cart.getCartItems()){
             if (cartItem.getLockId() == cartItem1.getLockId()
-                    && cartItem.getTerminalDeviceId() == cartItem1.getTerminalDeviceId()) {
+                    && cartItem.getContractId() == cartItem1.getContractId()) {
                 return true;
             }
         }
@@ -92,7 +95,7 @@ public class CartHelper {
     private boolean optionConflict(Cart cart, CartItem cartItem){
         for (CartItem cartItem1: cart.getCartItems()){
             if (cartItem.getOptionId() == cartItem1.getOptionId()
-                    && cartItem.getTerminalDeviceId() == cartItem1.getTerminalDeviceId()) {
+                    && cartItem.getContractId() == cartItem1.getContractId()) {
                 return true;
             }
         }

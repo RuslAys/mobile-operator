@@ -1,13 +1,13 @@
 package ru.javaschool.mobileoperator.domain.enums;
 
-public enum OperationType {
+public enum CartItemOperationType {
     SALE{
         @Override
         public String toString() {
             return "Sale";
         }
     },
-    SALE_TO_EXIST_PERSONAL_ACCOUNT{
+    SALE_TO_EXIST_CUSTOMER {
         @Override
         public String toString() {
             return "Sale to exist customer";
@@ -25,16 +25,10 @@ public enum OperationType {
             return "Remove option";
         }
     },
-    ADD_LOCK{
+    LOCK{
         @Override
         public String toString() {
             return "Add lock";
-        }
-    },
-    REMOVE_LOCK{
-        @Override
-        public String toString() {
-            return "Remove lock";
         }
     },
     CHANGE_TARIFF{

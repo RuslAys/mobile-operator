@@ -13,7 +13,7 @@
                 <ul class="list-group">
                     <c:forEach items="${cart.cartItems}" var="cartItem">
                             <li class="list-group-item">
-                                ${cartItem.operationType.toString()}
+                                ${cartItem.cartItemOperationType.toString()}
                                 <form name="confirm" action="cart/remove" method="post">
                                 <input type="hidden" class="form-control" name="itemId"
                                     id="itemField" value="${cartItem.id}" readonly/>

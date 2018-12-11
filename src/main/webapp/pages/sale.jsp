@@ -71,7 +71,7 @@
                                             <%--readonly/>--%>
                                     <%--</div>--%>
                                     <%--<div class="form-group">--%>
-                                        <%--<input type="hidden" class="form-control" name="personalAccountId"--%>
+                                        <%--<input type="hidden" class="form-control" name="customerId"--%>
                                             <%--id="personalAccountField" value="${terminalDevice.personalAccount.id}"--%>
                                             <%--readonly/>--%>
                                     <%--</div>--%>
