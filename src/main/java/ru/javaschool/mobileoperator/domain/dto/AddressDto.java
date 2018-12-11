@@ -37,4 +37,13 @@ public class AddressDto {
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
+
+    @Override
+    public String toString() {
+        return "AddressDto{" +
+                "city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                '}';
+    }
 }

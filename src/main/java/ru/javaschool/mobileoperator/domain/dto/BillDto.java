@@ -11,11 +11,12 @@ public class BillDto {
     private int balance;
     private int difference;
     private Date date;
+    private String operation;
 
     public BillDto() {
     }
 
-    public BillDto(long id, int balance, int difference, Date date) {
+    public BillDto(long id, int balance, int difference, Date date, String operation) {
         this.id = id;
         this.balance = balance;
         this.difference = difference;
@@ -68,5 +69,13 @@ public class BillDto {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }

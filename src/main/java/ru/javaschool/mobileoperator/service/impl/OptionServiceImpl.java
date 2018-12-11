@@ -184,15 +184,15 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeOptionFromContract(Long contractId, Long optionId) {
         Contract contract = contractDao.find(contractId);
-        if(!contract.isLocked()){
+        if(contract.isLocked()){
             throw new ContractException("Contract is locked");
-        }
-        if(contract.getTariffPlan().isArchival()){
-            throw new TariffPlanException("Current tariff plan is archival. Can not add options");
         }
         Option optionToDelete = optionDao.find(optionId);
 
-        if(optionHelper.existInclusiveConflicts(contract.getOptions(), optionToDelete)){
+        List<Option> options = new ArrayList<>();
+        options.add(optionToDelete);
+        Set<Option> check = optionHelper.getParentInclusiveOptionsOnContract(contract, options);
+        if(!check.isEmpty()){
             throw new IllegalArgumentException("Cannot delete option. It is required option");
         }
         optionHelper.removeOptionFromContract(contract, optionToDelete);

@@ -187,12 +187,14 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Difference</th>
+                                <th>Operation</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Date</th>
                                 <th>Difference</th>
+                                <th>Operation</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -233,7 +235,8 @@
                             + date.getHours() + ":" + date.getMinutes();
                     }
                 },
-                {data: "difference"}
+                {data: "difference"},
+                {data: "operation"}
             ]
         });
 

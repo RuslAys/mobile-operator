@@ -1,7 +1,12 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <body>
-    <h1>Cart</h1>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="${rootUrl}/">Profile</a>
+    </li>
+    <li class="breadcrumb-item active">Cart</li>
+</ol>
     <div class="container py-2">
         <div class = "row">
             <div class = "col">

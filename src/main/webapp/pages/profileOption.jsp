@@ -26,14 +26,14 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Price</th>
-                                <th>Remove</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Name</th>
                                 <th>Price</th>
-                                <th>Remove</th>
+                                <th>Action</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -47,8 +47,9 @@
                                                        value = "${contract.id}"id="contractId" placeholder="${contract.id}">
                                                 <input type="hidden" class="form-control" name="optionId"
                                                        value = "${option.id}"id="optionId" placeholder="${option.id}">
-                                            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
-                                            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
+                                            <button type="submit" name="confirm" class="btn btn-primary">Confirm removing</button>
+                                            <button type="submit" name="add_to_cart" class="btn btn-primary">Add removing to cart</button>
+                                            <button type="button" class="btn btn-primary" onclick="showOptionsToDelete(${option.id})">Show options</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -69,14 +70,14 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Price</th>
-                                <th>Add</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Name</th>
                                 <th>Price</th>
-                                <th>Add</th>
+                                <th>Action</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -90,8 +91,10 @@
                                                    value = "${contract.id}"id="freeOptionsContractId" placeholder="${contract.id}">
                                             <input type="hidden" class="form-control" name="optionId"
                                                    value = "${option.id}"id="freeOptionsOptionId" placeholder="${option.id}">
-                                            <button type="submit" name="confirm" class="btn btn-primary">Confirm</button>
-                                            <button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>
+                                            <button type="submit" name="confirm" class="btn btn-primary">Confirm adding</button>
+                                            <button type="submit" name="add_to_cart" class="btn btn-primary">Add adding to cart</button>
+                                            <button type="button" class="btn btn-primary" onclick="showOptionsToAdd(${option.id})">Show options</button>
+                                            <button type="button" class="btn btn-primary" onclick="showExclusiveOptions(${option.id})">Show ex options</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -168,4 +171,37 @@
         $('#optionsOnContractTable').DataTable();
         $('#availableOptions').DataTable();
     });
+
+    function showOptionsToDelete(id) {
+        var url = "${rootUrl}/rest/options/contract/inclusive/delete?contractId=" + ${contract.id} + "&optionIds=" + id;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function showOptionsToAdd(id) {
+        var url = "${rootUrl}/rest/options/contract/inclusive/add?contractId=" + ${contract.id} + "&optionIds=" + id;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function showExclusiveOptions(id) {
+        var url = "${rootUrl}/rest/options/contract/exclusive?contractId=" + ${contract.id} + "&optionIds=" + id;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
 </script>

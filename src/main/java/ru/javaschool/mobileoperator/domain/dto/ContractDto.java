@@ -102,4 +102,17 @@ public class ContractDto {
     public void setOptions(List<OptionDto> options) {
         this.options = options;
     }
+
+    @Override
+    public String toString() {
+        return "ContractDto{" +
+                "id=" + id +
+                ", balance=" + balance +
+                ", locked=" + locked +
+                ", lockedByUser=" + lockedByUser +
+                ", customer=" + customer +
+                ", phoneNumber=" + phoneNumber +
+                ", tariffPlan=" + tariffPlan +
+                '}';
+    }
 }

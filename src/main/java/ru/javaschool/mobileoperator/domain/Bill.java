@@ -26,6 +26,9 @@ public class Bill extends AbstractPO {
     @Column(name = "difference")
     private int difference;
 
+    @Column(name = "operation")
+    private String operation;
+
     public Date getDate() {
         return date;
     }
@@ -56,5 +59,13 @@ public class Bill extends AbstractPO {
 
     public void setDifference(int difference) {
         this.difference = difference;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }

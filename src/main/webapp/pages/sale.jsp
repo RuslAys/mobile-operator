@@ -129,7 +129,7 @@
                             $('#birthDateField').dateDropdowns({
                                 format: 'dd-mm-yyyy',
                                 minAge:14,
-                                required:true
+                                required:true,
                                 startDate: '-3d',
                                 uiLibrary: 'bootstrap4'
                             });
@@ -180,6 +180,10 @@
                 </form>
             </div>
         <%--</c:if>--%>
+    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -55,7 +55,8 @@ public class ProfileServiceImpl implements ProfileService {
         contract.getOptions().addAll(tariffPlan.getOptions());
         contract.setBalance(contract.getBalance() - tariffPlan.getPrice());
 
-        Bill bill = BillHelper.makeBill(contract, contract.getBalance(), -tariffPlan.getPrice());
+        Bill bill = BillHelper.makeBill(contract, contract.getBalance(),
+                -tariffPlan.getPrice(), "Change tariff plan");
         contract.getBills().add(bill);
         contractDao.update(contract);
     }

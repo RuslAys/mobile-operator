@@ -49,4 +49,13 @@ public class PhoneNumberDto {
     public void setContract(ContractDto contract) {
         this.contract = contract;
     }
+
+    @Override
+    public String toString() {
+        return "PhoneNumberDto{" +
+                "id=" + id +
+                ", number=" + number +
+                ", contract=" + contract +
+                '}';
+    }
 }

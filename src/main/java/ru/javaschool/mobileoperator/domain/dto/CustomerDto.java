@@ -119,4 +119,17 @@ public class CustomerDto {
     public void setAddress(AddressDto address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "id=" + id +
+                ", address=" + address +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", email='" + email + '\'' +
+                ", passport='" + passport + '\'' +
+                '}';
+    }
 }
