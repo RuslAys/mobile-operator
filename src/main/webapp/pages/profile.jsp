@@ -18,7 +18,7 @@
         <hr class="">
         <div class="container target">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <h2 class="">${contract.phoneNumber.number}</h2>
                 </div>
                 <form class="form" role="form" id="formLock" action="${rootUrl}/profile/${contract.phoneNumber.number}/lock" method="post">
@@ -125,7 +125,7 @@
                         </c:if>
                     </div>
                     <div class="row">
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <div class="card mb-10">
                                 <div class="card-header">
                                     <i class="fas fa-table"></i>
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <security:authorize access="hasRole('ROLE_OPERATOR')">
-                            <div class = "col-sm-4">
+                            <div class = "col-sm-3">
                                 <ul class="list-group">
                                     <c:forEach items="${anotherContracts}" var="cntr" varStatus="loop">
                                         <li class="list-group-item">

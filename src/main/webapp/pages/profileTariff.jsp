@@ -12,13 +12,13 @@
     <li class="breadcrumb-item active">Change tariff plan</li>
 </ol>
 <div class="content-wrapper">
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <div class="pricing-header px-2 py-2 pt-sm-2 pb-sm-3 mx-auto text-center">
         <h1 class="display-4">Current tariff plan: ${contract.tariffPlan.name}</h1>
     </div>
     <div class="container">
-        <div class="card-columns" >
+        <div class="card-columns" id="freeTariffs">
             <c:forEach items="${freeTariffs}" var="tariffPlan">
-                <div class="card shadow-sm p-2">
+                <div class="card shadow-sm p-2 col-sm-4 border-right">
                     <div class="card-header">
                         <h5 class="my-0 font-weight-bold">${tariffPlan.name}</h5>
                     </div>
@@ -96,9 +96,15 @@
     <i class="fas fa-angle-up"></i>
 </a>
 </body>
+<script src='<spring:url value="/resources/js/senzill-pagination.js"/>'></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#optionsTable').DataTable();
+        $(document).ready(function(){
+            $('#freeTariffs').senzill({
+                elPerPage: 3
+            });
+        });
     });
     function chooseTariff(id) {
         var tariffUrl = "${rootUrl}/rest/tariffs/" + id;
