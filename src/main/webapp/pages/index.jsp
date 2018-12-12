@@ -63,7 +63,7 @@
                                                 <c:forEach items="${customer.contracts}" var="contract">
                                                     <li class="list-group-item">
                                                         <a href="${rootUrl}/profile/${contract.phoneNumber.number}">${contract.phoneNumber.number}</a>
-                                                    <li class="list-group-item">
+                                                    </li>
                                                 </c:forEach>
                                             </ul>
                                         </td>

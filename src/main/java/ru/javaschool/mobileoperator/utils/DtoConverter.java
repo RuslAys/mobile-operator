@@ -214,8 +214,10 @@ public final class DtoConverter {
      * @return bill dto
      */
     public static BillDto billToBillDto(Bill bill){
-        return new BillDto(bill.getId(), toContractDtoWithoutLists(bill.getContract()),
+        BillDto dto = new BillDto(bill.getId(), toContractDtoWithoutLists(bill.getContract()),
                 bill.getBalance(), bill.getDifference(), bill.getDate());
+        dto.setOperation(bill.getOperation());
+        return dto;
     }
 
     /**

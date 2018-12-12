@@ -167,7 +167,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
             difference += option.getConnectionCost();
         }
         balance -= difference;
-        Bill bill = BillHelper.makeBill(contract, balance, -difference, "Add option");
+        Bill bill = BillHelper.makeBill(contract, balance, -difference, "Add option " + newOption.getName());
         contract.setBalance(balance);
         contract.getOptions().addAll(uniqueOptionsToAdd);
         contract.getBills().add(bill);

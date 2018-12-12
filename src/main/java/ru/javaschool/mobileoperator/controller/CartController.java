@@ -24,6 +24,9 @@ public class CartController {
     @Autowired
     private CartHelper cartHelper;
 
+    @Autowired
+    private Cart cart;
+
     /**
      * Get method for cart page
      * @param model ui model
@@ -33,32 +36,28 @@ public class CartController {
     @GetMapping
     public String cartPage(Model model,
                            HttpSession session){
-        model.addAttribute("cart", cartHelper.getCart(session));
+        model.addAttribute("cart", cart);
         return "cart";
     }
 
     /**
      * Post method for confirm items
-     * @param session http session
      * @return redirect to cart page {@link #cartPage(Model, HttpSession)}
      */
     @PostMapping("/confirm")
-    public String confirmItems(HttpSession session){
-        cartService.confirm(cartHelper.getCart(session));
+    public String confirmItems(){
+        cartService.confirm(cart);
         return "redirect:/cart";
     }
 
     /**
      * Post method for confirm items
-     * @param session http session
      * @return redirect to cart page {@link #cartPage(Model, HttpSession)}
      */
     @PostMapping("/remove")
-    public String removeItem(@RequestParam("itemId") Integer id,
-                             HttpSession session){
-        Cart cart = cartHelper.getCart(session);
+    public String removeItem(@RequestParam("itemId") Integer id){
         CartItem cartItem = cart.getCartItems().get(id);
-        cartService.removeItem(cartHelper.getCart(session), cartItem);
+        cartService.removeItem(cart, cartItem);
         return "redirect:/cart";
     }
 }

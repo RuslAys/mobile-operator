@@ -29,23 +29,26 @@ public class OptionController {
         return JsonConverter.toJsonString(optionService.getOptionWithoutLists(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_OPERATOR')")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     @GetMapping("/contract/inclusive/add")
-    public String inclusiveOptionsToAddOnContract(@RequestParam("contractId") long contractId,
+    public String inclusiveOptionsToAddOnContract(@PathVariable String username,
+                                                  @RequestParam("contractId") long contractId,
                                                   @RequestParam("optionIds") List<Long> optionIds){
         return JsonConverter.toJsonString(optionService.getChildInclusiveOptionsOnContract(contractId, optionIds));
     }
 
-    @PreAuthorize("hasRole('ROLE_OPERATOR')")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     @GetMapping("/contract/inclusive/delete")
-    public String inclusiveOptionsToDeleteOnContract(@RequestParam("contractId") long contractId,
+    public String inclusiveOptionsToDeleteOnContract(@PathVariable String username,
+                                                     @RequestParam("contractId") long contractId,
                                                      @RequestParam("optionIds") List<Long> optionIds){
         return JsonConverter.toJsonString(optionService.getParentInclusiveOptionsOnContract(contractId, optionIds));
     }
 
-    @PreAuthorize("hasRole('ROLE_OPERATOR')")
+    @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     @GetMapping("/contract/exclusive")
-    public String exclusiveOptionsOnContract(@RequestParam("contractId") long contractId,
+    public String exclusiveOptionsOnContract(@PathVariable String username,
+                                             @RequestParam("contractId") long contractId,
                                              @RequestParam("optionIds") List<Long> optionIds){
         return JsonConverter.toJsonString(optionService.getExclusiveOptionsOnContract(contractId, optionIds));
     }

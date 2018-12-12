@@ -80,4 +80,5 @@ public class User {
                 ", authorities=" + authorities +
                 '}';
     }
+//    $2a$10$n1UWdCNpY1HtMtmdAa.scuYg/1FBETF6oPK5PfSIDiWnJl2Vv2c7S
 }

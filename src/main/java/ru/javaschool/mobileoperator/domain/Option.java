@@ -37,20 +37,20 @@ public class Option extends AbstractPO {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "options_to_ex_options", joinColumns = { @JoinColumn(name = "parent_option_id")},
             inverseJoinColumns = { @JoinColumn(name = "child_option_id") })
+    @OrderColumn
     private List<Option> parentExclusive = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "options_to_in_options", joinColumns = { @JoinColumn(name = "parent_option_id") },
             inverseJoinColumns = { @JoinColumn(name = "child_option_id") })
+    @OrderColumn
     private List<Option> parentInclusive = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "parentExclusive")
-    @OrderColumn(name="orderIndex")
     private List<Option> exclusiveOptions = new ArrayList<>();
 
     @OrderBy("id")
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "parentInclusive")
-    @OrderColumn(name="orderIndex")
     private List<Option> inclusiveOptions = new ArrayList<>();
 
     public List<TariffPlan> getTariffPlans() {

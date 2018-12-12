@@ -62,8 +62,7 @@ public class OptionDaoImpl extends GenericDaoImpl<Option, Long>
     public Option findOptionWithListsById(Long optionId) {
         return (Option) currentSession()
                 .createQuery("SELECT o FROM Option o " +
-                        "LEFT JOIN FETCH o.inclusiveOptions LEFT JOIN FETCH o.parentInclusive " +
-                        "LEFT JOIN FETCH o.exclusiveOptions WHERE o.id = :id")
+                        "LEFT JOIN FETCH o.inclusiveOptions WHERE o.id = :id")
                 .setParameter("id", optionId).getSingleResult();
     }
 }

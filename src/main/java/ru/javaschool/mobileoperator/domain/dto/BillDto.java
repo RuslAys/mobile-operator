@@ -21,6 +21,7 @@ public class BillDto {
         this.balance = balance;
         this.difference = difference;
         this.date = date;
+        this.operation = operation;
     }
 
     public BillDto(long id, ContractDto contractDto, int balance, int difference, Date date) {

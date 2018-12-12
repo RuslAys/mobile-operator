@@ -14,7 +14,10 @@
     <li class="breadcrumb-item active">${option.name}</li>
 </ol>
 ${error}
+inclusive
 ${option.inclusiveOptions}
+exclusive
 ${option.exclusiveOptions}
+parent
 ${option.parentInclusive}
 </body>

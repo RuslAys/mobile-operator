@@ -35,7 +35,11 @@ public class GenericServiceImpl<E, K> implements GenericService<E, K> {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public E find(K id) {
-        return genericDao.find(id);
+        try{
+            return genericDao.find(id);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override

@@ -71,8 +71,7 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profilePage(Model model,
                               @PathVariable("username") String username,
-                              @AuthenticationPrincipal UserDetails user,
-                              HttpSession session){
+                              @AuthenticationPrincipal UserDetails user){
         ContractDto contract = contractService.getContractWithOptions(username);
         model.addAttribute("cart", cart);
         model.addAttribute("user", userService.getUser(username));
@@ -108,7 +107,6 @@ public class ProfileController {
      * @param username customer username
      * @param contractId contract id
      * @param newTariffId new tariff plan id
-     * @param session session
      * @return redirect to {@link #profileTariffPage(Model, String)}
      */
     @PostMapping(value = "/{username}/tariff/change" ,params = "add_to_cart")
@@ -116,10 +114,8 @@ public class ProfileController {
     public String changeTariff(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @RequestParam("newTariffId") Long newTariffId,
-                               HttpSession session){
+                               @RequestParam("newTariffId") Long newTariffId){
         cartActionService.changeTariffPlan(cart, contractId, newTariffId);
-//        profileService.changeTariff(contractId, newTariffId);
         model.addAttribute("cart", cart);
         return "redirect:/profile/" + username + "/tariff";
     }
@@ -129,9 +125,7 @@ public class ProfileController {
     public String changeTariffToCart(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @RequestParam("newTariffId") Long newTariffId,
-                               HttpSession session){
-//        profileService.changeTariff(contractId, newTariffId);
+                               @RequestParam("newTariffId") Long newTariffId){
         cartActionService.changeTariffPlan(cart, contractId, newTariffId);
         model.addAttribute("cart", cart);
         return "redirect:/cart";
@@ -166,10 +160,8 @@ public class ProfileController {
     public String addOption(Model model,
                             @PathVariable("username") String username,
                             @RequestParam("contractId") Long contractId,
-                            @RequestParam("optionId") Long optionId,
-                            HttpSession session){
+                            @RequestParam("optionId") Long optionId){
         cartActionService.addOption(cart, contractId, optionId);
-//        optionService.addOptionToContract(contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/cart";
     }
@@ -186,10 +178,8 @@ public class ProfileController {
     public String addOptionToCart(Model model,
                                   @PathVariable("username") String username,
                                   @RequestParam("contractId") Long contractId,
-                                  @RequestParam("optionId") Long optionId,
-                                  HttpSession session){
+                                  @RequestParam("optionId") Long optionId){
         cartActionService.addOption(cart, contractId, optionId);
-//        optionService.addOptionToContract(contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/profile/" + username + "/option";
     }
@@ -200,7 +190,6 @@ public class ProfileController {
      * @param username profile username
      * @param contractId contract id
      * @param optionId option id
-     * @param session http session
      * @return redirect to profile option management
      */
     @PostMapping(value = "/{username}/option/remove", params = "add_to_cart")
@@ -208,10 +197,8 @@ public class ProfileController {
     public String removeOption(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @RequestParam("optionId") Long optionId,
-                               HttpSession session){
+                               @RequestParam("optionId") Long optionId){
         cartActionService.removeOption(cart, contractId, optionId);
-//        optionService.addOptionToContract(contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/profile/" + username + "/option";
     }
@@ -222,7 +209,6 @@ public class ProfileController {
      * @param username profile username
      * @param contractId contract id
      * @param optionId option id
-     * @param session http session
      * @return redirect to cart page
      */
     @PostMapping(value = "/{username}/option/remove", params = "confirm")
@@ -230,9 +216,7 @@ public class ProfileController {
     public String removeOptionToCart(Model model,
                                      @PathVariable("username") String username,
                                      @RequestParam("contractId") Long contractId,
-                                     @RequestParam("optionId") Long optionId,
-                                     HttpSession session){
-//        optionService.removeOptionFromContract(contractId, optionId);
+                                     @RequestParam("optionId") Long optionId){
         cartActionService.removeOption(cart, contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/cart";
@@ -243,7 +227,6 @@ public class ProfileController {
      * @param model ui model
      * @param username profile username
      * @param contractId contract id
-     * @param session http session
      * @return redirect to profile
      */
     @PostMapping(value = "/{username}/lock", params = "add_to_cart")
@@ -251,9 +234,7 @@ public class ProfileController {
     public String lockContract(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @AuthenticationPrincipal UserDetails userDetails,
-                               HttpSession session){
-//        profileService.lockContract(contractId, userDetails);
+                               @AuthenticationPrincipal UserDetails userDetails){
         cartActionService.lockContract(cart, contractId, userDetails);
         model.addAttribute("cart", cart);
         return  "redirect:/profile/" + username;
@@ -264,7 +245,6 @@ public class ProfileController {
      * @param model ui model
      * @param username profile username
      * @param contractId contract id
-     * @param session http session
      * @return redirect to cart page
      */
     @PostMapping(value = "/{username}/lock", params = "confirm")
@@ -272,9 +252,7 @@ public class ProfileController {
     public String lockContractToCart(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @AuthenticationPrincipal UserDetails userDetails,
-                               HttpSession session){
-//        profileService.lockContract(contractId, userDetails);
+                               @AuthenticationPrincipal UserDetails userDetails){
         cartActionService.lockContract(cart, contractId, userDetails);
         model.addAttribute("cart", cart);
         return  "redirect:/cart";

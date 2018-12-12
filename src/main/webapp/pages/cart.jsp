@@ -13,8 +13,11 @@
                 <ul class="list-group">
                     <c:forEach items="${cart.cartItems}" var="cartItem">
                             <li class="list-group-item">
-                                ${cartItem.cartItemOperationType.toString()}
-                                <form name="confirm" action="cart/remove" method="post">
+                                <c:if test="${cartItem.cartItemOperationType != 'LOCK'}">
+                                    ${cartItem.cartItemOperationType.toString()}:
+                                </c:if>
+                                 ${cartItem.title}
+                                    <form name="confirm" action="cart/remove" method="post">
                                 <input type="hidden" class="form-control" name="itemId"
                                     id="itemField" value="${cartItem.id}" readonly/>
                                 <button type="submit" class="btn btn-primary">Remove</button>

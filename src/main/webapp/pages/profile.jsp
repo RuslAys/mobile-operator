@@ -218,7 +218,7 @@
 
 <script>
     $(document).ready(function() {
-        var billsUrl = "${rootUrl}/rest/bills?contractId=${contract.id}";
+        var billsUrl = "${rootUrl}/rest/bills/${contract.phoneNumber.number}?contractId=${contract.id}";
         $('#billsTable').DataTable({
             destroy:true,
             processing: true,
@@ -251,7 +251,7 @@
 </script>
 <script>
     $(document).ready(function(){
-        var billsUrl = "${rootUrl}/rest/bills?contractId=${contract.id}";
+        var billsUrl = "${rootUrl}/rest/bills/${contract.phoneNumber.number}?contractId=${contract.id}";
         $.ajax({
             type: 'GET',
             url: billsUrl,

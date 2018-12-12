@@ -222,11 +222,12 @@ public class AdminPanelController {
      */
     @GetMapping("/option/{optionId}")
     public String optionsEditor(@PathVariable Long optionId, Model model){
-//        OptionDto option = optionService.findOptionWithListsById(optionId);
-//        if(option == null){
-//            model.addAttribute("error", "not found");
-//        }
-        model.addAttribute("option", optionService.findOptionWithListsById(optionId));
+        OptionDto option = optionService.findOptionWithListsById(optionId);
+        if(option == null){
+            model.addAttribute("error", "not found");
+            return "optionEditor";
+        }
+        model.addAttribute("option", option);
         return "optionEditor";
     }
 

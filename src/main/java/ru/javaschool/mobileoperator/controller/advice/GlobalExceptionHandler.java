@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ContractException.class, OptionException.class,
-            PhoneNumberException.class, TariffPlanException.class, })
+            PhoneNumberException.class, TariffPlanException.class})
     public String handleBadRequestCustomErrors(Model model, HttpServletRequest request, Exception e){
         e.printStackTrace();
         model.addAttribute("info", e.getMessage());

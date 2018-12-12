@@ -9,6 +9,7 @@ import java.util.Objects;
 public class CartItem {
     private int id;
     private CartItemOperationType cartItemOperationType;
+    private String title;
     private long tariffPlanId;
     private long optionId;
     private long lockId;
@@ -31,6 +32,7 @@ public class CartItem {
         this.completed = builder.isCompleted();
         this.user = builder.getUserDetails();
         this.customerId = builder.getCustomerId();
+        this.title = builder.getTitle();
     }
 
     public int getId() {
@@ -119,6 +121,14 @@ public class CartItem {
 
     public void setCustomerId(long customerId) {
         this.customerId = customerId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

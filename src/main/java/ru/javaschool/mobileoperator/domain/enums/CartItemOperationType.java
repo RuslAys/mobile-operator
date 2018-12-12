@@ -28,7 +28,7 @@ public enum CartItemOperationType {
     LOCK{
         @Override
         public String toString() {
-            return "Add lock";
+            return "Lock";
         }
     },
     CHANGE_TARIFF{

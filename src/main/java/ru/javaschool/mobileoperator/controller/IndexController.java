@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.service.api.CustomerService;
 import ru.javaschool.mobileoperator.service.api.UserService;
@@ -29,7 +30,7 @@ public class IndexController {
     private UserService userService;
 
     @Autowired
-    private CartHelper cartHelper;
+    private Cart cart;
 
     @Autowired
     private CustomerService customerService;
@@ -41,11 +42,11 @@ public class IndexController {
      * @return if user redirect to profile, else show the search page
      */
     @GetMapping
-    public String index(Model model, @AuthenticationPrincipal UserDetails user, HttpSession session){
+    public String index(Model model, @AuthenticationPrincipal UserDetails user, HttpSession session) {
         if(roleHelper.isOnlyUser(user)){
             return "redirect:/profile/" + user.getUsername();
         }
-//        model.addAttribute("cart", cartHelper.getCart(session));
+        model.addAttribute("cart", cart);
         model.addAttribute("customers", customerService.getAll());
         return "index";
     }

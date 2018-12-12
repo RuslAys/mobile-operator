@@ -19,6 +19,7 @@ public class CartItemBuilder {
     private long phoneNumberId;
     private boolean completed;
     private long customerId;
+    private String title;
 
     private CartItemBuilder(Builder builder){
         this.id = builder.id;
@@ -32,6 +33,7 @@ public class CartItemBuilder {
         this.phoneNumberId = builder.phoneNumberId;
         this.completed = builder.completed;
         this.customerId = builder.customerId;
+        this.title = builder.title;
     }
 
     public static class Builder{
@@ -46,6 +48,7 @@ public class CartItemBuilder {
         private long phoneNumberId;
         private boolean completed;
         private long customerId;
+        private String title;
 
         public Builder(int id, CartItemOperationType cartItemOperationType){
             this.id = id;
@@ -107,6 +110,11 @@ public class CartItemBuilder {
             return this;
         }
 
+        public Builder setTitle(String title){
+            this.title = title;
+            return this;
+        }
+
         public CartItemBuilder build(){
             return new CartItemBuilder(this);
         }
@@ -154,5 +162,9 @@ public class CartItemBuilder {
 
     public long getCustomerId() {
         return customerId;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
