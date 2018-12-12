@@ -107,65 +107,106 @@
         </div>
     </div>
 </div>
-    <%--<div class="container py-4">--%>
-        <%--<div class="row">--%>
-            <%--<div class="col-md-12">--%>
-                <%--<div class="row">--%>
-                    <%--<div class="col-md-5 mx-auto">--%>
-                        <%--<form name="add-option" action="option/add" method="post">--%>
-                            <%--<div class="form-group">--%>
-                                <%--<input type="hidden" class="form-control" name="contractId"--%>
-                                    <%--value = "${terminalDevice.id}"id="contractId" placeholder="${terminalDevice.id}">--%>
-                                <%--<input type="hidden" class="form-control" name="username"--%>
-                                    <%--value = "${terminalDevice.phoneNumber.number}"id="phoneNumber" placeholder="${terminalDevice.phoneNumber.number}">--%>
-                                <%--<label for="freeOptionsField">Add option</label>--%>
-                                <%--<select class="form-control" id="freeOptionsField"--%>
-                                    <%--name="optionId">--%>
-                                    <%--<c:forEach items="${freeOptions}" var="option">--%>
-                                        <%--<option value="${option.id}"> <c:out value="${option.name} Price: ${option.price} Connection cost ${option.connectionCost}"/> </option>--%>
-                                    <%--</c:forEach>--%>
-                                <%--</select>--%>
-                             <%--</div>--%>
-                            <%--<button type="submit" name="confirm" class="btn btn-primary">Confirm</button>--%>
-                            <%--<button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>--%>
-                        <%--</form>--%>
-                    <%--</div>--%>
-
-    <%--&lt;%&ndash;<div class="container py-4">&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
-            <%--&lt;%&ndash;<div class="col-md-12">&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<div class="col-md-5 mx-auto">&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<form name="remove-option" action="option/remove" method="post">&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;<div class="form-group">&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<input type="hidden" class="form-control" name="contractId"&ndash;%&gt;--%>
-                                            <%--&lt;%&ndash;value = "${terminalDevice.id}"id="contractId" placeholder="${terminalDevice.id}">&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<label for="optionsField">Delete option</label>&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<select class="form-control" id="optionsField"&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;name="optionId">&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;<c:forEach items="${options}" var="option">&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="${option.id}"> <c:out value="${option.name} Price: ${option.price}"/> </option>&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;</c:forEach>&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;</select>&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;<button type="submit" name="confirm" class="btn btn-primary">Confirm</button>&ndash;%&gt;--%>
-                            <%--&lt;%&ndash;<button type="submit" name="add_to_cart" class="btn btn-primary">Add to cart</button>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;</form>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
+<!-- Modal to add -->
+<div class="modal fade" id="modalToAddOption" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Actions</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBodyToAddOption">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalToRemoveOption" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Actions</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBodyToRemoveOption">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
+
+<script>
+    function createFormToAdd(id, body) {
+        var url = '${rootUrl}/profile/${contract.phoneNumber.number}/option/add';
+        createForm(url, id, body);
+    }
+
+    function createFormToRemove(id, body){
+        var url = '${rootUrl}/profile/${contract.phoneNumber.number}/option/remove';
+        createForm(url, id, body);
+    }
+
+    function createForm(url, id, body) {
+        var form = document.createElement('form');
+        form.setAttribute('action', url);
+        form.setAttribute('method', 'post');
+
+        console.log(form);
+
+        var contractInput = document.createElement('input');
+        contractInput.setAttribute('type', 'hidden');
+        contractInput.setAttribute('name', 'contractId');
+        contractInput.setAttribute('value', '${contract.id}');
+        contractInput.setAttribute('placeholder', '${contract.id}');
+
+        var optionInput = document.createElement('input');
+        optionInput.setAttribute('type', 'hidden');
+        optionInput.setAttribute('name', 'optionId');
+        optionInput.setAttribute('value', id);
+        optionInput.setAttribute('placeholder', id);
+
+        var bConfirm = document.createElement('button');
+        bConfirm.setAttribute('type', 'submit');
+        bConfirm.setAttribute('content', 'test content');
+        bConfirm.setAttribute('class', 'btn btn-primary mr-3');
+        bConfirm.setAttribute('name', 'confirm');
+        bConfirm.innerHTML = 'Confirm';
+
+        var bAddToCart = document.createElement('button');
+        bAddToCart.setAttribute('content', 'test content');
+        bAddToCart.setAttribute('type', 'submit');
+        bAddToCart.setAttribute('class', 'btn btn-primary');
+        bAddToCart.setAttribute('name', 'add_to_cart');
+        bAddToCart.innerHTML = 'Add to cart';
+
+        form.appendChild(bConfirm);
+        form.appendChild(bAddToCart);
+        form.appendChild(contractInput);
+        form.appendChild(optionInput);
+
+        var wrapper = document.getElementById(body);
+        wrapper.appendChild(form);
+    }
+</script>
+
 <script>
     $(document).ready(function() {
         $('#optionsOnContractTable').DataTable();
@@ -173,29 +214,33 @@
     });
 
     function showOptionsToDelete(id) {
-        var url = "${rootUrl}/rest/options/contract/inclusive/delete?contractId=" + ${contract.id} + "&optionIds=" + id;
+        var url = "${rootUrl}/rest/options/${contract.phoneNumber.number}/contract/inclusive/delete?contractId=" + ${contract.id} + "&optionIds=" + id;
         $.ajax({
             url: url,
             type: "GET",
             success: function (data) {
                 console.log(data);
+                createFormToRemove(id, 'modalBodyToRemoveOption');
             }
         });
+        $("#modalToRemoveOption").modal();
     }
 
     function showOptionsToAdd(id) {
-        var url = "${rootUrl}/rest/options/contract/inclusive/add?contractId=" + ${contract.id} + "&optionIds=" + id;
+        var url = "${rootUrl}/rest/options/${contract.phoneNumber.number}/contract/inclusive/add?contractId=" + ${contract.id} + "&optionIds=" + id;
         $.ajax({
             url: url,
             type: "GET",
             success: function (data) {
                 console.log(data);
+                createFormToAdd(id, 'modalBodyToAddOption');
             }
         });
+        $("#modalToAddOption").modal();
     }
 
     function showExclusiveOptions(id) {
-        var url = "${rootUrl}/rest/options/contract/exclusive?contractId=" + ${contract.id} + "&optionIds=" + id;
+        var url = "${rootUrl}/rest/options/${contract.phoneNumber.number}/contract/exclusive?contractId=" + ${contract.id} + "&optionIds=" + id;
         $.ajax({
             url: url,
             type: "GET",

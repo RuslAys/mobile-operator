@@ -166,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card mb-3 border-top">
+            <div class="card mb-3 mt-3">
                 <div class="card-header">
                     <i class="fas fa-chart-area"></i>
                     Chart of account changes
