@@ -47,9 +47,7 @@
                                                        value = "${contract.id}"id="contractId" placeholder="${contract.id}">
                                                 <input type="hidden" class="form-control" name="optionId"
                                                        value = "${option.id}"id="optionId" placeholder="${option.id}">
-                                            <button type="submit" name="confirm" class="btn btn-primary">Confirm removing</button>
-                                            <button type="submit" name="add_to_cart" class="btn btn-primary">Add removing to cart</button>
-                                            <button type="button" class="btn btn-primary" onclick="showOptionsToDelete(${option.id})">Show options</button>
+                                            <button type="button" class="btn btn-primary" onclick="showOptionsToDelete(${option.id}, '${option.name}')">Remove</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -91,10 +89,7 @@
                                                    value = "${contract.id}"id="freeOptionsContractId" placeholder="${contract.id}">
                                             <input type="hidden" class="form-control" name="optionId"
                                                    value = "${option.id}"id="freeOptionsOptionId" placeholder="${option.id}">
-                                            <button type="submit" name="confirm" class="btn btn-primary">Confirm adding</button>
-                                            <button type="submit" name="add_to_cart" class="btn btn-primary">Add adding to cart</button>
-                                            <button type="button" class="btn btn-primary" onclick="showOptionsToAdd(${option.id})">Show options</button>
-                                            <button type="button" class="btn btn-primary" onclick="showExclusiveOptions(${option.id})">Show ex options</button>
+                                            <button type="button" class="btn btn-primary" onclick="showOptionsToAdd(${option.id}, '${option.name}')">Add</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -114,7 +109,7 @@
 </a>
 
 <!-- Modal to add -->
-<div class="modal fade" id="modalToAddOption" role="dialog">
+<div class="modal fade" id="modal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -122,27 +117,7 @@
                 <h4 class="modal-title">Actions</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body" id="modalBodyToAddOption">
-                <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalToRemoveOption" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Actions</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBodyToRemoveOption">
-                <p>Some text in the modal.</p>
+            <div class="modal-body" id="modalBody">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -186,14 +161,14 @@
         var bConfirm = document.createElement('button');
         bConfirm.setAttribute('type', 'submit');
         bConfirm.setAttribute('content', 'test content');
-        bConfirm.setAttribute('class', 'btn btn-primary mr-3');
+        bConfirm.setAttribute('class', 'btn btn-primary mr-3 mt-1');
         bConfirm.setAttribute('name', 'confirm');
         bConfirm.innerHTML = 'Confirm';
 
         var bAddToCart = document.createElement('button');
         bAddToCart.setAttribute('content', 'test content');
         bAddToCart.setAttribute('type', 'submit');
-        bAddToCart.setAttribute('class', 'btn btn-primary');
+        bAddToCart.setAttribute('class', 'btn btn-primary mt-1');
         bAddToCart.setAttribute('name', 'add_to_cart');
         bAddToCart.innerHTML = 'Add to cart';
 
@@ -208,44 +183,134 @@
 </script>
 
 <script>
+    function fillListToDelete(body, data) {
+        console.log('call fillListToDelete');
+        var list = document.createElement('ul');
+        list.setAttribute('class', 'list-group');
+
+        var header = document.createElement('li');
+        header.setAttribute('class', 'list-group-item text-muted');
+        header.setAttribute('contenteditable', 'false');
+        header.innerHTML="Following options will be deleted";
+
+        list.appendChild(header);
+
+        for (var i = 0; i < data.length; i++) {
+            var option = data[i];
+            var element = document.createElement('li');
+            element.setAttribute('class', 'list-group-item');
+            element.innerHTML=option.name;
+            list.appendChild(element);
+        }
+
+        var wrapper = document.getElementById(body);
+        wrapper.appendChild(list);
+    }
+
+    function fillListToAdd(body, data) {
+        var list = document.createElement('ul');
+        list.setAttribute('class', 'list-group');
+
+        var header = document.createElement('li');
+        header.setAttribute('class', 'list-group-item text-muted');
+        header.setAttribute('contenteditable', 'false');
+        header.innerHTML="Following options will be added";
+
+        list.appendChild(header);
+
+        for (var i = 0; i < data.length; i++) {
+            var option = data[i];
+            var element = document.createElement('li');
+            element.setAttribute('class', 'list-group-item');
+            element.innerHTML=option.name;
+            list.appendChild(element);
+        }
+
+        var wrapper = document.getElementById(body);
+        wrapper.appendChild(list);
+    }
+
+    function createTextWithAdding(body, name) {
+        var p = document.createElement('p');
+        p.innerHTML = "Following option will be added: " + name;
+
+        var wrapper = document.getElementById(body);
+        wrapper.appendChild(p);
+    }
+
+    function createTextWithRemoving(body, name) {
+        var p = document.createElement('p');
+        p.innerHTML = "Following option will be deleted: " + name;
+
+        var wrapper = document.getElementById(body);
+        wrapper.appendChild(p);
+    }
+</script>
+
+<script>
     $(document).ready(function() {
         $('#optionsOnContractTable').DataTable();
         $('#availableOptions').DataTable();
     });
 
-    function showOptionsToDelete(id) {
+    var modalId = "#modal";
+    var bodyName = 'modalBody';
+
+    function showOptionsToDelete(id, optionName) {
         var url = "${rootUrl}/rest/options/${contract.phoneNumber.number}/contract/inclusive/delete?contractId=" + ${contract.id} + "&optionIds=" + id;
         $.ajax({
             url: url,
             type: "GET",
             success: function (data) {
-                console.log(data);
-                createFormToRemove(id, 'modalBodyToRemoveOption');
+                var json = JSON.parse(data);
+
+                // var bodyName = 'modalBody';
+                var body = document.getElementById(bodyName).innerText="";
+
+                createTextWithRemoving(bodyName, optionName);
+                if(json != null && json.length != 0){
+                    fillListToDelete(bodyName, json);
+                    createFormToRemove(id, bodyName);
+                }
             }
         });
-        $("#modalToRemoveOption").modal();
+        $(modalId).modal();
     }
 
-    function showOptionsToAdd(id) {
+    function showOptionsToAdd(id, optionName) {
         var url = "${rootUrl}/rest/options/${contract.phoneNumber.number}/contract/inclusive/add?contractId=" + ${contract.id} + "&optionIds=" + id;
         $.ajax({
             url: url,
             type: "GET",
             success: function (data) {
-                console.log(data);
-                createFormToAdd(id, 'modalBodyToAddOption');
+                var json = JSON.parse(data);
+                console.log(json);
+
+                // var bodyName = 'modalBody';
+                var body = document.getElementById(bodyName).innerText="";
+
+                createTextWithAdding(bodyName, optionName);
+                if(json != null && json.length != 0){
+                    fillListToAdd(bodyName, json);
+                }
+                showExclusiveOptions(id, optionName);
             }
         });
-        $("#modalToAddOption").modal();
+        $(modalId).modal();
     }
 
-    function showExclusiveOptions(id) {
+    function showExclusiveOptions(id, optionName) {
         var url = "${rootUrl}/rest/options/${contract.phoneNumber.number}/contract/exclusive?contractId=" + ${contract.id} + "&optionIds=" + id;
         $.ajax({
             url: url,
             type: "GET",
             success: function (data) {
-                console.log(data);
+                var json = JSON.parse(data);
+
+                if(json != null && json.length != 0){
+                    fillListToDelete(bodyName, json);
+                }
+                createFormToAdd(id, bodyName);
             }
         });
     }
