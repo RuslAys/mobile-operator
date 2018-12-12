@@ -90,27 +90,44 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     public void addOptionToTariff(Long tariffId, Long optionId) {
         TariffPlan tariffPlan = tariffDao.find(tariffId);
         Option newOption = optionDao.find(optionId);
-        List<Option> tdOptions = tariffPlan.getOptions();
+
         List<Option> optionsToAdd = new ArrayList<>();
 
+        optionsToAdd.add(newOption);
+
         // Find options to add
-        optionsToAdd = optionHelper.getAllOptions(newOption, optionsToAdd);
+        Set<Option> uniqueOptionsToAdd = optionHelper.getChildInclusiveOptionsOnTariffPlan(tariffPlan, optionsToAdd);
+        uniqueOptionsToAdd.add(newOption);
 
         // Find options to delete
-        List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
-        if(!exclusiveOptions.isEmpty()){
-            List<Option> optionToDelete = new ArrayList<>();
-            optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
-            optionHelper.removeOptionsFromTariff(tariffPlan, optionToDelete);
-            optionToDelete.forEach(
-                    option -> optionDao.update(option)
-            );
+        Set<Option> uniqueOptionsToDelete = optionHelper.getExclusiveOptionsOnTariffPlan(tariffPlan, optionsToAdd);
+
+        if(!uniqueOptionsToDelete.isEmpty()){
+            List<Option> optionsToDelete = new ArrayList<>(uniqueOptionsToDelete);
+            optionHelper.removeOptionsFromTariff(tariffPlan, optionsToDelete);
         }
-        tariffPlan.getOptions().addAll(optionsToAdd);
-        List<Option> withoutDuplicates = new ArrayList<>(
-                new HashSet<>(tariffPlan.getOptions())
-        );
-        tariffPlan.setOptions(withoutDuplicates);
+
+//        List<Option> tdOptions = tariffPlan.getOptions();
+//        List<Option> optionsToAdd = new ArrayList<>();
+//
+//        // Find options to add
+//        optionsToAdd = optionHelper.getAllOptions(newOption, optionsToAdd);
+//
+//        // Find options to delete
+//        List<Option> exclusiveOptions = optionHelper.getExclusiveOptions(tdOptions, optionsToAdd);
+//        if(!exclusiveOptions.isEmpty()){
+//            List<Option> optionToDelete = new ArrayList<>();
+//            optionToDelete = optionHelper.getAllOptionsWithInclusiveParents(exclusiveOptions, optionToDelete);
+//            optionHelper.removeOptionsFromTariff(tariffPlan, optionToDelete);
+//            optionToDelete.forEach(
+//                    option -> optionDao.update(option)
+//            );
+//        }
+//        tariffPlan.getOptions().addAll(optionsToAdd);
+//        List<Option> withoutDuplicates = new ArrayList<>(
+//                new HashSet<>(tariffPlan.getOptions())
+//        );
+        tariffPlan.getOptions().addAll(uniqueOptionsToAdd);
         tariffDao.update(tariffPlan);
     }
 

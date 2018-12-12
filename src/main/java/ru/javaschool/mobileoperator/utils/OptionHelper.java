@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.utils;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
@@ -13,6 +15,8 @@ import java.util.Set;
 /**
  * Util class with methods for options
  */
+@Component
+@Scope("singleton")
 public class OptionHelper {
     /**
      * Method to check conflicts with exclusive options in specified list
@@ -200,6 +204,38 @@ public class OptionHelper {
             return new HashSet<>();
         }
         uniqueOptions.removeIf(option -> contract.getOptions().contains(option));
+        return uniqueOptions;
+    }
+
+    public Set<Option> getExclusiveOptionsOnTariffPlan(TariffPlan tariffPlan, List<Option> options){
+        Set<Option> uniqueOptions = new HashSet<>();
+        options.forEach(option -> uniqueOptions.addAll(option.getParentExclusive()));
+        if(uniqueOptions.isEmpty()){
+            return new HashSet<>();
+        }
+        uniqueOptions.removeIf(option -> !tariffPlan.getOptions().contains(option));
+        Set<Option> result = getParentInclusiveOptionsOnTariffPlan(tariffPlan, new ArrayList<>(uniqueOptions));
+        result.addAll(uniqueOptions);
+        return result;
+    }
+
+    public Set<Option> getParentInclusiveOptionsOnTariffPlan(TariffPlan tariffPlan, List<Option> options){
+        Set<Option> uniqueOptions = new HashSet<>();
+        options.forEach(option -> uniqueOptions.addAll(option.getParentInclusive()));
+        if(uniqueOptions.isEmpty()){
+            return new HashSet<>();
+        }
+        uniqueOptions.removeIf(option -> !tariffPlan.getOptions().contains(option));
+        return uniqueOptions;
+    }
+
+    public Set<Option> getChildInclusiveOptionsOnTariffPlan(TariffPlan tariffPlan, List<Option> options){
+        Set<Option> uniqueOptions = new HashSet<>();
+        options.forEach(option -> uniqueOptions.addAll(option.getInclusiveOptions()));
+        if(uniqueOptions.isEmpty()){
+            return new HashSet<>();
+        }
+        uniqueOptions.removeIf(option -> tariffPlan.getOptions().contains(option));
         return uniqueOptions;
     }
 }

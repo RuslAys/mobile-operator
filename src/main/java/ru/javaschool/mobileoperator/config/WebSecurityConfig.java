@@ -20,7 +20,7 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
  */
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = {"ru.javaschool.mobileoperator.service"})
+@ComponentScan(basePackages = {"ru.javaschool.mobileoperator"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -29,21 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public RoleHelper roleHelper(){
-        return new RoleHelper();
-    }
-
-    @Bean
-    public OptionHelper optionHelper(){
-        return new OptionHelper();
-    }
-
-    @Bean
-    public CartHelper cartHelper(){
-        return new CartHelper();
     }
 
     @Override

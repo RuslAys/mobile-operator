@@ -1,5 +1,7 @@
 package ru.javaschool.mobileoperator.utils;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
 
@@ -8,6 +10,8 @@ import javax.servlet.http.HttpSession;
 /**
  * Class with util methods to user cart
  */
+@Component
+@Scope("singleton")
 public class CartHelper {
 
     /**

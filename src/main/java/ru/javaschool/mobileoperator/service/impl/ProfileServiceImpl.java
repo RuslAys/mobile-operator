@@ -22,8 +22,6 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
 @Service("profileService")
 public class ProfileServiceImpl implements ProfileService {
 
-
-
     @Autowired
     private TariffDao tariffDao;
 

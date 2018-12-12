@@ -1,7 +1,9 @@
 package ru.javaschool.mobileoperator.utils;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import ru.javaschool.mobileoperator.domain.Authority;
 import ru.javaschool.mobileoperator.domain.User;
 import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
@@ -9,6 +11,8 @@ import ru.javaschool.mobileoperator.domain.enums.UserRoleEnum;
 /**
  * Util class with method for roles
  */
+@Component
+@Scope("singleton")
 public class RoleHelper {
     /**
      * Method to check if user has only user role
