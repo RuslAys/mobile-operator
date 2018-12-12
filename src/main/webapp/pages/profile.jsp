@@ -166,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card mb-3">
+            <div class="card mb-3 border-top">
                 <div class="card-header">
                     <i class="fas fa-chart-area"></i>
                     Chart of account changes
@@ -232,8 +232,9 @@
                     render: function (data) {
                         var date = new Date(data);
                         var month = date.getMonth() + 1;
+                        var zero = ((date.getMinutes() < 10) ? "0" : "");
                         return date.getDate() + "/" + month + "/" + date.getFullYear() + " "
-                            + date.getHours() + ":" + date.getMinutes();
+                            + date.getHours() + ":" + zero +date.getMinutes();
                     }
                 },
                 {data: "difference"},
@@ -243,8 +244,9 @@
 
         var date = new Date();
         var month = date.getMonth() + 1;
+        var zero = ((date.getMinutes() < 10) ? "0" : "");
         $("#billsTableDate").html("Updated: " + date.getDate() + "/" + month + "/" + date.getFullYear() + " "
-            + date.getHours() + ":" + date.getMinutes());
+            + date.getHours() + ":" + zero + date.getMinutes());
 
         $('#optionsTable').DataTable();
     });
@@ -264,8 +266,9 @@
                 for(var i = 0; i < bills.length; i++){
                     var billDate = new Date(bills[i].date);
                     var month = billDate.getMonth() + 1;
+                    var zero = ((billDate.getMinutes() < 10) ? "0" : "");
                     var stringDate = billDate.getDate() + "/" + month + "/" + billDate.getFullYear() + " "
-                    + billDate.getHours() + ":" + billDate.getMinutes();
+                    + billDate.getHours() + ":" + zero + billDate.getMinutes();
                     pos.push({
                         key: stringDate,
                         value: bills[i].balance,
@@ -334,7 +337,8 @@
 
     var date = new Date();
     var month = date.getMonth() + 1;
+    var zero = ((date.getMinutes() < 10) ? "0" : "");
     $("#balanceChartDate").html("Updated: " + date.getDate() + "/" + month + "/" + date.getFullYear() + " "
-        + date.getHours() + ":" + date.getMinutes());
+        + date.getHours() + ":" + zero + date.getMinutes());
 </script>
 </html>

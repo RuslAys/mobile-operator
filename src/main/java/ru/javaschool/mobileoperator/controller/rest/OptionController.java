@@ -30,7 +30,7 @@ public class OptionController {
     }
 
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    @GetMapping("/contract/inclusive/add")
+    @GetMapping("{username}/contract/inclusive/add")
     public String inclusiveOptionsToAddOnContract(@PathVariable String username,
                                                   @RequestParam("contractId") long contractId,
                                                   @RequestParam("optionIds") List<Long> optionIds) {
@@ -38,7 +38,7 @@ public class OptionController {
     }
 
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    @GetMapping("/contract/inclusive/delete")
+    @GetMapping("{username}/contract/inclusive/delete")
     public String inclusiveOptionsToDeleteOnContract(@PathVariable String username,
                                                      @RequestParam("contractId") long contractId,
                                                      @RequestParam("optionIds") List<Long> optionIds) {
@@ -46,7 +46,7 @@ public class OptionController {
     }
 
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    @GetMapping("/contract/exclusive")
+    @GetMapping("{username}/contract/exclusive")
     public String exclusiveOptionsOnContract(@PathVariable String username,
                                              @RequestParam("contractId") long contractId,
                                              @RequestParam("optionIds") List<Long> optionIds) {
