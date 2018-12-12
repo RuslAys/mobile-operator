@@ -1,5 +1,6 @@
 package ru.javaschool.mobileoperator.controller.advice;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,19 +15,19 @@ import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = Logger.getLogger(GlobalExceptionHandler.class);
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     public String handleInternalServerError(Exception e) {
-        e.printStackTrace();
+        log.error(e);
         return "errors/internal_error";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({RuntimeException.class})
     public String handleBadRequest(Model model, Exception e) {
-        e.printStackTrace();
-        model.addAttribute("info", e.getMessage());
+        log.error(e);
         return "errors/bad_request";
     }
 
@@ -34,17 +35,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ContractException.class, OptionException.class,
             PhoneNumberException.class, TariffPlanException.class})
     public String handleBadRequestCustomErrors(Model model, Exception e) {
-        e.printStackTrace();
-        model.addAttribute("info", e.getMessage());
-//        logger.error(e.getMessage());
+        log.error(e);
         return "errors/bad_request";
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFoundException(Model model, Exception e) {
-        e.printStackTrace();
-//        logger.error(e.getMessage());
+        log.error(e);
         return "errors/not_found";
     }
 }

@@ -1,101 +1,112 @@
 package ru.javaschool.mobileoperator.aspects;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+@Component
 @Aspect
 public class LoggingAspect {
 
-    Logger log = LogManager.getLogger(LoggingAspect.class);
+    private static final Logger log = Logger.getLogger(LoggingAspect.class);
 
-    @Around("execution (* ru.javaschool.mobileoperator.controller..*.*(..))")
-    public Object logAroundController(ProceedingJoinPoint joinPoint) throws Throwable{
+    @Pointcut("execution (* ru.javaschool.mobileoperator.controller..*.*(..))")
+    private void controllers(){};
+
+    @Pointcut("execution (* ru.javaschool.mobileoperator.service..*.*(..))")
+    private void services(){};
+
+    @Pointcut("execution (* ru.javaschool.mobileoperator.repository..*.*(..))")
+    private void repositories(){};
+
+    @Around("controllers() || services() || repositories()")
+    public Object logMvc(ProceedingJoinPoint joinPoint) throws Throwable{
         try {
             String className = joinPoint.getSignature().getDeclaringTypeName();
             String methodName = joinPoint.getSignature().getName();
             String args = Arrays.toString(joinPoint.getArgs());
             log.debug("Method " + className + "." + methodName + "(" + args + ")");
             Object result = joinPoint.proceed();
-            if(result == null){
-                return new Object();
+            if(result != null){
+                log.debug("Method " + className + "." + methodName + "(" + args + ")"+
+                        " returns " + result.toString());
+                return result;
             }
-            log.debug("Method " + className + "." + methodName + "(" + args + ")"+
-                    " returns " + result.toString() + " page");
-            return result;
         }catch (RuntimeException e){
             log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
                      joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
             throw e;
         }
-    }
-
-    @Around("execution (* ru.javaschool.mobileoperator.service.impl..*.*(..))")
-    public Object logAroundService(ProceedingJoinPoint joinPoint) throws Throwable{
-        try {
-            String className = joinPoint.getSignature().getDeclaringTypeName();
-            String methodName = joinPoint.getSignature().getName();
-            String args = Arrays.toString(joinPoint.getArgs());
-            log.debug("Method " + className + "." + methodName + "(" + args + ")");
-            Object result = joinPoint.proceed();
-            if(result != null){
-                log.debug("Method " + className + "." + methodName + "(" + args + ")"+
-                        " returns " + result.toString());
-                return result;
-            }
-
-        }catch (RuntimeException e){
-            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
-            throw e;
-        }
         return new Object();
     }
 
-    @Around("execution (* ru.javaschool.mobileoperator.repository..*.*(..))")
-    public Object logAroundDao(ProceedingJoinPoint joinPoint) throws Throwable{
-        try {
-            String className = joinPoint.getSignature().getDeclaringTypeName();
-            String methodName = joinPoint.getSignature().getName();
-            String args = Arrays.toString(joinPoint.getArgs());
-            log.debug("Method " + className + "." + methodName + "(" + args + ")");
-            Object result = joinPoint.proceed();
-            if(result != null){
-                log.debug("Return " + result.toString());
-                return result;
-            }
-        }catch (RuntimeException e){
-            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
-            throw e;
-        }
-        return new Object();
-    }
-
-    @Around("execution (* ru.javaschool.mobileoperator.utils..*.*(..))")
-    public Object logAroundUtils(ProceedingJoinPoint joinPoint) throws Throwable{
-        try {
-            String className = joinPoint.getSignature().getDeclaringTypeName();
-            String methodName = joinPoint.getSignature().getName();
-            String args = Arrays.toString(joinPoint.getArgs());
-            log.debug("Method " + className + "." + methodName + "(" + args + ")");
-            Object result = joinPoint.proceed();
-            if(result != null){
-                log.debug("Method " + className + "." + methodName + "(" + args + ")"+
-                        " returns " + result.toString());
-                return result;
-            }
-        }catch (RuntimeException e){
-            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
-                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
-            throw e;
-        }
-        return new Object();
-    }
+//    @Around("execution (* ru.javaschool.mobileoperator.service.impl..*.*(..))")
+//    public Object logAroundService(ProceedingJoinPoint joinPoint) throws Throwable{
+//        try {
+//            String className = joinPoint.getSignature().getDeclaringTypeName();
+//            String methodName = joinPoint.getSignature().getName();
+//            String args = Arrays.toString(joinPoint.getArgs());
+//            log.debug(METHOD + className + "." + methodName + "(" + args + ")");
+//            Object result = joinPoint.proceed();
+//            if(result != null){
+//                log.debug(METHOD + className + "." + methodName + "(" + args + ")"+
+//                        RETURNS + result.toString());
+//                return result;
+//            }
+//
+//        }catch (RuntimeException e){
+//            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
+//                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
+//            throw e;
+//        }
+//        return new Object();
+//    }
+//
+//    @Around("execution (* ru.javaschool.mobileoperator.repository..*.*(..))")
+//    public Object logAroundDao(ProceedingJoinPoint joinPoint) throws Throwable{
+//        try {
+//            String className = joinPoint.getSignature().getDeclaringTypeName();
+//            String methodName = joinPoint.getSignature().getName();
+//            String args = Arrays.toString(joinPoint.getArgs());
+//            log.debug(METHOD + className + "." + methodName + "(" + args + ")");
+//            Object result = joinPoint.proceed();
+//            if(result != null){
+//                log.debug(RETURNS + result.toString());
+//                return result;
+//            }
+//        }catch (RuntimeException e){
+//            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
+//                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
+//            throw e;
+//        }
+//        return new Object();
+//    }
+//
+//    @Around("execution (* ru.javaschool.mobileoperator.utils..*.*(..))")
+//    public Object logAroundUtils(ProceedingJoinPoint joinPoint) throws Throwable{
+//        try {
+//            String className = joinPoint.getSignature().getDeclaringTypeName();
+//            String methodName = joinPoint.getSignature().getName();
+//            String args = Arrays.toString(joinPoint.getArgs());
+//            log.debug(METHOD + className + "." + methodName + "(" + args + ")");
+//            Object result = joinPoint.proceed();
+//            if(result != null){
+//                log.debug(METHOD + className + "." + methodName + "(" + args + ")"+
+//                        RETURNS + result.toString());
+//                return result;
+//            }
+//        }catch (RuntimeException e){
+//            log.error(e.getMessage() + " " + Arrays.toString(joinPoint.getArgs()) + " in " +
+//                    joinPoint.getSignature().getName() + "()" + Arrays.toString(e.getStackTrace()));
+//            throw e;
+//        }
+//        return new Object();
+//    }
 
 }

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = {"ru.javaschool.mobileoperator"})
-@EnableAspectJAutoProxy
+//@EnableAspectJAutoProxy
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebAppConfig implements WebMvcConfigurer {
 

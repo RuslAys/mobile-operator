@@ -79,4 +79,15 @@ public class BillDto {
     public void setOperation(String operation) {
         this.operation = operation;
     }
+
+    @Override
+    public String toString() {
+        return "BillDto{" +
+                "id=" + id +
+                ", balance=" + balance +
+                ", difference=" + difference +
+                ", date=" + date +
+                ", operation='" + operation + '\'' +
+                '}';
+    }
 }

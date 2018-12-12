@@ -18,7 +18,8 @@ public class JmsConfig {
     private static final String PASSWORD = "t";
     private static final String DEFAULT_DESTINATION = "jms/queue/TariffsMQ";
     private static final String PROVIDER_URL = "http-remoting://127.0.0.1:8080";
-    private static final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
+//    private static final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
+    private static final String INITIAL_CONTEXT_FACTORY = "org.wildfly.naming.client.WildFlyInitialContextFactory";
     private static final String CONNECTION_FACTORY = "jms/RemoteConnectionFactory";
 
     @Bean

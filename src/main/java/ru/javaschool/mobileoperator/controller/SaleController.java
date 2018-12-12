@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.javaschool.mobileoperator.domain.Contract;
 import ru.javaschool.mobileoperator.domain.dto.AddressDto;
 import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
-import ru.javaschool.mobileoperator.service.api.CartSaleService;
 import ru.javaschool.mobileoperator.service.api.ContractService;
 import ru.javaschool.mobileoperator.service.api.PhoneNumberService;
 import ru.javaschool.mobileoperator.service.api.ProfileService;
@@ -41,9 +39,6 @@ public class SaleController {
 
     @Autowired
     private SaleService saleService;
-
-    @Autowired
-    private CartSaleService cartSaleService;
 
     @Autowired
     private ContractService contractService;
@@ -114,7 +109,6 @@ public class SaleController {
                                                           @RequestParam("tariff") Long tariffId,
                                                           @RequestParam("number") Long numberId,
                                                           HttpSession session) {
-        cartSaleService.saleToPersonalAccount(customerId, tariffId, numberId, session);
         return "redirect:/cart";
     }
 

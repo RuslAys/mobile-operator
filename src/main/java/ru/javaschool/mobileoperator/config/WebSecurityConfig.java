@@ -20,7 +20,7 @@ import ru.javaschool.mobileoperator.utils.RoleHelper;
  */
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = {"ru.javaschool.mobileoperator"})
+@ComponentScan(basePackages = {"ru.javaschool.mobileoperator", "ru.javaschool.mobileoperator.utils"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

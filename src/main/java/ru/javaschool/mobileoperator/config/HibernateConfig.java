@@ -30,7 +30,7 @@ import static org.hibernate.cfg.AvailableSettings.USER;
 @Configuration
 @PropertySource("classpath:db-mysql.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {@ComponentScan("ru.javaschool.mobileoperator.repository")})
+@ComponentScan(basePackages = {"ru.javaschool.mobileoperator.domain", "ru.javaschool.mobileoperator.repository"})
 public class HibernateConfig {
     @Autowired
     private Environment environment;

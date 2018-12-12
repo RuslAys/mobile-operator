@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tariff_plans")
@@ -78,5 +79,21 @@ public class TariffPlan extends AbstractPO {
         return "TariffPlan:" +
                 " name=" + name +
                 ", price=" + price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TariffPlan that = (TariffPlan) o;
+        return archival == that.archival &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(name, that.name)
+                && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(price, name, archival, id);
     }
 }

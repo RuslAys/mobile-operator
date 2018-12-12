@@ -126,7 +126,7 @@
                         <input type="text" class="form-control" name="birthDate" path="birthDate"
                             id="birthDateField" placeholder="Birth date"
                             value=
-                            "<fmt:formatDate value="${cForm.birthDate}" pattern="dd-MM-yyyy" />" disabled/>
+                            "<fmt:formatDate value="${cForm.birthDate}" pattern="dd-MM-yyyy" />" readonly/>
                         <script>
                             $('#birthDateField').datepicker({
                                 format: 'dd-mm-yyyy',
