@@ -20,7 +20,7 @@ public class BillController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     @GetMapping("/{username}")
     public String getBillsOnContract(@PathVariable String username,
-                                     @RequestParam("contractId") long contractId){
+                                     @RequestParam("contractId") long contractId) {
         return JsonConverter.toJsonString(billService.getBillsOnContract(contractId));
     }
 }

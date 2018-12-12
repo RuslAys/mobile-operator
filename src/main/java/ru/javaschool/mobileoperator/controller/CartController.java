@@ -29,33 +29,36 @@ public class CartController {
 
     /**
      * Get method for cart page
-     * @param model ui model
+     *
+     * @param model   ui model
      * @param session http session
      * @return cart page
      */
     @GetMapping
     public String cartPage(Model model,
-                           HttpSession session){
+                           HttpSession session) {
         model.addAttribute("cart", cart);
         return "cart";
     }
 
     /**
      * Post method for confirm items
+     *
      * @return redirect to cart page {@link #cartPage(Model, HttpSession)}
      */
     @PostMapping("/confirm")
-    public String confirmItems(){
+    public String confirmItems() {
         cartService.confirm(cart);
         return "redirect:/cart";
     }
 
     /**
      * Post method for confirm items
+     *
      * @return redirect to cart page {@link #cartPage(Model, HttpSession)}
      */
     @PostMapping("/remove")
-    public String removeItem(@RequestParam("itemId") Integer id){
+    public String removeItem(@RequestParam("itemId") Integer id) {
         CartItem cartItem = cart.getCartItems().get(id);
         cartService.removeItem(cart, cartItem);
         return "redirect:/cart";

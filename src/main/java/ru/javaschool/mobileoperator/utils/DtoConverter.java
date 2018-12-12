@@ -188,7 +188,7 @@ public final class DtoConverter {
         customer.setLastName(customerDto.getLastName());
         customer.setBirthDate(customerDto.getBirthDate());
         customer.setEmail(customerDto.getEmail());
-        customer.setPassport(customer.getPassport());
+        customer.setPassport(customerDto.getPassport());
         if(customerDto.getAddress() != null){
             customer.setAddress(dtoToAddress(customerDto.getAddress()));
         }

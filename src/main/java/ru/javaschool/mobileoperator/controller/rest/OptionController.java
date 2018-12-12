@@ -20,12 +20,12 @@ public class OptionController {
     private OptionService optionService;
 
     @GetMapping
-    public String allOptions(){
+    public String allOptions() {
         return JsonConverter.toJsonString(optionService.getAllOptionsWithoutLists());
     }
 
     @GetMapping("/{id}")
-    public String optionById(@PathVariable("id") long id){
+    public String optionById(@PathVariable("id") long id) {
         return JsonConverter.toJsonString(optionService.getOptionWithoutLists(id));
     }
 
@@ -33,7 +33,7 @@ public class OptionController {
     @GetMapping("/contract/inclusive/add")
     public String inclusiveOptionsToAddOnContract(@PathVariable String username,
                                                   @RequestParam("contractId") long contractId,
-                                                  @RequestParam("optionIds") List<Long> optionIds){
+                                                  @RequestParam("optionIds") List<Long> optionIds) {
         return JsonConverter.toJsonString(optionService.getChildInclusiveOptionsOnContract(contractId, optionIds));
     }
 
@@ -41,7 +41,7 @@ public class OptionController {
     @GetMapping("/contract/inclusive/delete")
     public String inclusiveOptionsToDeleteOnContract(@PathVariable String username,
                                                      @RequestParam("contractId") long contractId,
-                                                     @RequestParam("optionIds") List<Long> optionIds){
+                                                     @RequestParam("optionIds") List<Long> optionIds) {
         return JsonConverter.toJsonString(optionService.getParentInclusiveOptionsOnContract(contractId, optionIds));
     }
 
@@ -49,7 +49,7 @@ public class OptionController {
     @GetMapping("/contract/exclusive")
     public String exclusiveOptionsOnContract(@PathVariable String username,
                                              @RequestParam("contractId") long contractId,
-                                             @RequestParam("optionIds") List<Long> optionIds){
+                                             @RequestParam("optionIds") List<Long> optionIds) {
         return JsonConverter.toJsonString(optionService.getExclusiveOptionsOnContract(contractId, optionIds));
     }
 }

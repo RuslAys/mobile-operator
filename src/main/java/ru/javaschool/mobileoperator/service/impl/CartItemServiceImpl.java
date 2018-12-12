@@ -42,7 +42,7 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public void proceed(CartItem cartItem) {
-        switch (cartItem.getCartItemOperationType()){
+        switch (cartItem.getCartItemOperationType()) {
             case SALE:
 //                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
                 break;

@@ -35,7 +35,7 @@
     </Appenders>
     <Loggers>
 
-        <Logger name="ru.javaschool.mobileoperator.apects.LoggingAspect" additivity="false" level="trace">
+        <Logger name="ru.javaschool.mobileoperator.aspects.LoggingAspect" additivity="false" level="trace">
             <AppenderRef ref="application" />
             <AppenderRef ref="Console" />
         </Logger>

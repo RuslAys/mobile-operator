@@ -24,7 +24,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addItem(Cart cart, CartItem item) {
-        if(!cartHelper.alreadyExist(cart, item)){
+        if (!cartHelper.alreadyExist(cart, item)) {
             cart.addItem(item);
         }
     }
@@ -42,12 +42,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public void confirm(Cart cart) {
         Iterator<CartItem> itemIterator = cart.getCartItems().iterator();
-        while (itemIterator.hasNext()){
+        while (itemIterator.hasNext()) {
             try {
                 cartItemService.proceed(itemIterator.next());
                 itemIterator.remove();
                 cart.setQuantity(cart.getQuantity() - 1);
-            }catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 itemIterator.remove();
                 cart.setQuantity(cart.getQuantity() - 1);
 //                logger.error(e.getMessage());

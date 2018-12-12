@@ -37,13 +37,14 @@ public class IndexController {
 
     /**
      * Get method to index page
+     *
      * @param model ui model
-     * @param user Auth principal
+     * @param user  Auth principal
      * @return if user redirect to profile, else show the search page
      */
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal UserDetails user, HttpSession session) {
-        if(roleHelper.isOnlyUser(user)){
+        if (roleHelper.isOnlyUser(user)) {
             return "redirect:/profile/" + user.getUsername();
         }
         model.addAttribute("cart", cart);
@@ -53,17 +54,18 @@ public class IndexController {
 
     /**
      * Post method to search by users by username
-     * @param model ui model
+     *
+     * @param model    ui model
      * @param username username to search
      * @return redirect to index {@link #index(Model, UserDetails, HttpSession)}
      */
     @PreAuthorize("hasRole('ROLE_OPERATOR')")
     @PostMapping("/search")
-    public String search(Model model, @RequestParam("username") String username){
+    public String search(Model model, @RequestParam("username") String username) {
         User user = userService.getUser(username);
-        if(user == null){
+        if (user == null) {
             model.addAttribute("user", "Not found");
-        }else{
+        } else {
             model.addAttribute("user", userService.getUser(username));
         }
         return "index";

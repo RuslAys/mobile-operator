@@ -14,10 +14,119 @@
     <li class="breadcrumb-item active">${option.name}</li>
 </ol>
 ${error}
-inclusive
-${option.inclusiveOptions}
-exclusive
-${option.exclusiveOptions}
-parent
-${option.parentInclusive}
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <div class="container target">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Parent options for ${option.name}</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="parentOptionsTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Connection cost</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Connection cost</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach items="${option.inclusiveOptions}" var="option">
+                                <tr>
+                                    <td>${option.name}</td>
+                                    <td>${option.price}</td>
+                                    <td>${option.connectionCost}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Child options for ${option.name}</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="childOptionsTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Connection cost</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Connection cost</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach items="${option.parentInclusive}" var="option">
+                                <tr>
+                                    <td>${option.name}</td>
+                                    <td>${option.price}</td>
+                                    <td>${option.connectionCost}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Incompatible options for ${option.name}</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="incompatibleOptionsTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Connection cost</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Connection cost</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach items="${option.exclusiveOptions}" var="option">
+                                <tr>
+                                    <td>${option.name}</td>
+                                    <td>${option.price}</td>
+                                    <td>${option.connectionCost}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    $(document).ready(function() {
+        $('#parentOptionsTable').DataTable();
+        $('#childOptionsTable').DataTable();
+        $('#incompatibleOptionsTable').DataTable();
+    });
+</script>

@@ -16,12 +16,12 @@ public class TariffController {
     TariffService tariffService;
 
     @GetMapping
-    public String getTariffs(){
+    public String getTariffs() {
         return JsonConverter.toJsonString(tariffService.findAllActualTariffsWithOptions());
     }
 
     @GetMapping("/{tariffId}")
-    public String getTariffWithOptions(@PathVariable(name = "tariffId") Long tariffId){
+    public String getTariffWithOptions(@PathVariable(name = "tariffId") Long tariffId) {
         return JsonConverter.toJsonString(tariffService.findTariffWithOptions(tariffId));
     }
 }

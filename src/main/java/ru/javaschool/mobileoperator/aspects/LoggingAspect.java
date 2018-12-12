@@ -1,4 +1,4 @@
-package ru.javaschool.mobileoperator.apects;
+package ru.javaschool.mobileoperator.aspects;
 
 
 import org.apache.logging.log4j.LogManager;

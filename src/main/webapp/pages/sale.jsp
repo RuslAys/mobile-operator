@@ -144,7 +144,7 @@
                             id="streetField" placeholder="Street"/>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="house"
+                        <input type="text" class="form-control" name="houseNumber"
                             id="houseField" placeholder="House"/>
                     </div>
                     <div class="form-group">

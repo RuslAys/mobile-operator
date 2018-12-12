@@ -34,9 +34,6 @@ public class ProfileController {
     private UserService userService;
 
     @Autowired
-    private ProfileService profileService;
-
-    @Autowired
     private TariffService tariffService;
 
     @Autowired
@@ -63,7 +60,8 @@ public class ProfileController {
 
     /**
      * Get method for profile page
-     * @param model ui model
+     *
+     * @param model    ui model
      * @param username username to profile
      * @return return profile page
      */
@@ -71,12 +69,12 @@ public class ProfileController {
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String profilePage(Model model,
                               @PathVariable("username") String username,
-                              @AuthenticationPrincipal UserDetails user){
+                              @AuthenticationPrincipal UserDetails user) {
         ContractDto contract = contractService.getContractWithOptions(username);
         model.addAttribute("cart", cart);
         model.addAttribute("user", userService.getUser(username));
         model.addAttribute("contract", contract);
-        if(!roleHelper.isOnlyUser(user)){
+        if (!roleHelper.isOnlyUser(user)) {
             model.addAttribute("anotherContracts", customerService.getCustomerByContract(contract).getContracts());
         }
         return "profile";
@@ -84,13 +82,14 @@ public class ProfileController {
 
     /**
      * Get method for user tariff page
-     * @param model ui model
+     *
+     * @param model    ui model
      * @param username username to profile
      * @return profile tariff page
      */
     @GetMapping("/{username}/tariff")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String profileTariffPage(Model model, @PathVariable("username") String username){
+    public String profileTariffPage(Model model, @PathVariable("username") String username) {
         ContractDto contract = contractService.getContractWithOptions(username);
         TariffPlanDto tariffPlan = contract.getTariffPlan();
         model.addAttribute("cart", cart);
@@ -103,18 +102,19 @@ public class ProfileController {
 
     /**
      * Post method to change tariff plan on contract
-     * @param model ui model
-     * @param username customer username
-     * @param contractId contract id
+     *
+     * @param model       ui model
+     * @param username    customer username
+     * @param contractId  contract id
      * @param newTariffId new tariff plan id
      * @return redirect to {@link #profileTariffPage(Model, String)}
      */
-    @PostMapping(value = "/{username}/tariff/change" ,params = "add_to_cart")
+    @PostMapping(value = "/{username}/tariff/change", params = "add_to_cart")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String changeTariff(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @RequestParam("newTariffId") Long newTariffId){
+                               @RequestParam("newTariffId") Long newTariffId) {
         cartActionService.changeTariffPlan(cart, contractId, newTariffId);
         model.addAttribute("cart", cart);
         return "redirect:/profile/" + username + "/tariff";
@@ -123,9 +123,9 @@ public class ProfileController {
     @PostMapping(value = "/{username}/tariff/change", params = "confirm")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String changeTariffToCart(Model model,
-                               @PathVariable("username") String username,
-                               @RequestParam("contractId") Long contractId,
-                               @RequestParam("newTariffId") Long newTariffId){
+                                     @PathVariable("username") String username,
+                                     @RequestParam("contractId") Long contractId,
+                                     @RequestParam("newTariffId") Long newTariffId) {
         cartActionService.changeTariffPlan(cart, contractId, newTariffId);
         model.addAttribute("cart", cart);
         return "redirect:/cart";
@@ -134,13 +134,14 @@ public class ProfileController {
 
     /**
      * Get method for options page
-     * @param model ui model
+     *
+     * @param model    ui model
      * @param username profile username
      * @return options page
      */
     @GetMapping("/{username}/option")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
-    public String profileOptionsPage(Model model, @PathVariable("username") String username){
+    public String profileOptionsPage(Model model, @PathVariable("username") String username) {
         ContractDto contract = contractService.getContractWithOptions(username);
         model.addAttribute("contract", contract);
         model.addAttribute("options", contract.getOptions());
@@ -150,9 +151,10 @@ public class ProfileController {
 
     /**
      * Method to add option on terminal device
-     * @param username profile username
+     *
+     * @param username   profile username
      * @param contractId terminal device id
-     * @param optionId option id to add
+     * @param optionId   option id to add
      * @return redirect to profile option page {@link #profileOptionsPage(Model, String)}
      */
     @PostMapping(value = "/{username}/option/add", params = "confirm")
@@ -160,7 +162,7 @@ public class ProfileController {
     public String addOption(Model model,
                             @PathVariable("username") String username,
                             @RequestParam("contractId") Long contractId,
-                            @RequestParam("optionId") Long optionId){
+                            @RequestParam("optionId") Long optionId) {
         cartActionService.addOption(cart, contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/cart";
@@ -168,9 +170,10 @@ public class ProfileController {
 
     /**
      * Method to add option on terminal device
-     * @param username profile username
+     *
+     * @param username   profile username
      * @param contractId terminal device id
-     * @param optionId option id to add
+     * @param optionId   option id to add
      * @return redirect to profile option page {@link #profileOptionsPage(Model, String)}
      */
     @PostMapping(value = "/{username}/option/add", params = "add_to_cart")
@@ -178,7 +181,7 @@ public class ProfileController {
     public String addOptionToCart(Model model,
                                   @PathVariable("username") String username,
                                   @RequestParam("contractId") Long contractId,
-                                  @RequestParam("optionId") Long optionId){
+                                  @RequestParam("optionId") Long optionId) {
         cartActionService.addOption(cart, contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/profile/" + username + "/option";
@@ -186,10 +189,11 @@ public class ProfileController {
 
     /**
      * Post method for remove option from terminal device. Adding item to cart
-     * @param model ui model
-     * @param username profile username
+     *
+     * @param model      ui model
+     * @param username   profile username
      * @param contractId contract id
-     * @param optionId option id
+     * @param optionId   option id
      * @return redirect to profile option management
      */
     @PostMapping(value = "/{username}/option/remove", params = "add_to_cart")
@@ -197,7 +201,7 @@ public class ProfileController {
     public String removeOption(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @RequestParam("optionId") Long optionId){
+                               @RequestParam("optionId") Long optionId) {
         cartActionService.removeOption(cart, contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/profile/" + username + "/option";
@@ -205,10 +209,11 @@ public class ProfileController {
 
     /**
      * Post method for remove option from terminal device. Adding item to cart
-     * @param model ui model
-     * @param username profile username
+     *
+     * @param model      ui model
+     * @param username   profile username
      * @param contractId contract id
-     * @param optionId option id
+     * @param optionId   option id
      * @return redirect to cart page
      */
     @PostMapping(value = "/{username}/option/remove", params = "confirm")
@@ -216,7 +221,7 @@ public class ProfileController {
     public String removeOptionToCart(Model model,
                                      @PathVariable("username") String username,
                                      @RequestParam("contractId") Long contractId,
-                                     @RequestParam("optionId") Long optionId){
+                                     @RequestParam("optionId") Long optionId) {
         cartActionService.removeOption(cart, contractId, optionId);
         model.addAttribute("cart", cart);
         return "redirect:/cart";
@@ -224,8 +229,9 @@ public class ProfileController {
 
     /**
      * Post method for lock / unlock contract
-     * @param model ui model
-     * @param username profile username
+     *
+     * @param model      ui model
+     * @param username   profile username
      * @param contractId contract id
      * @return redirect to profile
      */
@@ -234,27 +240,28 @@ public class ProfileController {
     public String lockContract(Model model,
                                @PathVariable("username") String username,
                                @RequestParam("contractId") Long contractId,
-                               @AuthenticationPrincipal UserDetails userDetails){
+                               @AuthenticationPrincipal UserDetails userDetails) {
         cartActionService.lockContract(cart, contractId, userDetails);
         model.addAttribute("cart", cart);
-        return  "redirect:/profile/" + username;
+        return "redirect:/profile/" + username;
     }
 
     /**
      * Post method for lock / unlock contract
-     * @param model ui model
-     * @param username profile username
+     *
+     * @param model      ui model
+     * @param username   profile username
      * @param contractId contract id
      * @return redirect to cart page
      */
     @PostMapping(value = "/{username}/lock", params = "confirm")
     @PreAuthorize("(#username == authentication.principal.username) or hasRole('ROLE_OPERATOR')")
     public String lockContractToCart(Model model,
-                               @PathVariable("username") String username,
-                               @RequestParam("contractId") Long contractId,
-                               @AuthenticationPrincipal UserDetails userDetails){
+                                     @PathVariable("username") String username,
+                                     @RequestParam("contractId") Long contractId,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
         cartActionService.lockContract(cart, contractId, userDetails);
         model.addAttribute("cart", cart);
-        return  "redirect:/cart";
+        return "redirect:/cart";
     }
 }

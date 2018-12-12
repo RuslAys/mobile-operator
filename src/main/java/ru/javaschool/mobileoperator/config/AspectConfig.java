@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import ru.javaschool.mobileoperator.apects.LoggingAspect;
+import ru.javaschool.mobileoperator.aspects.LoggingAspect;
 
 @Configuration
 @EnableAspectJAutoProxy
