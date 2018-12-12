@@ -263,8 +263,6 @@
             type: "GET",
             success: function (data) {
                 var json = JSON.parse(data);
-
-                // var bodyName = 'modalBody';
                 var body = document.getElementById(bodyName).innerText="";
 
                 createTextWithRemoving(bodyName, optionName);
@@ -284,9 +282,7 @@
             type: "GET",
             success: function (data) {
                 var json = JSON.parse(data);
-                console.log(json);
 
-                // var bodyName = 'modalBody';
                 var body = document.getElementById(bodyName).innerText="";
 
                 createTextWithAdding(bodyName, optionName);

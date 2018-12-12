@@ -1,10 +1,16 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<style>
-    #content-wrapper{
-        overflow-y: hidden;
-    }
-</style>
+<c:if test="${contract.locked == false}">
+    <spring:url value="lock" var="lock" />
+</c:if>
+<c:if test="${contract.locked == true}">
+    <spring:url value="unlock" var="lock" />
+</c:if>
+<%--<style>--%>
+    <%--#content-wrapper{--%>
+        <%--overflow-y: hidden;--%>
+    <%--}--%>
+<%--</style>--%>
 <body id="page-top">
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
@@ -23,8 +29,20 @@
                 </div>
                 <form class="form" role="form" id="formLock" action="${rootUrl}/profile/${contract.phoneNumber.number}/lock" method="post">
                     <input hidden class="form-control form-control-lg rounded-1" name="contractId" value="${contract.id}">
-                    <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm">Confirm Lock / Unlock</button>
-                    <button type="submit" class="btn btn-success" id="btnLockAddToCart" name="add_to_cart">Add to cart Lock / Unlock</button>
+                    <security:authorize access="hasRole('ROLE_USER')">
+                        <c:if test="${contract.lockedByUser == false}">
+                            <button type="submit" class="btn btn-dark" id="btnLockConfirm" name="confirm" disabled>Confirm ${lock}</button>
+                            <button type="submit" class="btn btn-dark" id="btnLockAddToCart" name="add_to_cart" disabled>Add to cart ${lock}</button>
+                        </c:if>
+                        <c:if test="${contract.lockedByUser == true}">
+                            <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm" >Confirm ${lock}</button>
+                            <button type="submit" class="btn btn-success" id="btnLockAddToCart" name="add_to_cart">Add to cart ${lock}</button>
+                        </c:if>
+                    </security:authorize>
+                    <security:authorize access="hasRole('ROLE_OPERATOR')">
+                            <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm">Confirm ${lock}</button>
+                            <button type="submit" class="btn btn-success" id="btnLockAddToCart" name="add_to_cart">Add to cart ${lock}</button>
+                    </security:authorize>
                 </form>
             </div>
             <div class="row">

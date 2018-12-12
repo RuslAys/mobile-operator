@@ -4,64 +4,6 @@
 <head>
 
 <title>MSS</title>
-<!-- navbar -->
-<%--<nav class="navbar navbar-expand-lg navbar-light bg-light">--%>
-  <%--<a class="navbar-brand" href="${rootUrl}">MSS</a>--%>
-  <%--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">--%>
-    <%--<span class="navbar-toggler-icon"></span>--%>
-  <%--</button>--%>
-  <%--<div class="collapse navbar-collapse" id="navbarTogglerDemo02">--%>
-    <%--<ul class="navbar-nav mr-auto mt-2 mt-lg-0">--%>
-      <%--<li class="nav-item active">--%>
-        <%--<security:authorize access="hasRole('ROLE_ADMIN')">--%>
-                <%--<a class="nav-link" href="${rootUrl}/admin">Admin panel</a>--%>
-            <%--${rootUrl}--%>
-        <%--</security:authorize>--%>
-      <%--</li>--%>
-      <%--<li class="nav-item active">--%>
-        <%--<security:authorize access="hasRole('ROLE_OPERATOR')">--%>
-              <%--<a class="nav-link" href="${rootUrl}/sale">Sale contract</a>--%>
-        <%--</security:authorize>--%>
-      <%--</li>--%>
-      <%--<security:authorize access="isAuthenticated()">--%>
-          <%--<li class="nav-item active">--%>
-                <%--<a class="nav-link" href="${rootUrl}/cart">Cart quantity: ${cart.quantity}</a>--%>
-          <%--</li>--%>
-      <%--</security:authorize>--%>
-    <%--</ul>--%>
-    <%--<security:authorize access="isAuthenticated()">--%>
-        <%--Logged as--%>
-        <%--<a class="nav-link"--%>
-            <%--href="${rootUrl}/profile/<security:authentication property="principal.username"/>">--%>
-            <%--<security:authentication property="principal.username"/>--%>
-        <%--</a>--%>
-        <%--&lt;%&ndash;<form class="form-inline my-2 my-lg-0" action="${rootUrl}/logout" method="post">&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</form>&ndash;%&gt;--%>
-        <%--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>--%>
-    <%--</security:authorize>--%>
-  <%--</div>--%>
-    <%--&lt;%&ndash;Logout modal&ndash;%&gt;--%>
-  <%--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">--%>
-      <%--<div class="modal-dialog" role="document">--%>
-          <%--<div class="modal-content">--%>
-              <%--<h5 class="modal-title" id="modalLabel">Ready to Leave?</h5>--%>
-              <%--<button class="close" type="button" data-dismiss="modal" aria-lable="Close">--%>
-                  <%--<span aria-hidden="true">x</span>--%>
-              <%--</button>--%>
-          <%--</div>--%>
-          <%--<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>--%>
-          <%--<div class="modal-footer">--%>
-              <%--<button class="btn btn-secondary" type="button" data-dimiss="modal">Cancel</button>--%>
-              <%--<form class="form-inline my-2 my-lg-0" action="${rootUrl}/logout" method="post">--%>
-                  <%--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>--%>
-              <%--</form>--%>
-          <%--</div>--%>
-      <%--</div>--%>
-  <%--</div>--%>
-<%--</nav>--%>
-<%--</head>--%>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
