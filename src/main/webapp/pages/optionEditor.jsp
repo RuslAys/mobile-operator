@@ -122,6 +122,12 @@ ${error}
         </div>
     </div>
 </div>
+
+<jsp:include page="parts/footer.jsp"/>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 </body>
 <script>
     $(document).ready(function() {

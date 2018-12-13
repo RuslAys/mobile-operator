@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <spring:url value="/admin/operator/l" var="pageurl" />
-<body>
+<body id="page-top">
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="${rootUrl}/">Profile</a>
@@ -23,16 +23,16 @@
                                     <div class="form-group">
                                         <label for="usernameField">Username</label>
                                         <input type="text" class="form-control" name="username"
-                                            id="usernameField" placeholder="Username">
+                                            id="usernameField" placeholder="Username" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="passwordField">Password</label>
                                         <input type="password" class="form-control" name="password"
-                                            id="passwordField" placeholder="Password">
+                                            id="passwordField" placeholder="Password" required>
                                     </div><div class="form-group">
                                         <label for="passwordField">Confirm password</label>
                                         <input type="password" class="form-control" name="confirmPassword"
-                                            id="confirmPasswordField" placeholder="Password">
+                                            id="confirmPasswordField" placeholder="Password" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary mb-1">Add</button>
                                 </form>
@@ -83,6 +83,11 @@
 </div>
 </div>
 </div>
+<jsp:include page="parts/footer.jsp"/>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 </body>
 </html>
 <script>

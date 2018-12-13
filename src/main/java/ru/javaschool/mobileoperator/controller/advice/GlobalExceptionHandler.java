@@ -3,6 +3,7 @@ package ru.javaschool.mobileoperator.controller.advice;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -44,5 +45,12 @@ public class GlobalExceptionHandler {
     public String handleNotFoundException(Model model, Exception e) {
         log.error(e);
         return "errors/not_found";
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BindException.class)
+    public String handleValidationException(Exception e){
+        log.error(e);
+        return "errors/bad_request";
     }
 }

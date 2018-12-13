@@ -31,7 +31,12 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Remove</button>
+                    <c:if test="${tariff.archival == true}">
+                        <button type="submit" class="btn btn-primary" disabled>Archival tariff plan</button>
+                    </c:if>
+                    <c:if test="${tariff.archival == false}">
+                        <button type="submit" class="btn btn-primary">Remove</button>
+                    </c:if>
                 </form>
             </div>
         </div>
@@ -46,7 +51,12 @@
                         </c:forEach>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <c:if test="${tariff.archival == true}">
+                    <button type="submit" class="btn btn-primary" disabled>Archival tariff plan</button>
+                </c:if>
+                <c:if test="${tariff.archival == false}">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </c:if>
             </form>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
 <spring:url value="${rootUrl}/admin/option/l" var="pageurl" />
-<body>
+<body id="page-top">
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="${rootUrl}/">Profile</a>
@@ -21,15 +21,15 @@
                                     <form name="add-new-option" action="${rootUrl}/admin/option/add" method="post">
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="name"
-                                                id="optionNameField" placeholder="Option`s name">
+                                                id="optionNameField" placeholder="Option`s name" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="price"
-                                                id="priceField" placeholder="Price">
+                                                id="priceField" placeholder="Price" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="connectionCost"
-                                                id="connectionCostField" placeholder="Connection cost">
+                                                id="connectionCostField" placeholder="Connection cost" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="inclusiveOptionsField">Inclusive options</label>
@@ -93,6 +93,11 @@
             </div>
         </div>
     </div>
+<jsp:include page="parts/footer.jsp"/>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 </body>
 </html>
 <script>

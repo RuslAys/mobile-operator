@@ -40,7 +40,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     }
 
     @Autowired
-    public UserServiceImpl(@Qualifier("userDaoImpl") GenericDao<User, String> genericDao){
+    public UserServiceImpl(@Qualifier("userDaoImpl") GenericDao<User, String> genericDao) {
         super(genericDao);
         this.userDao = (UserDao) genericDao;
     }
@@ -49,7 +49,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public User getUser(String username) {
         User user = userDao.getUser(username);
-        if(user == null) {
+        if (user == null) {
             //TODO написать обработчик ошибки
             throw new UsernameNotFoundException("User not found");
         }
@@ -74,8 +74,8 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = userUserDetailsConverter.convert(getUser(username));
-        if(userDetails == null) throw new UsernameNotFoundException("User not found");
-        if(!userDetails.isEnabled()) throw new UserDisabledException("User is disabled");
+        if (userDetails == null) throw new UsernameNotFoundException("User not found");
+        if (!userDetails.isEnabled()) throw new UserDisabledException("User is disabled");
         return userDetails;
     }
 
@@ -85,11 +85,11 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
         return findAll()
                 .stream()
                 .filter(user -> user.getAuthorities()
-                                .stream()
-                                .allMatch(
-                                        authority -> authority.getAuthority().equals(role.name())
-                                )
+                        .stream()
+                        .allMatch(
+                                authority -> authority.getAuthority().equals(role.name())
                         )
+                )
                 .collect(Collectors.toList());
     }
 
@@ -97,7 +97,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, String>
     @Override
     public void setOperatorActiveStatus(String username, boolean status) {
         User user = userDao.getUser(username);
-        if(user.isEnabled() != status) {
+        if (user.isEnabled() != status) {
             user.setEnabled(status);
             userDao.update(user);
         }

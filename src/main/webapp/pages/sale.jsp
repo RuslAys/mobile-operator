@@ -23,7 +23,7 @@
                         <div>
                             <form id="search-form" action="${rootUrl}/sale/search" method="post">
                                 <input type="text" class="form-control form-control-lg rounded-1" name="number"
-                                        id="phoneNumberField" placeholder="Search by phone number">
+                                        id="phoneNumberField" placeholder="Search by phone number" required>
                                 <button type="submit" class="btn btn-primary btn-md float-right mt-1 mb-1">Search</button>
                             </form>
                         </div>
@@ -39,7 +39,9 @@
                                         <input type="text" class="form-control" name="firstName"
                                             id="firstNameField" value="${contract.customer.firstName}"
                                             readonly/>
+                                        <div class="invalid-feedback">Oops, you missed this one.</div>
                                     </div>
+
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="lastName"
                                             id="lastNameField" value="${contract.customer.lastName}"
@@ -114,17 +116,17 @@
                 <form name="add-new-customer" action="sale/confirm" method="post" commandName="customerDto">
                     <div class="form-group">
                         <input type="text" class="form-control" name="firstName" path="fristName"
-                            id="firstNameField" placeholder="First Name"/>
+                            id="firstNameField" placeholder="First Name" required/>
+                        <div class="invalid-feedback">Oops, you missed this one.</div>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="lastName" path="lastName"
-                            id="lastNameField" placeholder="Last Name"/>
+                            id="lastNameField" placeholder="Last Name" required/>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="birthDate" path="birthDate"
-                            id="birthDateField" placeholder="Birth date"
-                            value=
-                            "<fmt:formatDate value="${cForm.birthDate}" pattern="dd-MM-yyyy" />" readonly/>
+                           id="birthDateField" placeholder="Birth date"
+                           value="<fmt:formatDate value="${cForm.birthDate}" pattern="dd-MM-yyyy" />" required/>
                         <script>
                             $('#birthDateField').datepicker({
                                 format: 'dd-mm-yyyy',

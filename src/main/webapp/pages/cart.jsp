@@ -1,6 +1,6 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<body>
+<body id= "page-top">
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="${rootUrl}/">Profile</a>
@@ -8,12 +8,12 @@
     <li class="breadcrumb-item active">Cart</li>
 </ol>
 <div id="content-wrapper">
-    <div class="container-fluid center-pill">
-        <div class="col-sm-6 mb-2">
+    <div class="container-fluid">
+        <div class="col-sm-6 mx-auto mb-1">
             <div class="card mb-10">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Cart items</div>
+                    Cart</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="cartItemsTable" width="100%" cellspacing="0">
@@ -53,11 +53,11 @@
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-6 mx-auto">
             <div class="card mb-10">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Result items</div>
+                    Results</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="resultItemsTable" width="100%" cellspacing="0">
@@ -91,6 +91,11 @@
         </div>
     </div>
 </div>
+<jsp:include page="parts/footer.jsp" />
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 </body>
 <script>
     $(document).ready(function(){

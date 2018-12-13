@@ -7,7 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import ru.javaschool.mobileoperator.BaseTest;
-import ru.javaschool.mobileoperator.config.AspectConfig;
 import ru.javaschool.mobileoperator.config.H2Config;
 import ru.javaschool.mobileoperator.config.WebAppConfig;
 import ru.javaschool.mobileoperator.config.WebSecurityConfig;

@@ -21,12 +21,12 @@
                                 <div class="form-group">
                                     <label for="tariffNameField">Tariff plan name</label>
                                     <input type="text" class="form-control" name="name"
-                                        id="tariffNameField" placeholder="Tariff name">
+                                        id="tariffNameField" placeholder="Tariff name" required>
                                 </div>
                                  <div class="form-group">
                                     <label for="tariffPriceField">Tariff price</label>
                                     <input type="text" class="form-control" name="price"
-                                        id="tariffPriceField" placeholder="Tariff price">
+                                        id="tariffPriceField" placeholder="Tariff price" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="optionsField">Add options</label>
@@ -63,7 +63,7 @@
                                 <c:forEach var="tariff" items="${tariffs}">
                                     <tr>
                                         <form name="remove-tariff" action="${rootUrl}/admin/tariff/remove" method="post">
-                                            <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffId">
+                                            <input type="hidden" class="form-control" name="tariffId" value="${tariff.id}" id="tariffId">
                                             <td>
                                                 <a href="${rootUrl}/admin/tariff/${tariff.id}"><c:out value="${tariff.name}"/></a>
                                             </td>
