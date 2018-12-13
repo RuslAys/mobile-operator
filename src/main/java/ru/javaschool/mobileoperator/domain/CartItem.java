@@ -2,6 +2,7 @@ package ru.javaschool.mobileoperator.domain;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.javaschool.mobileoperator.domain.enums.CartItemOperationType;
+import ru.javaschool.mobileoperator.domain.enums.CartItemResult;
 import ru.javaschool.mobileoperator.utils.CartItemBuilder;
 
 import java.util.Objects;
@@ -19,6 +20,8 @@ public class CartItem {
     private boolean completed;
     private UserDetails user;
     private long customerId;
+    private CartItemResult result;
+    private String resultMessage;
 
     public CartItem(CartItemBuilder builder){
         this.id = builder.getId();
@@ -129,6 +132,22 @@ public class CartItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public CartItemResult getResult() {
+        return result;
+    }
+
+    public void setResult(CartItemResult result) {
+        this.result = result;
+    }
+
+    public String getResultMessage() {
+        return resultMessage;
+    }
+
+    public void setResultMessage(String resultMessage) {
+        this.resultMessage = resultMessage;
     }
 
     @Override

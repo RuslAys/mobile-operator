@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.dto.AddressDto;
 import ru.javaschool.mobileoperator.domain.dto.ContractDto;
 import ru.javaschool.mobileoperator.domain.dto.CustomerDto;
@@ -49,6 +50,9 @@ public class SaleController {
     @Autowired
     private CartHelper cartHelper;
 
+    @Autowired
+    private Cart cart;
+
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -65,7 +69,7 @@ public class SaleController {
      */
     @GetMapping
     public String salePage(Model model, HttpSession session) {
-        model.addAttribute("cart", cartHelper.getCart(session));
+        model.addAttribute("cart", cart);
         model.addAttribute("tariffs", tariffService.findAll());
         model.addAttribute("numbers", phoneNumberService.getAllEmptyNumbers());
         return "sale";

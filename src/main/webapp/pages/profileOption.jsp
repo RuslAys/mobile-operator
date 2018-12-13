@@ -268,8 +268,8 @@
                 createTextWithRemoving(bodyName, optionName);
                 if(json != null && json.length != 0){
                     fillListToDelete(bodyName, json);
-                    createFormToRemove(id, bodyName);
                 }
+                createFormToRemove(id, bodyName);
             }
         });
         $(modalId).modal();
@@ -282,6 +282,8 @@
             type: "GET",
             success: function (data) {
                 var json = JSON.parse(data);
+                console.log("parsed json from showOptionsToAdd() ");
+                console.log(json);
 
                 var body = document.getElementById(bodyName).innerText="";
 
@@ -289,7 +291,20 @@
                 if(json != null && json.length != 0){
                     fillListToAdd(bodyName, json);
                 }
-                showExclusiveOptions(id, optionName);
+                var strId = id.toString();
+                console.log(strId);
+                for (var i = 0; i < json.length; i++){
+                    if(i < (json.length - 1)){
+                        strId += "," + json[i].id.toString() + ","
+                        console.log(strId);
+                    }else{
+                        strId += "," + json[i].id.toString();
+                        console.log(strId);
+                    }
+                }
+
+                console.log(strId);
+                showExclusiveOptions(strId, optionName);
             }
         });
         $(modalId).modal();

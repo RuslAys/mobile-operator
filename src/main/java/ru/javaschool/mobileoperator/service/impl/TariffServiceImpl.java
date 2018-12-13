@@ -77,12 +77,16 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
     public void removeOptionFromTariff(Long tariffId, Long optionId) {
         TariffPlan tariffPlan = tariffDao.find(tariffId);
         Option optionToDelete = optionDao.find(optionId);
-        if(optionHelper.existInclusiveConflicts(tariffPlan.getOptions(), optionToDelete)){
-            throw new OptionException("Cannot delete option. It is required option");
-        }
-        optionHelper.removeOptionFromTariff(tariffPlan, optionToDelete);
+        List<Option> options = new ArrayList<>();
+        options.add(optionToDelete);
+        Set<Option> optionsToDelete = optionHelper.getParentInclusiveOptionsOnTariffPlan(tariffPlan, options);
+        optionsToDelete.add(optionToDelete);
+//        if(optionHelper.existInclusiveConflicts(tariffPlan.getOptions(), optionToDelete)){
+//            throw new OptionException("Cannot delete option. It is required option");
+//        }
+
+        optionHelper.removeOptionsFromTariff(tariffPlan, new ArrayList<>(optionsToDelete));
         tariffDao.update(tariffPlan);
-        optionDao.update(optionToDelete);
     }
 
     @Override
@@ -100,7 +104,7 @@ public class TariffServiceImpl extends GenericServiceImpl<TariffPlan, Long>
         uniqueOptionsToAdd.add(newOption);
 
         // Find options to delete
-        Set<Option> uniqueOptionsToDelete = optionHelper.getExclusiveOptionsOnTariffPlan(tariffPlan, optionsToAdd);
+        Set<Option> uniqueOptionsToDelete = optionHelper.getExclusiveOptionsOnTariffPlan(tariffPlan, new ArrayList<>(uniqueOptionsToAdd));
 
         if(!uniqueOptionsToDelete.isEmpty()){
             List<Option> optionsToDelete = new ArrayList<>(uniqueOptionsToDelete);

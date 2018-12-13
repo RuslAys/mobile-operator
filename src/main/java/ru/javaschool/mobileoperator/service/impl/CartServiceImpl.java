@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
+import ru.javaschool.mobileoperator.domain.CartResult;
+import ru.javaschool.mobileoperator.domain.enums.CartItemResult;
 import ru.javaschool.mobileoperator.service.api.CartItemService;
 import ru.javaschool.mobileoperator.service.api.CartService;
 import ru.javaschool.mobileoperator.utils.CartHelper;
@@ -18,9 +20,6 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartItemService cartItemService;
-
-    @Autowired
-    private CartService cartService;
 
     @Override
     public void addItem(Cart cart, CartItem item) {
@@ -40,18 +39,23 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void confirm(Cart cart) {
+    public void confirm(Cart cart, CartResult cartResult) {
         Iterator<CartItem> itemIterator = cart.getCartItems().iterator();
         while (itemIterator.hasNext()) {
+            CartItem item = itemIterator.next();
             try {
-                cartItemService.proceed(itemIterator.next());
+                cartItemService.proceed(item);
+                item.setResult(CartItemResult.SUCCESS);
+                item.setResultMessage("Completed");
+                cartResult.getCartItems().add(item);
                 itemIterator.remove();
                 cart.setQuantity(cart.getQuantity() - 1);
             } catch (RuntimeException e) {
+                item.setResult(CartItemResult.FAIL);
+                item.setResultMessage(e.getMessage());
+                cartResult.getCartItems().add(item);
                 itemIterator.remove();
                 cart.setQuantity(cart.getQuantity() - 1);
-//                logger.error(e.getMessage());
-                throw e;
             }
         }
     }

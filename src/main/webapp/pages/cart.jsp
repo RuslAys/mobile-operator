@@ -25,6 +25,16 @@
                             </li>
                     </c:forEach>
                 </ul>
+                <ul class="list-group">
+                    <c:forEach items="${cartResult.cartItems}" var="cartItem">
+                        <li class="list-group-item">
+                            <c:if test="${cartItem.cartItemOperationType != 'LOCK'}">
+                                ${cartItem.cartItemOperationType.toString()}:
+                            </c:if>
+                                ${cartItem.title}: ${cartItem.result} ${cartItem.resultMessage}
+                        </li>
+                    </c:forEach>
+                </ul>
             </div>
         </div>
         <div class = "row">

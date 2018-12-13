@@ -10,8 +10,6 @@ import java.util.Objects;
 @Component
 @SessionScope
 public class Cart {
-    private int id;
-    private String name = "";
     private int price;
     private int quantity;
     private List<CartItem> cartItems = new ArrayList<>();
@@ -37,22 +35,6 @@ public class Cart {
                 }
             }
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getPrice() {
@@ -85,15 +67,13 @@ public class Cart {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
-        return id == cart.id &&
-                price == cart.price &&
-                quantity == cart.quantity &&
-                Objects.equals(name, cart.name);
+        return price == cart.price &&
+                quantity == cart.quantity;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, quantity);
+        return Objects.hash(price, quantity);
     }
 
     @Override

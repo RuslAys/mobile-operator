@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.Option;
 import ru.javaschool.mobileoperator.domain.PhoneNumber;
 import ru.javaschool.mobileoperator.domain.TariffPlan;
@@ -58,6 +59,9 @@ public class AdminPanelController {
     @Autowired
     private CartHelper cartHelper;
 
+    @Autowired
+    private Cart cart;
+
     /**
      * Get method for admin page
      *
@@ -65,8 +69,8 @@ public class AdminPanelController {
      * @return admin page
      */
     @GetMapping
-    public String adminPage(Model model, HttpSession session) {
-        model.addAttribute("cart", cartHelper.getCart(session));
+    public String adminPage(Model model) {
+        model.addAttribute("cart", cart);
         return "admin";
     }
 

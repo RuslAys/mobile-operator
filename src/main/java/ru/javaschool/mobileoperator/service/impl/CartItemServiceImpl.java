@@ -15,8 +15,8 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private SaleService saleService;
+//    @Autowired
+//    private SaleService saleService;
 
     @Autowired
     private OptionService optionService;
@@ -43,12 +43,12 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public void proceed(CartItem cartItem) {
         switch (cartItem.getCartItemOperationType()) {
-            case SALE:
-//                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
-                break;
-            case SALE_TO_EXIST_CUSTOMER:
-                saleService.saleToExistPersonalAccount(cartItem.getCustomerId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
-                break;
+//            case SALE:
+////                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
+//                break;
+//            case SALE_TO_EXIST_CUSTOMER:
+//                saleService.saleToExistPersonalAccount(cartItem.getCustomerId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
+//                break;
             case ADD_OPTION:
                 optionService.addOptionToContract(cartItem.getContractId(), cartItem.getOptionId());
                 break;

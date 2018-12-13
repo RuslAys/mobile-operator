@@ -2,6 +2,7 @@ package ru.javaschool.mobileoperator.service.api;
 
 import ru.javaschool.mobileoperator.domain.Cart;
 import ru.javaschool.mobileoperator.domain.CartItem;
+import ru.javaschool.mobileoperator.domain.CartResult;
 
 public interface CartService {
     /**
@@ -29,5 +30,5 @@ public interface CartService {
      * Method to confirm all items and start executing items` procedure
      * @param cart cart
      */
-    void confirm(Cart cart);
+    void confirm(Cart cart, CartResult cartResult);
 }

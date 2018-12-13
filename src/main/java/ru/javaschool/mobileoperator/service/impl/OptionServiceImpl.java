@@ -144,7 +144,6 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         if(contract.getOptions().contains(newOption)){
             throw new OptionException("Option " + newOption.getName() + " already added");
         }
-        List<Option> tdOptions = contract.getOptions();
         List<Option> optionsToAdd = new ArrayList<>();
 
         optionsToAdd.add(newOption);
@@ -154,7 +153,7 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
         uniqueOptionsToAdd.add(newOption);
 
         // Find options to delete
-        Set<Option> uniqueOptionsToDelete = optionHelper.getExclusiveOptionsOnContract(contract, optionsToAdd);
+        Set<Option> uniqueOptionsToDelete = optionHelper.getExclusiveOptionsOnContract(contract, new ArrayList<>(uniqueOptionsToAdd));
 
         if(!uniqueOptionsToDelete.isEmpty()){
             List<Option> optionsToDelete = new ArrayList<>(uniqueOptionsToDelete);
@@ -185,11 +184,12 @@ public class OptionServiceImpl extends GenericServiceImpl<Option, Long>
 
         List<Option> options = new ArrayList<>();
         options.add(optionToDelete);
-        Set<Option> check = optionHelper.getParentInclusiveOptionsOnContract(contract, options);
-        if(!check.isEmpty()){
-            throw new IllegalArgumentException("Cannot delete option. It is required option");
-        }
-        optionHelper.removeOptionFromContract(contract, optionToDelete);
+        Set<Option> exclusiveOptions = optionHelper.getParentInclusiveOptionsOnContract(contract, options);
+        exclusiveOptions.add(optionToDelete);
+//        if(!check.isEmpty()){
+//            throw new IllegalArgumentException("Cannot delete option. It is required option");
+//        }
+        optionHelper.removeOptionsFromContract(contract, new ArrayList<>(exclusiveOptions));
         contractDao.update(contract);
     }
 

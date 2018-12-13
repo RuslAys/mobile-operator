@@ -62,19 +62,6 @@ public class CartHelper {
     }
 
     /**
-     * Method to return cart from session
-     * @param session http session
-     * @return cart
-     */
-    public Cart getCart(HttpSession session){
-        Cart cart = (Cart) session.getAttribute("cart");
-        if(cart == null){
-            cart = new Cart();
-        }
-        return cart;
-    }
-
-    /**
      * Method to check lock conflicts in cart`s cart items
      * @param cart cart
      * @param cartItem cart item
