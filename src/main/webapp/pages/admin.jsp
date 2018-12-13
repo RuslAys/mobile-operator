@@ -7,7 +7,7 @@
     </li>
     <li class="breadcrumb-item active">Admin</li>
 </ol>
-    <h1>Admin panel</h1>
+    <h1 id = "adminPanelHeader">Admin panel</h1>
     <ul>
         <li>
             <a href="${rootUrl}/admin/operator">Operator editor</a>

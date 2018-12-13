@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class, AspectConfig.class})
+@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class})
 @ComponentScan("ru.javaschool.mobileoperator")
 public class LoginTest extends BaseTest {
     @Test
@@ -33,6 +33,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void correctAdminLoginTest() throws Exception{
+        createAdmin();
         this.mockMvc.perform(formLogin().user("a").password("p"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -41,10 +42,12 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void correctUserLoginTest() throws Exception{
-        this.mockMvc.perform(formLogin().user("79817549091").password("p"))
+        createUser();
+        this.mockMvc.perform(formLogin().user("u").password("p"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
+        removeAllUsers();
     }
 
     @Test

@@ -2,11 +2,13 @@ package ru.javaschool.mobileoperator.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class JsonConverter {
     private static ObjectMapper objectMapper = new ObjectMapper();
+    private final static Logger log = Logger.getLogger(JsonConverter.class);
 
     private JsonConverter(){
 
@@ -19,8 +21,7 @@ public class JsonConverter {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-//            logger.error("Parse error on " + object.toString() + Arrays.toString(e.getStackTrace()));
+            log.error(e.getStackTrace());
             throw new IllegalArgumentException(e.getMessage());
         }
     }
@@ -32,8 +33,7 @@ public class JsonConverter {
         try {
             return objectMapper.writeValueAsString(objects);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-//            logger.error("Parse error on " + objects.toString() + Arrays.toString(e.getStackTrace()));
+            log.error(e.getStackTrace());
             throw new IllegalArgumentException(e.getMessage());
         }
     }

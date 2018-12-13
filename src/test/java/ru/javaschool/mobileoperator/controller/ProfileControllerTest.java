@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class, AspectConfig.class})
+@ContextConfiguration(classes = {WebAppConfig.class, WebSecurityConfig.class, H2Config.class})
 @ComponentScan("ru.javaschool.mobileoperator")
 public class ProfileControllerTest extends BaseTest {
 

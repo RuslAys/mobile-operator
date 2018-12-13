@@ -13,6 +13,8 @@ import ru.javaschool.mobileoperator.service.exceptions.OptionException;
 import ru.javaschool.mobileoperator.service.exceptions.PhoneNumberException;
 import ru.javaschool.mobileoperator.service.exceptions.TariffPlanException;
 
+import javax.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,14 +23,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     public String handleInternalServerError(Exception e) {
-        log.error(e);
+        log.error(e.getStackTrace());
         return "errors/internal_error";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({RuntimeException.class})
     public String handleBadRequest(Model model, Exception e) {
-        log.error(e);
+        log.error(e.getStackTrace());
         return "errors/bad_request";
     }
 
@@ -36,21 +38,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ContractException.class, OptionException.class,
             PhoneNumberException.class, TariffPlanException.class})
     public String handleBadRequestCustomErrors(Model model, Exception e) {
-        log.error(e);
+        log.error(e.getStackTrace());
         return "errors/bad_request";
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFoundException(Model model, Exception e) {
-        log.error(e);
+        log.error(e.getStackTrace());
         return "errors/not_found";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    public String handleValidationException(Exception e){
-        log.error(e);
-        return "errors/bad_request";
+    public String handleValidationException(HttpServletRequest request, Exception e, Model model){
+        log.error("Validation error on " + request.getRequestURL());
+        log.error(e.getStackTrace());
+        model.addAttribute("error", "validation error");
+        return "redirect:" + request.getRequestURL();
     }
 }

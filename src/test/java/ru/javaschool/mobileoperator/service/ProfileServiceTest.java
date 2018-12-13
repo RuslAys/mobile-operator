@@ -64,7 +64,6 @@ public class ProfileServiceTest extends BaseTest {
 
     @Test
     public void test1lockContractByAdmin(){
-        createAdmin();
 
         Contract contract = new Contract();
         contractService.add(contract);

@@ -53,7 +53,7 @@
         <div class="container target">
             <div class="row">
                 <div class="col-sm-4">
-                    <h2 class="">${contract.phoneNumber.number}</h2>
+                    <h2 id="username" class="">${contract.phoneNumber.number}</h2>
                 </div>
                 <form class="form" role="form" id="formLock" action="${rootUrl}/profile/${contract.phoneNumber.number}/lock" method="post">
                     <input hidden class="form-control form-control-lg rounded-1" name="contractId" value="${contract.id}">
@@ -121,7 +121,7 @@
                         <div class="col-xl-3 col-sm-6 mb-3">
                             <div class="card text-white bg-primary o-hidden h-100">
                                 <div class="card-body">
-                                    <div class="mr-5">Options: ${fn:length(contract.options)}</div>
+                                    <div id="Options" class="mr-5">Options: ${fn:length(contract.options)}</div>
                                 </div>
                                 <a class="card-footer text-white clearfix small z-1" href="${rootUrl}/profile/${contract.phoneNumber.number}/option">
                                     <span class="float-left">Option management</span>
@@ -133,7 +133,7 @@
                             <div class="col-xl-3 col-sm-6 mb-3">
                                 <div class="card text-white bg-primary o-hidden h-100 ">
                                     <div class="card-body">
-                                        <div class="mr-5">Tariff plan: ${contract.tariffPlan.name}</div>
+                                        <div id="tariffPlan" class="mr-5">Tariff plan: ${contract.tariffPlan.name}</div>
                                     </div>
                                     <a class="card-footer text-white clearfix small z-1" href="${rootUrl}/profile/${contract.phoneNumber.number}/tariff">
                                         <span class="float-left">Change tariff plan</span>
@@ -146,7 +146,7 @@
                             <div class="col-xl-3 col-sm-6 mb-3">
                                 <div class="card text-white bg-danger o-hidden h-100">
                                     <div class="card-body">
-                                        <div class="mr-5">Tariff plan: ${contract.tariffPlan.name}
+                                        <div id="tariffPlan" class="mr-5">Tariff plan: ${contract.tariffPlan.name}
                                             <h5>Tariff plan is archival</h5>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@
                         <div class="col-xl-3 col-sm-6 mb-3">
                             <div class="card text-white bg-success o-hidden h-100">
                                 <div class="card-body">
-                                    <div class="mr-5">Balance: ${contract.balance}</div>
+                                    <div id="balance" class="mr-5">Balance: ${contract.balance}</div>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +204,7 @@
                         </div>
                         <security:authorize access="hasRole('ROLE_OPERATOR')">
                             <div class = "col-sm-3">
-                                <ul class="list-group">
+                                <ul id = "allContracts" class="list-group">
                                     <c:forEach items="${anotherContracts}" var="cntr" varStatus="loop">
                                         <li class="list-group-item">
                                             <a class="nav-link" href="/profile/${cntr.phoneNumber.number}">${cntr.phoneNumber.number}</a>

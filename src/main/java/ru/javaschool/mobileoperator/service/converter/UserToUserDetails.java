@@ -9,6 +9,9 @@ import ru.javaschool.mobileoperator.domain.User;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Class to convert user entity to user details
+ */
 @Component
 public class UserToUserDetails implements Converter<User, UserDetails> {
 

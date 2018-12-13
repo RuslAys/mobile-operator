@@ -22,22 +22,6 @@ public class CartHelper {
      */
     public boolean alreadyExist(Cart cart, CartItem cartItem){
         switch (cartItem.getCartItemOperationType()){
-            case SALE:
-                for (CartItem cartItem1: cart.getCartItems()){
-                    if (cartItem.getCustomer().equals(cartItem1.getCustomer())
-                            && cartItem.getPhoneNumberId() == cartItem1.getPhoneNumberId()) {
-                        return true;
-                    }
-                }
-                break;
-            case SALE_TO_EXIST_CUSTOMER:
-                for (CartItem cartItem1: cart.getCartItems()){
-                    if (cartItem.getCustomerId() == cartItem1.getCustomerId()
-                            && cartItem.getPhoneNumberId() == cartItem1.getPhoneNumberId()) {
-                        return true;
-                    }
-                }
-                break;
             case LOCK:
                 for (CartItem cartItem1: cart.getCartItems()){
                     if (cartItem.getContractId() == cartItem1.getContractId()) {

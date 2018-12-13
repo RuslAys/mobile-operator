@@ -1,5 +1,6 @@
 package ru.javaschool.mobileoperator.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class JmsMessageSenderTest extends BaseTest {
     @Autowired
     private JmsMessageSender jmsMessageSender;
 
+    @Ignore
     @Test
     public void sendMessageTest(){
         jmsMessageSender.send("Text from test");

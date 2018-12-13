@@ -33,11 +33,11 @@ public class BaseTest {
 
     protected MockMvc mockMvc;
 
-//    @Before
-//    public void setup(){
-//        MockitoAnnotations.initMocks(this);
-//        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
-//    }
+    @Before
+    public void setup(){
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+    }
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -68,5 +68,10 @@ public class BaseTest {
         authorities.add(new Authority(user, UserRoleEnum.USER.name()));
         user.setAuthorities(authorities);
         userService.add(user);
+    }
+
+    public void removeAllUsers(){
+        List<User> users = userService.findAll();
+        users.forEach(user -> userService.remove(user));
     }
 }

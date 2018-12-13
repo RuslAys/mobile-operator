@@ -46,7 +46,7 @@
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <security:authorize access="hasRole('ROLE_ADMIN')">
             <li class="nav-item active">
-                <a class="nav-link" href="${rootUrl}/admin">Admin panel</a>
+                <a id = "adminPanelButton" class="nav-link" href="${rootUrl}/admin">Admin panel</a>
             </li>
         </security:authorize>
         <security:authorize access="hasRole('ROLE_OPERATOR')">
