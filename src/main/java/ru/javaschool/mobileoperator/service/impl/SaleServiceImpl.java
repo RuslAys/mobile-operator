@@ -96,7 +96,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void saleToExistPersonalAccount(long customerId, long tariffPlanId, long phoneNumberId) {
+    public void saleToExistCustomer(long customerId, long tariffPlanId, long phoneNumberId) {
         PhoneNumber phoneNumber = phoneNumberDao.find(phoneNumberId);
         if(phoneNumber.getContract() != null){
             throw new PhoneNumberException("Number already in use");

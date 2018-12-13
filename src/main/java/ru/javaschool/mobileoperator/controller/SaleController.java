@@ -105,14 +105,13 @@ public class SaleController {
      * @param customerId personal account id
      * @param tariffId   tariff id
      * @param numberId   phone number id
-     * @param session    http session
      * @return redirect to cart page
      */
     @PostMapping(value = "/confirm/customer")
     public String confirmSaleToExistPersonalAccountToCart(@RequestParam("customerId") Long customerId,
                                                           @RequestParam("tariff") Long tariffId,
-                                                          @RequestParam("number") Long numberId,
-                                                          HttpSession session) {
+                                                          @RequestParam("number") Long numberId) {
+        saleService.saleToExistCustomer(customerId, tariffId, numberId);
         return "redirect:/cart";
     }
 

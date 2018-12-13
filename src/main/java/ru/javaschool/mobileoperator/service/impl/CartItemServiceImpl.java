@@ -47,7 +47,7 @@ public class CartItemServiceImpl implements CartItemService {
 ////                saleService.saleContract(cartItem.getCustomer(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
 //                break;
 //            case SALE_TO_EXIST_CUSTOMER:
-//                saleService.saleToExistPersonalAccount(cartItem.getCustomerId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
+//                saleService.saleToExistCustomer(cartItem.getCustomerId(), cartItem.getTariffPlanId(), cartItem.getPhoneNumberId());
 //                break;
             case ADD_OPTION:
                 optionService.addOptionToContract(cartItem.getContractId(), cartItem.getOptionId());

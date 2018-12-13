@@ -14,9 +14,9 @@ public interface SaleService {
 
     /**
      * Method to sale terminal device to existing personal account
-     * @param personalAccountId personal account id
+     * @param customerId customer id
      * @param tariffPlanId tariff plan id
      * @param phoneNumberId phone number id
      */
-    void saleToExistPersonalAccount(long personalAccountId, long tariffPlanId, long phoneNumberId);
+    void saleToExistCustomer(long customerId, long tariffPlanId, long phoneNumberId);
 }
