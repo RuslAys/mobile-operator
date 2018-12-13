@@ -1,6 +1,5 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<c:set var="pageListHolder" value="${options}" scope="session" />
 <spring:url value="${rootUrl}/admin/option/l" var="pageurl" />
 <body>
 <ol class="breadcrumb">
@@ -36,7 +35,7 @@
                                             <label for="inclusiveOptionsField">Inclusive options</label>
                                             <select multiple class="form-control" id="inclusiveOptionsField"
                                                 name="inclusiveOptions">
-                                                <c:forEach items="${pageListHolder.source}" var="option">
+                                                <c:forEach items="${options}" var="option">
                                                     <option value="${option.id}"> <c:out value="${option}"/> </option>
                                                 </c:forEach>
                                             </select>
@@ -45,12 +44,12 @@
                                             <label for="exclusiveOptionsField">Exclusive options</label>
                                             <select multiple class="form-control" id="exclusiveOptionsField"
                                                   name="exclusiveOptions">
-                                                <c:forEach items="${pageListHolder.source}" var="option">
+                                                <c:forEach items="${options}" var="option">
                                                     <option value="${option.id}"> <c:out value="${option}"/> </option>
                                                 </c:forEach>
                                             </select>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-primary float-right mb-1">Submit</button>
                                     </form>
                                 </div>
                             </div>
@@ -59,52 +58,45 @@
                 </div>
             </div>
         <div>
-
-        <table class="table">
-            <thead class = "thead-light">
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Connection cost</th>
-                </tr>
-              </thead>
-            <tbody>
-            <c:forEach var="option" items="${pageListHolder.pageList}">
-                <tr>
-                <td>
-                    <a href="${rootUrl}/admin/option/${option.id}"><c:out value="${option.name}" /> </a>
-                </td>
-                <td>${option.price}</td>
-                <td>${option.connectionCost}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <div>
-        <span style="float:left;">
-        <c:choose>
-            <c:when test="${pageListHolder.firstPage}">Prev</c:when>
-            <c:otherwise><a href="${pageurl}/prev">Prev</a></c:otherwise>
-        </c:choose>
-        </span>
-        <span>
-        <c:forEach begin="0" end="${pageListHolder.pageCount-1}" varStatus="loop">
-        &nbsp;&nbsp;
-        <c:choose>
-            <c:when test="${loop.index == pageListHolder.page}">${loop.index+1}</c:when>
-            <c:otherwise><a href="${pageurl}/${loop.index}">${loop.index+1}</a></c:otherwise>
-        </c:choose>
-        &nbsp;&nbsp;
-        </c:forEach>
-        </span>
-        <span>
-        <c:choose>
-            <c:when test="${pageListHolder.lastPage}">Next</c:when>
-            <c:otherwise><a href="${pageurl}/next">Next</a></c:otherwise>
-        </c:choose>
-        </span>
-        </div>
+            <div class="row">
+                <div class="col-sm-9 mx-auto">
+                    <div class="card mb-10 ">
+                        <div class="card-header">
+                            <i class="fas fa-table "></i>
+                            Options</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="optionsTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Connection cost</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="option" items="${options}">
+                                        <tr>
+                                            <td>
+                                                <a href="${rootUrl}/admin/option/${option.id}"><c:out value="${option   .name}"/></a>
+                                            </td>
+                                            <td>${option.price}</td>
+                                            <td>${option.connectionCost}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 </html>
+<script>
+    $(document).ready(function(){
+        $('#optionsTable').DataTable();
+    });
+</script>

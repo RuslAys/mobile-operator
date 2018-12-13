@@ -80,35 +80,9 @@ public class AdminPanelController {
      * @param model ui model
      * @return operator page
      */
-    @GetMapping(value = {"/operator/l/{type}", "/operator"})
-    public String operatorPage(Model model,
-                               @PathVariable Map<String, String> pathVariablesMap,
-                               HttpServletRequest request) {
-        PagedListHolder<User> userPagedListHolder = null;
-        String type = pathVariablesMap.get("type");
-        if (null == type) {
-            List<User> operators = (userService.findAll(UserRoleEnum.OPERATOR));
-            userPagedListHolder = new PagedListHolder<User>();
-            userPagedListHolder.setSource(operators);
-            userPagedListHolder.setPageSize(3);
-            request.getSession().setAttribute("operators", userPagedListHolder);
-        } else if ("next".equals(type)) {
-            // Return next set of list
-            userPagedListHolder = (PagedListHolder<User>) request.getSession()
-                    .getAttribute("operators");
-            userPagedListHolder.nextPage();
-        } else if ("prev".equals(type)) {
-            // Return previous set of list
-            userPagedListHolder = (PagedListHolder<User>) request.getSession()
-                    .getAttribute("operators");
-            userPagedListHolder.previousPage();
-        } else {
-            // Return specific index set of list
-            userPagedListHolder = (PagedListHolder<User>) request.getSession()
-                    .getAttribute("operators");
-            int pageNum = Integer.parseInt(type);
-            userPagedListHolder.setPage(pageNum);
-        }
+    @GetMapping(value = "/operator")
+    public String operatorPage(Model model) {
+        model.addAttribute("operators", userService.findAll(UserRoleEnum.OPERATOR));
         return "operator";
     }
 
@@ -119,7 +93,7 @@ public class AdminPanelController {
      * @param password        operator password
      * @param confirmPassword string for password confirming
      * @param model           ui model
-     * @return redirect to operator admin page {@link #operatorPage(Model, Map, HttpServletRequest)} }
+     * @return redirect to operator admin page {@link #operatorPage(Model)} }
      */
     @PostMapping("/operator/add")
     public String addOperator(
@@ -175,35 +149,9 @@ public class AdminPanelController {
      * @param model ui model
      * @return options page
      */
-    @GetMapping(value = {"/option/l/{type}", "/option"})
-    public String optionPage(Model model,
-                             @PathVariable Map<String, String> pathVariablesMap,
-                             HttpServletRequest request) {
-        PagedListHolder<Option> optionPagedListHolder = null;
-        String type = pathVariablesMap.get("type");
-        if (null == type) {
-            List<Option> options = (optionService.findAll());
-            optionPagedListHolder = new PagedListHolder<Option>();
-            optionPagedListHolder.setSource(options);
-            optionPagedListHolder.setPageSize(3);
-            request.getSession().setAttribute("options", optionPagedListHolder);
-        } else if ("next".equals(type)) {
-            // Return next set of list
-            optionPagedListHolder = (PagedListHolder<Option>) request.getSession()
-                    .getAttribute("options");
-            optionPagedListHolder.nextPage();
-        } else if ("prev".equals(type)) {
-            // Return previous set of list
-            optionPagedListHolder = (PagedListHolder<Option>) request.getSession()
-                    .getAttribute("options");
-            optionPagedListHolder.previousPage();
-        } else {
-            // Return specific index set of list
-            optionPagedListHolder = (PagedListHolder<Option>) request.getSession()
-                    .getAttribute("options");
-            int pageNum = Integer.parseInt(type);
-            optionPagedListHolder.setPage(pageNum);
-        }
+    @GetMapping(value = "/option")
+    public String optionPage(Model model) {
+        model.addAttribute("options", optionService.findAll());
         return "option";
     }
 
@@ -213,7 +161,7 @@ public class AdminPanelController {
      * @param name             option name
      * @param inclusiveOptions inclusive options to option
      * @param exclusiveOptions exclusive options to option
-     * @return redirect to options page {@link #operatorPage(Model, Map, HttpServletRequest)}
+     * @return redirect to options page {@link #operatorPage(Model)}
      */
     @PostMapping("/option/add")
     public String addOption(@RequestParam String name,
@@ -230,7 +178,7 @@ public class AdminPanelController {
     /**
      * Get method to option editor
      *
-     * @return redirect to options page {@link #operatorPage(Model, Map, HttpServletRequest)}
+     * @return redirect to options page {@link #optionsEditor(Long, Model)}
      */
     @GetMapping("/option/{optionId}")
     public String optionsEditor(@PathVariable Long optionId, Model model) {
@@ -249,35 +197,9 @@ public class AdminPanelController {
      * @param model ui model
      * @return tariff page
      */
-    @GetMapping(value = {"/tariff/l/{type}", "/tariff"})
-    public String tariffPage(Model model,
-                             @PathVariable Map<String, String> pathVariablesMap,
-                             HttpServletRequest request) {
-        PagedListHolder<TariffPlan> tariffPagedListHolder = null;
-        String type = pathVariablesMap.get("type");
-        if (null == type) {
-            List<TariffPlan> tariffs = (tariffService.findAll());
-            tariffPagedListHolder = new PagedListHolder<TariffPlan>();
-            tariffPagedListHolder.setSource(tariffs);
-            tariffPagedListHolder.setPageSize(3);
-            request.getSession().setAttribute("tariffs", tariffPagedListHolder);
-        } else if ("next".equals(type)) {
-            // Return next set of list
-            tariffPagedListHolder = (PagedListHolder<TariffPlan>) request.getSession()
-                    .getAttribute("tariffs");
-            tariffPagedListHolder.nextPage();
-        } else if ("prev".equals(type)) {
-            // Return previous set of list
-            tariffPagedListHolder = (PagedListHolder<TariffPlan>) request.getSession()
-                    .getAttribute("tariffs");
-            tariffPagedListHolder.previousPage();
-        } else {
-            // Return specific index set of list
-            tariffPagedListHolder = (PagedListHolder<TariffPlan>) request.getSession()
-                    .getAttribute("tariffs");
-            int pageNum = Integer.parseInt(type);
-            tariffPagedListHolder.setPage(pageNum);
-        }
+    @GetMapping(value = "/tariff")
+    public String tariffPage(Model model) {
+        model.addAttribute("tariffs", tariffService.findAll());
         model.addAttribute("options", optionService.findAll());
         return "tariff";
     }
@@ -287,14 +209,12 @@ public class AdminPanelController {
      *
      * @param tariffPlanDto valid tariff plan dto
      * @param optionIds     tariff options
-     * @return redirect to tariff page {@link #tariffPage(Model, Map, HttpServletRequest)}}
+     * @return redirect to tariff page {@link #tariffPage(Model)}}
      */
     @PostMapping("/tariff/add")
-    public String addTariffPlan(/*@RequestParam String name,
-                                @RequestParam String price,*/
-            @Valid TariffPlanDto tariffPlanDto,
-            @RequestParam(value = "optionIds", required = false) List<Long> optionIds,
-            BindingResult result) {
+    public String addTariffPlan(@Valid TariffPlanDto tariffPlanDto,
+                                @RequestParam(value = "optionIds", required = false) List<Long> optionIds,
+                                BindingResult result) {
         if (result.hasErrors()) {
             return "errors/bad_request";
         }
@@ -364,7 +284,7 @@ public class AdminPanelController {
     public String phoneNumbersPage(Model model,
                                    @PathVariable Map<String, String> pathVariablesMap,
                                    HttpServletRequest request) {
-        model.addAttribute("phones", phoneNumberService.getAllEmptyNumbers());
+        model.addAttribute("phones", phoneNumberService.findAll());
         return "phone";
     }
 

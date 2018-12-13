@@ -21,7 +21,7 @@
           </c:forEach>
        </h5>
 
-        <form name="edit-operator" action="/admin/operator/editOperator" method="post">
+        <form name="edit-operator" action="${rootUrl}/admin/operator/editOperator" method="post">
             <input type="hidden" class="form-control" name="username"
                 value = "${user.username}"id="usernameField" placeholder="${user.username}">
            <div class="form-check">

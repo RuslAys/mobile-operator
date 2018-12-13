@@ -65,7 +65,7 @@ public class ProfileServiceImpl implements ProfileService {
         Contract contract = contractDao.find(contractId);
         if(contract.isLocked()){
             if(!contract.isLockedByUser() && roleHelper.isOnlyUser(userDetails)){
-                throw new BusinessException("Can not unlock with this role");
+                throw new BusinessException("Can not unlock. Access denied");
             }
             contract.setLocked(false);
             contract.setLockedByUser(false);

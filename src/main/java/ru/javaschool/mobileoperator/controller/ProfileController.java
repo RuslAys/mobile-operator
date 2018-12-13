@@ -57,6 +57,9 @@ public class ProfileController {
     @Autowired
     private CartActionService cartActionService;
 
+    @Autowired
+    private ProfileService profileService;
+
 
     /**
      * Get method for profile page
@@ -70,6 +73,10 @@ public class ProfileController {
     public String profilePage(Model model,
                               @PathVariable("username") String username,
                               @AuthenticationPrincipal UserDetails user) {
+        if(username.equals(user.getUsername()) && !roleHelper.isOnlyUser(user)){
+            model.addAttribute("manager", userService.getUser(username));
+            return "profile";
+        }
         ContractDto contract = contractService.getContractWithOptions(username);
         model.addAttribute("cart", cart);
         model.addAttribute("user", userService.getUser(username));

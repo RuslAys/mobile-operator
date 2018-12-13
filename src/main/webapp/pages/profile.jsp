@@ -1,18 +1,46 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<c:if test="${contract.locked == false}">
-    <spring:url value="lock" var="lock" />
+<c:if test="${manager == null}">
+    <c:if test="${contract.locked == false}">
+        <spring:url value="lock" var="lock" />
+    </c:if>
+    <c:if test="${contract.locked == true}">
+        <spring:url value="unlock" var="lock" />
+    </c:if>
 </c:if>
-<c:if test="${contract.locked == true}">
-    <spring:url value="unlock" var="lock" />
-</c:if>
-<%--<style>--%>
-    <%--#content-wrapper{--%>
-        <%--overflow-y: hidden;--%>
-    <%--}--%>
-<%--</style>--%>
 <body id="page-top">
-<!-- Breadcrumbs-->
+<c:if test="${manager != null}">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="${rootUrl}/">Profile</a>
+        </li>
+        <li class="breadcrumb-item active">${manager.username}</li>
+    </ol>
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <hr class="">
+            <div class="container target">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <ul class="list-group">
+                            <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                            <li class="list-group-item">
+                                <span class="pull-left"><strong class="">Name:</strong></span>
+                                    ${manager.username}
+                            </li>
+                            <c:forEach items="${manager.authorities}" var="authority" varStatus="loop">
+                                <li class="list-group-item">
+                                    Role: ${authority.authority}
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
+<c:if test="${manager == null}">
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="${rootUrl}/">Profile</a>
@@ -30,12 +58,16 @@
                 <form class="form" role="form" id="formLock" action="${rootUrl}/profile/${contract.phoneNumber.number}/lock" method="post">
                     <input hidden class="form-control form-control-lg rounded-1" name="contractId" value="${contract.id}">
                     <security:authorize access="hasRole('ROLE_USER')">
-                        <c:if test="${contract.lockedByUser == false}">
+                        <c:if test="${(contract.locked == true) && (contract.lockedByUser == false)}">
                             <button type="submit" class="btn btn-dark" id="btnLockConfirm" name="confirm" disabled>Confirm ${lock}</button>
                             <button type="submit" class="btn btn-dark" id="btnLockAddToCart" name="add_to_cart" disabled>Add to cart ${lock}</button>
                         </c:if>
-                        <c:if test="${contract.lockedByUser == true}">
-                            <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm" >Confirm ${lock}</button>
+                        <c:if test="${(contract.locked == true) && (contract.lockedByUser == true)}">
+                            <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm">Confirm ${lock}</button>
+                            <button type="submit" class="btn btn-success" id="btnLockAddToCart" name="add_to_cart">Add to cart ${lock}</button>
+                        </c:if>
+                        <c:if test="${(contract.locked == false)}">
+                            <button type="submit" class="btn btn-success" id="btnLockConfirm" name="confirm">Confirm ${lock}</button>
                             <button type="submit" class="btn btn-success" id="btnLockAddToCart" name="add_to_cart">Add to cart ${lock}</button>
                         </c:if>
                     </security:authorize>
@@ -360,3 +392,4 @@
         + date.getHours() + ":" + zero + date.getMinutes());
 </script>
 </html>
+</c:if>

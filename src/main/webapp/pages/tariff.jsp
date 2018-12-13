@@ -1,8 +1,7 @@
 <%@include file ="parts/common.jsp"%>
 <jsp:include page="parts/header.jsp" />
-<c:set var="pageListHolder" value="${tariffs}" scope="session" />
 <spring:url value="${rootUrl}/admin/tariff/l" var="pageurl" />
-<body>
+<body id="page-top">
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="${rootUrl}/">Profile</a>
@@ -38,101 +37,62 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Add new tariff plan</button>
+                                <button type="submit" class="btn btn-primary float-right mb-1">Add new tariff plan</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <h3>Tariff plans</h3>
-                <table class="table">
-                  <thead class = "thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Archival</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      <c:forEach items="${pageListHolder.pageList}" var="tariffPlan">
-                          <%--<c:if test="${tariffPlan.archival == false}">--%>
-                              <tr>
-                                  <form name="remove-tariff" action="${rootUrl}/admin/tariff/remove" method="post">
-                                     <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffs">
-                                     <td>
-                                        <a href="${rootUrl}/admin/tariff/${tariffPlan.id}"><c:out value="${tariffPlan.name}" /> </a>
-                                     </td>
-                                     <td>
-                                        ${tariffPlan.price}
-                                      </td>
-                                      <td>
-                                          ${tariffPlan.archival}
-                                      </td>
-                                     <td>
-                                        <button type="submit" class="btn btn-primary">Remove</button>
-                                     </td>
-                                  </form>
-                              </tr>
-                          <%--</c:if>--%>
-                      </c:forEach>
-                  </tbody>
-                </table>
+            <div class="col-sm-9 mx-auto">
+                <div class="card mb-10 ">
+                    <div class="card-header">
+                        <i class="fas fa-table "></i>
+                        Tariffs</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="tariffsTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Archival</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="tariff" items="${tariffs}">
+                                    <tr>
+                                        <form name="remove-tariff" action="${rootUrl}/admin/tariff/remove" method="post">
+                                            <input type="hidden" class="form-control" name="tariffId" value="${tariffPlan.id}" id="tariffId">
+                                            <td>
+                                                <a href="${rootUrl}/admin/tariff/${tariff.id}"><c:out value="${tariff.name}"/></a>
+                                            </td>
+                                            <td>${tariff.price}</td>
+                                            <td>${tariff.archival}</td>
+                                            <td>
+                                                <button type="submit" class="btn btn-primary">Remove</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div>
-                    <span style="float:left;">
-                    <c:choose>
-                        <c:when test="${pageListHolder.firstPage}">Prev</c:when>
-                        <c:otherwise><a href="${pageurl}/prev">Prev</a></c:otherwise>
-                    </c:choose>
-                    </span>
-                    <span>
-                    <c:forEach begin="0" end="${pageListHolder.pageCount-1}" varStatus="loop">
-                    &nbsp;&nbsp;
-                    <c:choose>
-                        <c:when test="${loop.index == pageListHolder.page}">${loop.index+1}</c:when>
-                        <c:otherwise><a href="${pageurl}/${loop.index}">${loop.index+1}</a></c:otherwise>
-                    </c:choose>
-                    &nbsp;&nbsp;
-                    </c:forEach>
-                    </span>
-                    <span>
-                    <c:choose>
-                        <c:when test="${pageListHolder.lastPage}">Next</c:when>
-                        <c:otherwise><a href="${pageurl}/next">Next</a></c:otherwise>
-                    </c:choose>
-                    </span>
-                    </div>
+                </div>
+            </div>
         </div>
-
-
-
-<!--
-        <h3>Archival tariff plans</h3>
-                <table class="table">
-                      <thead class = "thead-light">
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Price</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          <c:forEach items="${tariffPlans}" var="tariffPlan">
-                              <c:if test="${tariffPlan.archival == true}">
-                                  <tr>
-                                     <td>
-                                        ${tariffPlan.name}
-                                     </td>
-                                     <td>
-                                        ${tariffPlan.price}
-                                      </td>
-                                  </tr>
-                              </c:if>
-                          </c:forEach>
-                      </tbody>
-                </table>
-
-                -->
     </div>
+
+    <jsp:include page="parts/footer.jsp" />
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 </body>
 </html>
+<script>
+    $(document).ready(function(){
+        $('#tariffsTable').DataTable();
+    });
+</script>
